@@ -2,6 +2,7 @@
   <div class="layout-wrapper">
     <el-container>
       <el-header>
+      <logo></logo>
       <Navbar></Navbar>
       </el-header>
       <el-container>
@@ -18,12 +19,14 @@
   import AppMain from 'components/main/Main'
   import Sidebar from 'components/sidebar/Sidebar'
   import Navbar from 'components/navbar/Navbar'
+  import Logo from 'components/logo/Logo'
 
   export default {
     components: {
       AppMain,
       Sidebar,
-      Navbar
+      Navbar,
+      Logo
     }
   }
 </script>
@@ -35,10 +38,11 @@
   }
   .el-header {
     height: 50px !important;
-    background-color: #01B4FF;//32A7B8 #49ABE8 3F87FF #52B2E8 007BB6 #01B4FF
+    background-color: #01B4FF;//32A7B8 #49ABE8 3F87FF #52B2E8 007BB6 #01B4FF e6e6e6
     color: #333;
     text-align: center;
     z-index: 1100;
+    padding: 0;
   }
 
   /*.el-aside {*/
