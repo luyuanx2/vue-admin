@@ -38,6 +38,11 @@ export default {
     routes: {
       type: Array
     }
+  },
+  methods: {
+    generateTitle (title) {
+      return this.$t('route.' + title)
+    }
   }
 }
 </script>

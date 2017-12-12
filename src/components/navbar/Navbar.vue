@@ -20,11 +20,11 @@
 <script>
   import { mapGetters } from 'vuex'
   export default {
-//    computed: {
-//      ...mapGetters([
-//        'avatar'
-//      ])
-//    },
+    computed: {
+      ...mapGetters([
+        'avatar'
+      ])
+    },
     methods: {
       logout () {
         this.$store.dispatch('LogOut').then(() => {
