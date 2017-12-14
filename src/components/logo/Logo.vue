@@ -12,10 +12,10 @@
 <style rel="stylesheet/scss" lang="scss" scoped>
   .navbar-brand {
     float: left;
-    height: 50px;
+    height: 100%;
     width: 180px;
     font-size: 18px;
-    line-height: 22px;
+    line-height: 55px;
     font-weight: 700;
     display: inline-block;
     .navbar-brand-logo {
