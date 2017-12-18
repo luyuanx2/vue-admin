@@ -17,11 +17,30 @@ Vue.use(Router)
 export const constantRouterMap = [
   {path: '/login', component: _import('login/index'), hidden: true},
   {path: '/authredirect', component: _import('login/authredirect'), hidden: true},
+  { path: '/404', Layout, hidden: true },
+  { path: '/401', Layout, hidden: true },
   {
-    path: '/',
-    component: Layout
+    path: '',
+    component: Layout,
+    redirect: 'dashboard',
+    children: [{
+      path: 'dashboard',
+      component: Layout,
+      name: 'dashboard',
+      meta: { title: '首页', icon: 'dashboard', noCache: true }
+    }]
+  },
+  {
+    path: '/documentation',
+    component: Layout,
+    redirect: '/documentation/index',
+    children: [{
+      path: 'index',
+      component: Layout,
+      name: 'documentation',
+      meta: { title: '文档', icon: 'documentation', noCache: true }
+    }]
   }
-
 ]
 export default new Router({
   // mode: 'history', //后端支持可开
@@ -40,7 +59,7 @@ export const asyncRouterMap = [
       component: Layout,
       name: 'permission',
       meta: {
-        title: 'permission',
+        title: '权限测试页',
         icon: 'lock',
         role: ['admin']
       }
@@ -54,7 +73,7 @@ export const asyncRouterMap = [
       path: 'index',
       component: Layout,
       name: 'icons',
-      meta: {title: 'icons', icon: 'icon', noCache: true}
+      meta: {title: '图标', icon: 'icon', noCache: true}
     }]
   },
   {
@@ -63,7 +82,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'component-demo',
     meta: {
-      title: 'components',
+      title: '组件',
       icon: 'component'
     },
     children: [
@@ -86,7 +105,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'charts',
     meta: {
-      title: 'charts',
+      title: '图表',
       icon: 'chart'
     },
     children: [
@@ -102,7 +121,7 @@ export const asyncRouterMap = [
     redirect: '/example/table/complex-table',
     name: 'example',
     meta: {
-      title: 'example',
+      title: '综合实例',
       icon: 'example'
     },
     children: [
@@ -132,7 +151,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'form',
     meta: {
-      title: 'form',
+      title: '表单',
       icon: 'form'
     },
     children: [
@@ -147,7 +166,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'errorPages',
     meta: {
-      title: 'errorPages',
+      title: '错误页面',
       icon: '404'
     },
     children: [
@@ -160,7 +179,7 @@ export const asyncRouterMap = [
     path: '/error-log',
     component: Layout,
     redirect: 'noredirect',
-    children: [{path: 'log', component: Layout, name: 'errorLog', meta: {title: 'errorLog', icon: 'bug'}}]
+    children: [{path: 'log', component: Layout, name: 'errorLog', meta: {title: '错误日志', icon: 'bug'}}]
   },
 
   {
@@ -183,14 +202,14 @@ export const asyncRouterMap = [
     path: '/zip',
     component: Layout,
     redirect: '/zip/download',
-    children: [{path: 'download', component: Layout, name: 'exportZip', meta: {title: 'exportZip', icon: 'zip'}}]
+    children: [{path: 'download', component: Layout, name: 'exportZip', meta: {title: 'zip', icon: 'zip'}}]
   },
 
   {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
-    children: [{path: 'index', component: Layout, name: 'theme', meta: {title: 'theme', icon: 'theme'}}]
+    children: [{path: 'index', component: Layout, name: 'theme', meta: {title: '换肤', icon: 'theme'}}]
   },
 
   {
@@ -208,7 +227,7 @@ export const asyncRouterMap = [
   {
     path: '/i18n',
     component: Layout,
-    children: [{path: 'index', component: Layout, name: 'i18n', meta: {title: 'i18n', icon: 'international'}}]
+    children: [{path: 'index', component: Layout, name: 'i18n', meta: {title: '国际化', icon: 'international'}}]
   },
 
   {path: '*', redirect: '/404', hidden: true}
