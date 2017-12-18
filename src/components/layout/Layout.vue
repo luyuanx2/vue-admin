@@ -40,35 +40,26 @@
     height: 100%;
   }
   .el-header {
-    height: 55px !important;
-    background-color: #00b4ef;//32A7B8 #49ABE8 3F87FF #52B2E8 007BB6 #01B4FF e6e6e6 #00b4ef
-    color: #333;
-    text-align: center;
-    z-index: 1100;
-    padding: 0;
-    /*box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 0 3px 0 rgba(0,0,0,.04);*/
-  }
+  position: fixed;
+  width: 100%;
+  height: 55px !important;
+  background-color: #00b4ef;//32A7B8 #49ABE8 3F87FF #52B2E8 007BB6 #01B4FF e6e6e6 #00b4ef
+  color: #333;
+  text-align: center;
+  z-index: 1100;
+  padding: 0;
+  /*box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 0 3px 0 rgba(0,0,0,.04);*/
+}
 
-  /*.el-aside {*/
-    /*background-color: #D3DCE6;*/
-    /*color: #333;*/
-    /*height: 100%;*/
-  /*}*/
 
-  .el-main {
-    /*background-color: #E9EEF3;*/
-    background-color: red;
-    min-height: 100%;
-  }
+.el-container {
+  height: 100%;
+}
 
-  .el-container {
-    height: 100%;
-  }
-
-  .layout-wrapper {
-  @include clearfix;
-    position: relative;
-    height: 100%;
-    width: 100%;
-  }
+.layout-wrapper {
+@include clearfix;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
 </style>

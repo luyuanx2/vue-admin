@@ -1,7 +1,9 @@
 #app {
   // 主体区域
   .main-container {
-    min-height: 100%;
+    height: calc(100% - 55px);
+    margin-top: 55px;
+    //min-height: 100%;
     transition: margin-left 0.28s;
     margin-left: 180px;
     width: 100%;
