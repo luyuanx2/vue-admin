@@ -8,6 +8,7 @@
       <el-container>
         <sidebar class="sidebar-container"></sidebar>
         <div class="main-container">
+          <tags-view></tags-view>
           <app-main ></app-main>
         </div>
       </el-container>
@@ -20,13 +21,15 @@
   import Sidebar from 'components/sidebar/Sidebar'
   import Navbar from 'components/navbar/Navbar'
   import Logo from 'components/logo/Logo'
+  import TagsView from 'components/tags-view/TagsView'
 
   export default {
     components: {
       AppMain,
       Sidebar,
       Navbar,
-      Logo
+      Logo,
+      TagsView
     }
   }
 </script>
@@ -43,6 +46,7 @@
     text-align: center;
     z-index: 1100;
     padding: 0;
+    /*box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 0 3px 0 rgba(0,0,0,.04);*/
   }
 
   /*.el-aside {*/

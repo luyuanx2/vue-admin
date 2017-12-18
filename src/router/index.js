@@ -17,26 +17,26 @@ Vue.use(Router)
 export const constantRouterMap = [
   {path: '/login', component: _import('login/index'), hidden: true},
   {path: '/authredirect', component: _import('login/authredirect'), hidden: true},
-  { path: '/404', Layout, hidden: true },
-  { path: '/401', Layout, hidden: true },
+  { path: '/404', component: _import('login/index'), hidden: true },
+  { path: '/401', component: _import('login/index'), hidden: true },
   {
     path: '',
     component: Layout,
     redirect: 'dashboard',
     children: [{
       path: 'dashboard',
-      component: Layout,
+      component: _import('login/index'),
       name: 'dashboard',
       meta: { title: '首页', icon: 'dashboard', noCache: true }
     }]
   },
   {
     path: '/documentation',
-    component: Layout,
+    component: _import('login/index'),
     redirect: '/documentation/index',
     children: [{
       path: 'index',
-      component: Layout,
+      component: _import('login/index'),
       name: 'documentation',
       meta: { title: '文档', icon: 'documentation', noCache: true }
     }]
@@ -51,12 +51,12 @@ export default new Router({
 export const asyncRouterMap = [
   {
     path: '/permission',
-    component: Layout,
+    component: _import('login/index'),
     redirect: '/permission/index',
     meta: {role: ['admin']},
     children: [{
       path: 'index',
-      component: Layout,
+      component: _import('login/index'),
       name: 'permission',
       meta: {
         title: '权限测试页',
@@ -68,17 +68,17 @@ export const asyncRouterMap = [
 
   {
     path: '/icon',
-    component: Layout,
+    component: _import('login/index'),
     children: [{
       path: 'index',
-      component: Layout,
+      component: _import('login/index'),
       name: 'icons',
       meta: {title: '图标', icon: 'icon', noCache: true}
     }]
   },
   {
     path: '/components',
-    component: Layout,
+    component: _import('login/index'),
     redirect: 'noredirect',
     name: 'component-demo',
     meta: {

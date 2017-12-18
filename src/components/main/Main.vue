@@ -1,17 +1,24 @@
 <template>
-    <!--<el-main>-->
-      <section class="app-main">
-        <transition name="fade" mode="out-in">
-          <!-- <router-view :key="key"></router-view> -->
-          <div style="padding: 32px;background-color: #f0f2f5;box-sizing: inherit"></div>
-          <router-view></router-view>
-        </transition>
-      </section>
-    <!--</el-main>-->
+  <section class="app-main">
+    <transition name="fade" mode="out-in">
+      <!-- <router-view :key="key"></router-view> -->
+      <keep-alive :include="cachedViews">
+        <router-view></router-view>
+      </keep-alive>
+    </transition>
+  </section>
 </template>
 
 <script>
   export default {
-
+    computed: {
+      cachedViews () {
+        // console.log(this.$store.state.tagsView.cachedViews)
+        return this.$store.state.tagsView.cachedViews
+      }
+      // key() {
+      //   return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
+      // }
+    }
   }
 </script>
