@@ -1,7 +1,7 @@
 <template>
   <div class="tags-view-container">
+    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <scroll-pane class='tags-view-wrapper' ref='scrollPane'>
-      <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
       <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''"
                    v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path"
                    @contextmenu.prevent.native="openMenu(tag,$event)">
@@ -127,39 +127,42 @@
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .tags-view-container {
+    position: relative;
     .hamburger-container {
-      line-height: 36px;
-      height: 36px;
-      float: left;
-      padding-top: 8px;
-      padding-left: 10px;
+      z-index: 10;
+      line-height: 46px;
+      height: 30px;
+      position: absolute;
+      padding: 0 10px;
     }
     .tags-view-wrapper {
+      margin-left: 40px;
       background: #fff;
       height: 36px;
       border-bottom: 1px solid #d8dce5;
       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
       .tags-view-item {
-        /*border-radius: 3px;*/
+        border-right: 1px solid rgba(211, 212, 214, 0.5);//#d3d4d6
         display: inline-block;
         position: relative;
         height: 36px;
         line-height: 36px;
-        border: 1px solid #fff;
+        /*border: 1px solid #fff;*/
         color: #76838f;
         background: #fff;
-        padding: 0 8px;
+        /*padding: 0 5px;*/
         font-size: 14px;
-        margin-left: 5px;
-        /*margin-top: 1px;*/
+        /*margin-left: 8px;*/
+        padding-left: 8px;
         &:first-of-type {
-          padding-left: 0;
-          margin-left: 10px;
+          /*margin-left: 2px;*/
+          /*padding-left: 8px;*/
         }
         &.active {
           background-color: #fff;
-          color: #76838f;
-          border-color: #fff;
+          color: #d3d4d6;
+          /*border-color: #fff;*/
+          border-bottom: 2px solid #2d8cf0;
           &::before {
             content: '';
             background: #2d8cf0;
@@ -202,6 +205,7 @@
   .tags-view-wrapper {
     .tags-view-item {
       .el-icon-close {
+        margin-right: 5px;
         border-radius: 50%;
         text-align: center;
         position: relative;
@@ -211,17 +215,8 @@
         width: 16px;
         line-height: 16px;
         vertical-align: middle;
-       /* top: -1px;*/
-       /* right: -5px;*/
         color: #495060;
         transition: all .3s cubic-bezier(.645, .045, .355, 1);
-       /* width: 16px;
-        height: 16px;
-        vertical-align: 2px;
-        border-radius: 50%;
-        text-align: center;
-        transition: all .3s cubic-bezier(.645, .045, .355, 1);
-        transform-origin: 100% 50%;*/
         &:hover {
           background-color: #f56c6c;
           color: #fff;
