@@ -40,9 +40,6 @@ export default {
     }
   },
   methods: {
-    generateTitle (title) {
-      return this.$t('route.' + title)
-    }
   }
 }
 </script>
