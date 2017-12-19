@@ -160,9 +160,10 @@
         }
         &.active {
           background-color: #fff;
-          color: #d3d4d6;
+          color: #76838f;
+          /*d3d4d6*/
           /*border-color: #fff;*/
-          border-bottom: 2px solid #2d8cf0;
+          border-bottom: 3px solid #2d8cf0;
           &::before {
             content: '';
             background: #2d8cf0;
