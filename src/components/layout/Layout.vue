@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-wrapper">
+  <div class="layout-wrapper" :class="{hideSidebar:!sidebar.opened}">
     <el-container>
       <el-header>
       <logo></logo>
@@ -30,6 +30,11 @@
       Navbar,
       Logo,
       TagsView
+    },
+    computed: {
+      sidebar() {
+        return this.$store.state.app.sidebar
+      }
     }
   }
 </script>

@@ -25,7 +25,7 @@ export const constantRouterMap = [
     redirect: 'dashboard',
     children: [{
       path: 'dashboard',
-      component: _import('login/index'),
+      component: _import('dashboard/index'),
       name: 'dashboard',
       meta: { title: '首页', icon: 'dashboard', noCache: true }
     }]

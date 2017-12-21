@@ -54,7 +54,7 @@ export function formatTime (time, option) {
 }
 
 // 格式化时间
-export function getQueryObject (url) {
+export function getQueryObject(url) {
   url = url == null ? window.location.href : url
   const search = url.substring(url.lastIndexOf('?') + 1)
   const obj = {}
@@ -74,7 +74,7 @@ export function getQueryObject (url) {
  * @param {Sting} val input value
  * @returns {number} output value
  */
-export function getByteLen (val) {
+export function getByteLen(val) {
   let len = 0
   for (let i = 0; i < val.length; i++) {
     if (val[i].match(/[^\x00-\xff]/ig) != null) {
@@ -86,7 +86,7 @@ export function getByteLen (val) {
   return Math.floor(len)
 }
 
-export function cleanArray (actual) {
+export function cleanArray(actual) {
   const newArray = []
   for (let i = 0; i < actual.length; i++) {
     if (actual[i]) {
@@ -96,7 +96,7 @@ export function cleanArray (actual) {
   return newArray
 }
 
-export function param (json) {
+export function param(json) {
   if (!json) return ''
   return cleanArray(Object.keys(json).map(key => {
     if (json[key] === undefined) return ''
@@ -105,7 +105,7 @@ export function param (json) {
   })).join('&')
 }
 
-export function param2Obj (url) {
+export function param2Obj(url) {
   const search = url.split('?')[1]
   if (!search) {
     return {}
@@ -113,13 +113,13 @@ export function param2Obj (url) {
   return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
 }
 
-export function html2Text (val) {
+export function html2Text(val) {
   const div = document.createElement('div')
   div.innerHTML = val
   return div.textContent || div.innerText
 }
 
-export function objectMerge (target, source) {
+export function objectMerge(target, source) {
   /* Merges two  objects,
    giving the last one precedence */
 
@@ -142,7 +142,7 @@ export function objectMerge (target, source) {
   return target
 }
 
-export function scrollTo (element, to, duration) {
+export function scrollTo(element, to, duration) {
   if (duration <= 0) return
   const difference = to - element.scrollTop
   const perTick = difference / duration * 10
@@ -154,7 +154,7 @@ export function scrollTo (element, to, duration) {
   }, 10)
 }
 
-export function toggleClass (element, className) {
+export function toggleClass(element, className) {
   if (!element || !className) {
     return
   }
@@ -211,7 +211,7 @@ export function getTime (type) {
   }
 }
 
-export function debounce (func, wait, immediate) {
+export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
   const later = function () {
