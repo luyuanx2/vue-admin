@@ -18,6 +18,7 @@ export default {
   },
   methods: {
     handleScroll (e) {
+        console.log(e.wheelDelta)
       const eventDelta = e.wheelDelta || -e.deltaY * 3
       const $container = this.$refs.scrollContainer
       const $containerWidth = $container.offsetWidth
@@ -26,14 +27,18 @@ export default {
 
       if (eventDelta > 0) {
         this.left = Math.min(0, this.left + eventDelta)
+        console.log('0' + this.left)
       } else {
         if ($containerWidth - padding < $wrapperWidth) {
           if (this.left < -($wrapperWidth - $containerWidth + padding)) {
             this.left = this.left
+            console.log('1' + this.left)
           } else {
             this.left = Math.max(this.left + eventDelta, $containerWidth - $wrapperWidth - padding)
+            console.log('2' + this.left)
           }
         } else {
+          console.log('3' + this.left)
           this.left = 0
         }
       }

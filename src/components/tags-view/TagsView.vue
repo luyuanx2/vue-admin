@@ -6,7 +6,7 @@
                    v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path"
                    @contextmenu.prevent.native="openMenu(tag,$event)">
         <span style="margin-left: 3px;">{{tag.title}}</span>
-        <i class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></i>
+        <i class='el-icon-close'  @click.prevent.stop='closeSelectedTag(tag)'></i>
       </router-link>
     </scroll-pane>
     <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
@@ -57,9 +57,22 @@
       }
     },
     mounted () {
+      this.deleteOne()
       this.addViewTags()
     },
     methods: {
+
+      deleteOne() {
+        console.log(this.$refs.scrollPane)
+        const $container =  this.$refs.scrollPane.$refs.scrollContainer
+        const $containerWidth = $container.offsetWidth
+        const $wrapper =  this.$refs.scrollPane.$refs.scrollWrapper
+        const $wrapperWidth = $wrapper.offsetWidth
+        this.$refs.scrollPane.left = Math.min(0, this.$refs.scrollPane.left + 100)
+          console.log('0' + this.$refs.scrollPane.left)
+
+
+      },
       toggleSideBar () {
         this.$store.dispatch('toggleSideBar')
       },
@@ -100,6 +113,7 @@
               this.$router.push('/')
             }
           }
+          this.deleteOne()
         })
       },
       closeOthersTags () {
