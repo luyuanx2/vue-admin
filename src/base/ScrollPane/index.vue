@@ -45,13 +45,13 @@ export default {
       const $targetWidth = $target.offsetWidth
 
       if ($targetLeft < -this.left) {
-        // tag in the left
+        // 标签在左边
         this.left = -$targetLeft + padding
       } else if ($targetLeft + padding > -this.left && $targetLeft + $targetWidth < -this.left + $containerWidth - padding) {
         // tag in the current view
         // eslint-disable-line
       } else {
-        // tag in the right
+        // 标签在右边
         this.left = -($targetLeft - ($containerWidth - $targetWidth) + padding)
       }
     }

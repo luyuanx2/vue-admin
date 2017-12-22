@@ -10,9 +10,9 @@
       </router-link>
     </scroll-pane>
     <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
-      <li @click="closeSelectedTag(selectedTag)">Close</li>
-      <li @click="closeOthersTags">Close Others</li>
-      <li @click="closeAllTags">Close All</li>
+      <li @click="closeSelectedTag(selectedTag)">关闭</li>
+      <li @click="closeOthersTags">关闭其它</li>
+      <li @click="closeAllTags">关闭所有</li>
     </ul>
   </div>
 </template>
@@ -113,6 +113,8 @@
         this.$router.push('/')
       },
       openMenu (tag, e) {
+        console.log(e.clientX)
+        console.log(e.clientY)
         this.visible = true
         this.selectedTag = tag
         this.left = e.clientX
@@ -127,9 +129,7 @@
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .tags-view-container {
-    position: relative;
     .hamburger-container {
-      z-index: 10;
       line-height: 46px;
       height: 30px;
       position: absolute;
@@ -160,8 +160,8 @@
         /*margin-left: 8px;*/
         padding-left: 8px;
         &:first-of-type {
-          /*margin-left: 2px;*/
-          /*padding-left: 8px;*/
+          /*margin-left: 0;*/
+          /*padding-left: 0;*/
         }
         &.active {
           background-color: #fff;
