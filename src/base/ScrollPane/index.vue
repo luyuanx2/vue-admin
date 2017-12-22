@@ -27,7 +27,7 @@ export default {
 
       if (eventDelta > 0) {
         this.left = Math.min(0, this.left + eventDelta)
-        console.log('0' + this.left)
+        console.log('0-' + this.left)
       } else {
         if ($containerWidth - padding < $wrapperWidth) {
           if (this.left < -($wrapperWidth - $containerWidth + padding)) {

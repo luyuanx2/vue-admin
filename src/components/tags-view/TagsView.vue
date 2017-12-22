@@ -63,7 +63,7 @@
     methods: {
 
       deleteOne(e) {
-        console.log(e)
+        console.log(e.target.parentNode)
         const $container = this.$refs.scrollPane.$refs.scrollContainer
         const $containerWidth = $container.offsetWidth
         const $wrapper = this.$refs.scrollPane.$refs.scrollWrapper
