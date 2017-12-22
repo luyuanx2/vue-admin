@@ -61,16 +61,20 @@
       this.addViewTags()
     },
     methods: {
-
       deleteOne(e) {
-        console.log(e.target.parentNode)
+        const width = e.target.parentNode.offsetWidth
         const $container = this.$refs.scrollPane.$refs.scrollContainer
         const $containerWidth = $container.offsetWidth
         const $wrapper = this.$refs.scrollPane.$refs.scrollWrapper
         const $wrapperWidth = $wrapper.offsetWidth
-        this.$refs.scrollPane.left = Math.min(0, this.$refs.scrollPane.left + 100)
-        console.log('0' + this.$refs.scrollPane.left)
 
+        console.log($containerWidth)
+        console.log($wrapperWidth)
+        if($wrapperWidth  > $containerWidth){
+            console.log('进入方法')
+          this.$refs.scrollPane.left = Math.min(0, this.$refs.scrollPane.left + width)
+        }
+        console.log('0' + this.$refs.scrollPane.left)
       },
       toggleSideBar () {
         this.$store.dispatch('toggleSideBar')
