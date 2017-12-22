@@ -6,7 +6,7 @@
                    v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path"
                    @contextmenu.prevent.native="openMenu(tag,$event)">
         <span style="margin-left: 3px;">{{tag.title}}</span>
-        <i class='el-icon-close'  @click.prevent.stop='closeSelectedTag(tag)'></i>
+        <i class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag,$event)'></i>
       </router-link>
     </scroll-pane>
     <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
   import ScrollPane from 'base/ScrollPane'
   import Hamburger from 'base/Hamburger'
 
@@ -62,15 +62,14 @@
     },
     methods: {
 
-      deleteOne() {
-        console.log(this.$refs.scrollPane)
-        const $container =  this.$refs.scrollPane.$refs.scrollContainer
+      deleteOne(e) {
+        console.log(e)
+        const $container = this.$refs.scrollPane.$refs.scrollContainer
         const $containerWidth = $container.offsetWidth
-        const $wrapper =  this.$refs.scrollPane.$refs.scrollWrapper
+        const $wrapper = this.$refs.scrollPane.$refs.scrollWrapper
         const $wrapperWidth = $wrapper.offsetWidth
         this.$refs.scrollPane.left = Math.min(0, this.$refs.scrollPane.left + 100)
-          console.log('0' + this.$refs.scrollPane.left)
-
+        console.log('0' + this.$refs.scrollPane.left)
 
       },
       toggleSideBar () {
@@ -103,7 +102,7 @@
           }
         })
       },
-      closeSelectedTag (view) {
+      closeSelectedTag (view,e) {
         this.$store.dispatch('delVisitedViews', view).then((views) => {
           if (this.isActive(view)) {
             const latestView = views.slice(-1)[0]
@@ -113,7 +112,7 @@
               this.$router.push('/')
             }
           }
-          this.deleteOne()
+          this.deleteOne(e)
         })
       },
       closeOthersTags () {
@@ -161,7 +160,7 @@
       border-bottom: 1px solid #d8dce5;
       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
       .tags-view-item {
-        border-right: 1px solid rgba(211, 212, 214, 0.5);//#d3d4d6
+        border-right: 1px solid rgba(211, 212, 214, 0.5); //#d3d4d6
         display: inline-block;
         position: relative;
         height: 36px;
