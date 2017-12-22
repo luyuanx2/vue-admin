@@ -37,10 +37,10 @@
       this.initChart()
       if (this.autoResize) {
         this.__resizeHanlder = debounce(() => {
-            if (this.chart) {
-          this.chart.resize()
-        }
-      },100)
+          if (this.chart) {
+            this.chart.resize()
+          }
+        }, 100)
         window.addEventListener('resize', this.__resizeHanlder)
       }
       // 监听侧边栏的变化
