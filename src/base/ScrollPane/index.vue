@@ -48,6 +48,10 @@ export default {
       const $containerWidth = $container.offsetWidth
       const $targetLeft = $target.offsetLeft
       const $targetWidth = $target.offsetWidth
+//      console.log('$containerWidth:'+$containerWidth)
+//      console.log('$targetLeft:'+$targetLeft)
+//      console.log('$targetWidth:'+$targetWidth)
+//      console.log('this.left:'+this.left)
 
       if ($targetLeft < -this.left) {
         // 标签在左边
