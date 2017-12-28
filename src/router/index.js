@@ -40,9 +40,9 @@ export default new Router({
 export const asyncRouterMap = [
 
   {
-    path: '/userManage',
+    path: '/user',
     component: Layout,
-    redirect: '/userManage/user/userList',
+    redirect: '/example/table/complex-table',
     name: 'UserManage',
     meta: {
       title: '用户管理',
@@ -50,15 +50,21 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: 'user',
+        path: '/user/userManage',
         component: _import('user/index'),
-        redirect: '/userManage/user/userList',
-        name: 'User',
+        redirect: '/example/table/complex-table',
+        name: 'index',
+        meta: {
+          title: '用户管理',
+          icon: 'example'
+        },
         children: [
           { path: 'userList', component: _import('user/UserList'), name: 'UserList', meta: {title: '用户列表'}},
-          { path: 'userList', component: _import('user/UserList'), name: 'UserList', meta: {title: '用户列表'}}
+          { path: 'userList1', component: _import('user/UserList'), name: 'UserList', meta: {title: '用户列表'}},
+          { path: 'userList2', component: _import('user/UserList'), name: 'UserList', meta: {title: '用户列表'}}
         ]
-      }
+      },
+      { path: 'userList', icon: 'tab', component: _import('login/index'), name: 'tab', meta: { title: 'tab' }}
     ]
   }
 ]
