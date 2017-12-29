@@ -1,4 +1,4 @@
-export function parseTime (time, cFormat) {
+export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
   }
@@ -30,7 +30,7 @@ export function parseTime (time, cFormat) {
   return timeStr
 }
 
-export function formatTime (time, option) {
+export function formatTime(time, option) {
   time = +time * 1000
   const d = new Date(time)
   const now = Date.now()
@@ -203,7 +203,7 @@ export const pickerOptions = [
     }
   }]
 
-export function getTime (type) {
+export function getTime(type) {
   if (type === 'start') {
     return new Date().getTime() - 3600 * 1000 * 24 * 90
   } else {
@@ -246,7 +246,7 @@ export function debounce(func, wait, immediate) {
   }
 }
 
-export function deepClone (source) {
+export function deepClone(source) {
   if (!source && typeof source !== 'object') {
     throw new Error('error arguments', 'shallowClone')
   }
@@ -265,7 +265,7 @@ export function deepClone (source) {
 }
 
 // get dependencies verison from package.json
-export function getVersion (name) {
+export function getVersion(name) {
   const p = require('../../package')
   return p.dependencies[name]
 }

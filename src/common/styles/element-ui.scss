@@ -1,4 +1,17 @@
- //覆盖一些element-ui样式 覆盖css样式可在这里添加
+//覆盖一些element-ui样式
+.el-button--mini, .el-button--mini.is-round {
+  padding: 5px 10px;
+}
+.el-button--primary {
+  color: #409EFF;
+  background-color: #fff;
+  border-color: #409EFF;
+}
+
+.el-breadcrumb__inner, .el-breadcrumb__inner a {
+  font-weight: 400 !important;
+}
+
 .el-upload {
   input[type="file"] {
     display: none !important;
@@ -9,12 +22,46 @@
   display: none;
 }
 
+.cell {
+  .el-tag {
+    margin-right: 0px;
+  }
+}
+
+.small-padding {
+  .cell {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.status-col {
+  .cell {
+    padding: 0 10px;
+    text-align: center;
+    .el-tag {
+      margin-right: 0px;
+    }
+  }
+}
+
 //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;
   left: 0;
   position: relative;
   margin: 0 auto;
+}
+
+//文章页textarea修改样式
+.article-textarea {
+  textarea {
+    padding-right: 40px;
+    resize: none;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #bfcbd9;
+  }
 }
 
 //element ui upload

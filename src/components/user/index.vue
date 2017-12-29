@@ -7,13 +7,15 @@
 </template>
 
 <script>
-export default {
-  import UserList from 'components/user/index'
-
-  computed: {
-    cachedViews() {
-      return this.$store.state.tagsView.cachedViews
+  import UserList from 'components/user/UserList'
+  export default {
+    components: {
+      UserList
+    },
+    computed: {
+      cachedViews() {
+        return this.$store.state.tagsView.cachedViews
+      }
     }
   }
-}
 </script>

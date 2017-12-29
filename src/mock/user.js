@@ -18,6 +18,7 @@ export default {
   getUserList: config => {
     const { importance, type, title, page = 1, limit = 20, sort } = param2Obj(config.url)
 
+    let mockList = List
     if (sort === '-id') {
       mockList = mockList.reverse()
     }
