@@ -36,8 +36,7 @@
                   header-row-style="background-color:#eee !important"
                   border
                   fit
-                  highlight-current-row
-                  style="width: 100%;border-top-left-radius: 6px;border-top-right-radius: 6px;">
+                  highlight-current-row>
           <el-table-column align="center" label="序号" width="50">
             <template slot-scope="scope">
               <span>{{scope.row.id}}</span>
