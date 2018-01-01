@@ -18,7 +18,6 @@ export default {
   },
   methods: {
     handleScroll (e) {
-        console.log(e.wheelDelta)
       const eventDelta = e.wheelDelta || -e.deltaY * 3
       const $container = this.$refs.scrollContainer
       const $containerWidth = $container.offsetWidth
@@ -48,10 +47,6 @@ export default {
       const $containerWidth = $container.offsetWidth
       const $targetLeft = $target.offsetLeft
       const $targetWidth = $target.offsetWidth
-//      console.log('$containerWidth:'+$containerWidth)
-//      console.log('$targetLeft:'+$targetLeft)
-//      console.log('$targetWidth:'+$targetWidth)
-//      console.log('this.left:'+this.left)
 
       if ($targetLeft < -this.left) {
         // 标签在左边

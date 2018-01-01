@@ -15,7 +15,7 @@
     height: 100%;
     width: 180px;
     font-size: 18px;
-    line-height: 55px;
+    line-height: 50px;
     font-weight: 700;
     display: inline-block;
     .navbar-brand-logo {

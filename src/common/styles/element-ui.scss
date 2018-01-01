@@ -1,13 +1,4 @@
 //覆盖一些element-ui样式
-.el-button--mini, .el-button--mini.is-round {
-  padding: 5px 10px;
-}
-.el-button--primary {
-  color: #409EFF;
-  background-color: #fff;
-  border-color: #409EFF;
-}
-
 .el-breadcrumb__inner, .el-breadcrumb__inner a {
   font-weight: 400 !important;
 }
@@ -74,3 +65,9 @@
     }
   }
 }
+
+.el-table {
+  font-size: 13px;
+  color: rgb(96, 98, 102);
+}
+

@@ -9,14 +9,14 @@ for (let i = 0; i < count; i++) {
     id: '@increment',
     timestamp: +Mock.Random.date('T'),
     userName: '@cname',
-    mobile: '@mobile',
-    'status|1': ['published', 'draft', 'deleted']
+    mobile: /^1[0-9]{10}$/,
+    'status|1': ['正常', '冻结']
   }))
 }
 
 export default {
   getUserList: config => {
-    const { importance, type, title, page = 1, limit = 20, sort } = param2Obj(config.url)
+    const { page = 1, limit = 20, sort } = param2Obj(config.url)
 
     let mockList = List
     if (sort === '-id') {

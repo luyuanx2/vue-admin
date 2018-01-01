@@ -70,8 +70,7 @@
 
         console.log($containerWidth)
         console.log($wrapperWidth)
-        if($wrapperWidth  > $containerWidth){
-            console.log('进入方法')
+        if ($wrapperWidth > $containerWidth) {
           this.$refs.scrollPane.left = Math.min(0, this.$refs.scrollPane.left + width)
         }
         console.log('0' + this.$refs.scrollPane.left)
@@ -106,7 +105,7 @@
           }
         })
       },
-      closeSelectedTag (view,e) {
+      closeSelectedTag (view, e) {
         this.$store.dispatch('delVisitedViews', view).then((views) => {
           if (this.isActive(view)) {
             const latestView = views.slice(-1)[0]
