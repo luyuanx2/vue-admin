@@ -145,6 +145,7 @@
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .tags-view-container {
+    position: relative;
     .hamburger-container {
       line-height: 46px;
       height: 30px;
