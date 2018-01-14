@@ -50,9 +50,9 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
           console.log(response)
-          const data = response.data
+          const data = response
           commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
+          setToken(data.token)
           resolve()
         }).catch(error => {
           console.log(error)
@@ -64,10 +64,10 @@ const user = {
     GetUserInfo ({commit, state}) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
-          if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
+          if (!response) { // 由于mockjs 不支持自定义状态码只能这样hack
             reject(new Error('error'))
           }
-          const data = response.data
+          const data = response
           commit('SET_ROLES', data.role)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
@@ -122,7 +122,7 @@ const user = {
         commit('SET_TOKEN', role)
         setToken(role)
         getUserInfo(role).then(response => {
-          const data = response.data
+          const data = response
           commit('SET_ROLES', data.role)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)

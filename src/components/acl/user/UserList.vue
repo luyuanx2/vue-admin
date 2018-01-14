@@ -151,9 +151,8 @@
       getList() {
         this.listLoading = true
         getUserList(this.listQuery).then(response => {
-          console.log(response.data)
-          this.list = response.data.items
-          this.total = response.data.total
+          this.list = response.items
+          this.total = response.total
           this.listLoading = false
         })
       },
