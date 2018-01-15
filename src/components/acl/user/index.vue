@@ -113,7 +113,8 @@
           seq: ''
         }
       },
-      append(data) {
+      append(data, event) {
+        event.stopPropagation()
         this.treeData = data;
         this.resetTemp()
         this.dialogStatus = 'create'
@@ -134,7 +135,7 @@
           if (valid) {
             addDept(this.temp).then((res) => {
 //              this.list.unshift(this.temp)
-             this.createTreeNode(res.data.id,res.data.label)
+             this.createTreeNode(23,res.data.label)
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -147,7 +148,8 @@
         })
       },
 
-      remove(node, data) {
+      remove(node, data, event) {
+        event.stopPropagation()
         this.$confirm('删除部门, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -171,9 +173,9 @@
       renderContent(h, { node, data, store }) {
         return (<span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;"><span>
           <span>{node.label}</span></span><span>
-        <el-button style="font-size: 12px;" type="text" on-click={ () => this.edit(node, data) }><i class="el-icon-edit"></i></el-button>
-        <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.append(data) }><i class="el-icon-plus"></i></el-button>
-        <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.remove(node, data) }><i class="el-icon-minus"></i></el-button>
+        <el-button style="font-size: 12px;" type="text" on-click={ () => this.edit(node, data, event) }><i class="el-icon-edit"></i></el-button>
+        <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.append(data, event) }><i class="el-icon-plus"></i></el-button>
+        <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.remove(node, data, event) }><i class="el-icon-minus"></i></el-button>
         </span></span>)
       }
     },

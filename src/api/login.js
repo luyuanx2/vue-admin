@@ -3,10 +3,12 @@ import request from '@/utils/request'
 export function loginByUsername (username, password) {
   const data = {
     username,
-    password
+    password,
+    grant_type: 'password',
+    scope: 'all'
   }
   return request({
-    url: '/login/login',
+    url: '/oauth/token',
     method: 'post',
     data
   })
