@@ -1,16 +1,27 @@
 import request from '@/utils/request'
-
-export function listDept(query) {
+import qs from 'qs'
+export function listDept() {
   return request({
     url: '/sys/dept/listDept',
-    method: 'get',
-    params: query
+    method: 'get'
   })
 }
-export function addDept(query) {
+export function addDept(obj) {
   return request({
     url: '/sys/dept/addDept',
     method: 'post',
-    params: query
+    data: obj,
+    transformRequest: [function (data) {
+      data = qs.stringify(data)
+      return data;
+    }]
+  })
+}
+
+export function deleteDept(obj) {
+  return request({
+    url: '/sys/dept/delete',
+    method: 'delete',
+    params: obj
   })
 }

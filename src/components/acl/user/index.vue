@@ -41,8 +41,8 @@
         <user-list></user-list>
           </div>
         </el-card>
-        <el-dialog width="25%" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-          <el-form size="medium" :rules="rules" ref="dataForm" :model="temp" label-width="50px" style="width:340px;">
+        <el-dialog width="27%" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+          <el-form size="medium" :rules="rules" ref="dataForm" :model="temp" label-width="50px" style="padding:0 24px">
             <el-form-item label="名称" prop="name">
               <el-input v-model="temp.name"></el-input>
             </el-form-item>
@@ -67,7 +67,7 @@
 
 <script>
   import UserList from 'components/acl/user/UserList'
-  import {listDept,addDept} from 'api/dept'
+  import {listDept, addDept, deleteDept} from 'api/dept'
   export default {
     components: {
       UserList
@@ -137,7 +137,7 @@
           if (valid) {
             addDept(this.temp).then((res) => {
 //              this.list.unshift(this.temp)
-             this.createTreeNode(23,res.data.label)
+             this.createTreeNode(res.data,this.temp.name)
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -157,14 +157,16 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          const parent = node.parent
-          const children = parent.data.children || parent.data
-          const index = children.findIndex(d => d.id === data.id)
-          children.splice(index, 1)
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
+          deleteDept({id: node.key}).then(() => {
+            const parent = node.parent
+            const children = parent.data.children || parent.data
+            const index = children.findIndex(d => d.id === data.id)
+            children.splice(index, 1)
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          })
         }).catch(() => {
           this.$message({
             type: 'info',
