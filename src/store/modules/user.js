@@ -51,8 +51,8 @@ const user = {
         loginByUsername(username, userInfo.password).then(response => {
           console.log(response)
           const data = response
-          commit('SET_TOKEN', data.token)
-          setToken(data.token)
+          commit('SET_TOKEN', data.data.access_token)
+          setToken(data.data.access_token)
           resolve()
         }).catch(error => {
           console.log(error)
@@ -68,10 +68,10 @@ const user = {
             reject(new Error('error'))
           }
           const data = response
-          commit('SET_ROLES', data.role)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
+          commit('SET_ROLES', data.data.role)
+          commit('SET_NAME', data.data.name)
+          commit('SET_AVATAR', data.data.avatar)
+          commit('SET_INTRODUCTION', data.data.introduction)
           resolve(response)
         }).catch(error => {
           reject(error)

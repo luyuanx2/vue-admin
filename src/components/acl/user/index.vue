@@ -108,15 +108,17 @@
       resetTemp() {
         this.temp = {
           id: undefined,
+          parentId: '',
           remark: '',
           name: '',
           seq: ''
         }
       },
-      append(data, event) {
+      append(node, data, event) {
         event.stopPropagation()
         this.treeData = data;
         this.resetTemp()
+        this.temp.parentId = node.key
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -174,7 +176,7 @@
         return (<span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;"><span>
           <span>{node.label}</span></span><span>
         <el-button style="font-size: 12px;" type="text" on-click={ () => this.edit(node, data, event) }><i class="el-icon-edit"></i></el-button>
-        <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.append(data, event) }><i class="el-icon-plus"></i></el-button>
+        <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.append(node, data, event) }><i class="el-icon-plus"></i></el-button>
         <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.remove(node, data, event) }><i class="el-icon-minus"></i></el-button>
         </span></span>)
       }

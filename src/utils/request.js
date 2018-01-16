@@ -1,4 +1,5 @@
 import axios from 'axios'
+// import qs from 'qs'
 // import {Message, MessageBox} from 'element-ui'
 import {Message} from 'element-ui'
 import store from '../store'
@@ -7,7 +8,7 @@ import {getToken} from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api的base_url
-  // baseURL: 'http://192.168.202.5',
+  baseURL: 'http://192.168.1.55:8999/manage',
   timeout: 15000                  // 请求超时时间
 })
 
@@ -15,9 +16,8 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers['Authorization'] = 'bearer '+getToken()
-  } else {
-    config.headers['Authorization'] = 'bearer '+getToken()
   }
+  // config.data = qs.stringify(config.data)
   return config
 }, error => {
   // Do something with request error
@@ -33,6 +33,7 @@ service.interceptors.response.use(
      * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中
      */
     const res = response.data
+    console.log(res)
     if (res.code !== 2000) {
       Message({
         message: res.message,
