@@ -103,7 +103,7 @@
       _listDept() {
         listDept().then(response => {
           this.data2 = response.data
-          this._recursiveRenderDept(this.data2)
+          this._recursiveRenderDept(response.data)
         })
       },
       expandOrShrink() {
@@ -242,7 +242,6 @@
         });
       },
       renderContent(h, { node, data, store }) {
-        console.log(node)
         if(node.level === 1) {
           return (<span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 27px;"><span>
             <span>{node.label}</span></span><span>

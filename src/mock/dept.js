@@ -11,11 +11,13 @@ const listDept = Mock.mock({
       label: '二级 2-1',
       children: [{
         id: 4,
-        label: '三级 3-1-1'
+        label: '三级 3-1-1',
+        children: []
       }, {
         id: 5,
         label: '三级 3-1-2',
-        disabled: true
+        disabled: true,
+        children: []
       }]
     }, {
       id: 2,
@@ -23,11 +25,13 @@ const listDept = Mock.mock({
       disabled: true,
       children: [{
         id: 6,
-        label: '三级 3-2-1'
+        label: '三级 3-2-1',
+        children: []
       }, {
         id: 7,
         label: '三级 3-2-2',
-        disabled: true
+        disabled: true,
+        children: []
       }]
     }]
   }]
