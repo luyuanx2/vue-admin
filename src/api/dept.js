@@ -25,3 +25,14 @@ export function deleteDept(obj) {
     params: obj
   })
 }
+export function updateDept(obj) {
+  return request({
+    url: '/sys/dept/update',
+    method: 'put',
+    data: obj,
+    transformRequest: [function (data) {
+      data = qs.stringify(data)
+      return data;
+    }]
+  })
+}

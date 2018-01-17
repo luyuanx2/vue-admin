@@ -134,10 +134,11 @@ a:hover {
 
 //main-container全局样式
 .app-main{
-  min-height: 100%;
+  height: calc(100vh - 86px);
 }
 
 .app-container {
+  min-height: 100%;
   padding: 15px;
   background-color: #ECF0F5;
 }

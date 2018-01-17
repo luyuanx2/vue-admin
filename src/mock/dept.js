@@ -42,7 +42,23 @@ const addDept = Mock.mock({
   }
 })
 
+const deleteDept = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {
+  }
+})
+
+const updateDept = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {
+  }
+})
+
 export default {
   listDept: config => listDept,
-  addDept: config => addDept
+  addDept: config => addDept,
+  deleteDept: config => deleteDept,
+  updateDept: config => updateDept,
 }

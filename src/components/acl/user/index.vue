@@ -22,11 +22,11 @@
               class="filter-tree"
               :data="data2"
               :props="defaultProps"
-              :default-expand-all="expandAll"
+              :default-expand-all="isExpand"
               node-key="id"
               :filter-node-method="filterNode"
               :expand-on-click-node="false"
-              highlight-current=true
+              highlight-current="true"
               :render-content="renderContent"
               ref="tree2">
             </el-tree>
@@ -57,7 +57,7 @@
           <div slot="footer" class="dialog-footer">
             <el-button  size="medium" @click="dialogFormVisible = false">取 消</el-button>
             <el-button  size="medium" v-if="dialogStatus=='create'" type="primary" @click="createData">确 定</el-button>
-            <el-button  size="medium" v-else type="primary" @click="updateData">确定</el-button>
+            <el-button  size="medium" v-else type="primary" @click="updateData">确 定</el-button>
           </div>
         </el-dialog>
       </div>
@@ -66,12 +66,13 @@
 </template>
 
 <script>
-  import UserList from 'components/acl/user/UserList'
-  import {listDept, addDept, deleteDept} from 'api/dept'
+//  import UserList from 'components/acl/user/UserList'
+  import {listDept, addDept, deleteDept, updateDept} from 'api/dept'
+  import {Message} from 'element-ui'
   export default {
-    components: {
-      UserList
-    },
+//    components: {
+//      UserList
+//    },
     computed: {
       expandAll() {
         return this.isExpand
@@ -93,12 +94,22 @@
       selectNode(a,b,c) {
         alert('aaaa')
       },
+      _recursiveRenderDept(deptList) {
+        deptList.forEach((dept) => {
+          this.deptMap[dept.id] = dept;
+          this._recursiveRenderDept(dept.children)
+        })
+      },
       _listDept() {
         listDept().then(response => {
           this.data2 = response.data
+          this._recursiveRenderDept(this.data2)
         })
       },
       expandOrShrink() {
+        for(var i=0;i<this.$refs.tree2.store._getAllNodes().length;i++){
+          this.$refs.tree2.store._getAllNodes()[i].expanded = !this.isExpand;
+        }
         this.isExpand = !this.isExpand
       },
       filterNode(value, data) {
@@ -114,8 +125,28 @@
           seq: ''
         }
       },
-      append(node, data, event) {
-        event.stopPropagation()
+      editTemp(editDept) {
+        this.temp.id = editDept.id
+        this.temp.parentId = editDept.parentId
+        this.temp.remark = editDept.remark
+        this.temp.name = editDept.label
+        this.temp.seq = editDept.seq
+      },
+      edit(node, data, e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let deptId = node.key
+        let editDept = this.deptMap[deptId]
+        this.editTemp(editDept)
+        this.dialogStatus = 'update'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs.dataForm.clearValidate()
+        })
+      },
+      append(node, data, e) {
+        e.preventDefault();
+        e.stopPropagation();
         this.treeData = data;
         this.resetTemp()
         this.temp.parentId = node.key
@@ -132,55 +163,99 @@
         }
         this.treeData.children.push(newChild)
       },
-      createData() {
+      updateData() {
         this.$refs.dataForm.validate((valid) => {
           if (valid) {
-            addDept(this.temp).then((res) => {
-//              this.list.unshift(this.temp)
-             this.createTreeNode(res.data,this.temp.name)
+            this.createOrUpdate(updateDept(this.temp),function (data) {
+              Message.success("编辑成功")
+            }, null);
+            /*updateDept(this.temp).then(() => {
+              this._listDept();
               this.dialogFormVisible = false
-              this.$notify({
-                title: '成功',
-                message: '创建成功',
+//              this.$notify({
+//                title: '成功',
+//                message: '编辑成功',
+//                type: 'success',
+//                duration: 2000
+//              })
+              this.$message({
                 type: 'success',
-                duration: 2000
-              })
-            })
+                message: '编辑成功!'
+              });
+            })*/
           }
         })
       },
-
-      remove(node, data, event) {
-        event.stopPropagation()
+      createData() {
+        this.$refs.dataForm.validate((valid) => {
+          if (valid) {
+            this.createOrUpdate(addDept(this.temp),function (data) {
+//              this.createTreeNode(res.data,this.temp.name)
+              Message.success("添加成功")
+            }, null);
+//            addDept(this.temp).then((res) => {
+////              this.list.unshift(this.temp)
+//             this.createTreeNode(res.data,this.temp.name)
+//              this.dialogFormVisible = false
+//              this.$message({
+//                type: 'success',
+//                message: '添加成功!'
+//              });
+//            })
+          }
+        })
+      },
+      createOrUpdate(method,successCallback, failCallback) {
+        method.then((result) => {
+            if (result.code === 2000) {
+              this.dialogFormVisible = false
+              this._listDept()
+              if (successCallback) {
+                successCallback(result);
+              }
+            } else {
+              if (failCallback) {
+                failCallback(result);
+              }
+            }
+          })
+      },
+      remove(node, data, e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let deptId = node.key
         this.$confirm('删除部门, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteDept({id: node.key}).then(() => {
+          deleteDept({id: deptId}).then(() => {
             const parent = node.parent
             const children = parent.data.children || parent.data
             const index = children.findIndex(d => d.id === data.id)
             children.splice(index, 1)
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
+            delete this.deptMap[deptId];
+            Message.success("删除成功")
           })
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
+          Message.info("已取消删除")
         });
       },
       renderContent(h, { node, data, store }) {
-        return (<span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;"><span>
-          <span>{node.label}</span></span><span>
-        <el-button style="font-size: 12px;" type="text" on-click={ () => this.edit(node, data, event) }><i class="el-icon-edit"></i></el-button>
-        <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.append(node, data, event) }><i class="el-icon-plus"></i></el-button>
-        <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.remove(node, data, event) }><i class="el-icon-minus"></i></el-button>
-        </span></span>)
+        console.log(node)
+        if(node.level === 1) {
+          return (<span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 27px;"><span>
+            <span>{node.label}</span></span><span>
+          <el-button style="font-size: 12px;" type="text" on-click={ () => this.edit(node, data, event) }><i class="el-icon-edit"></i></el-button>
+            <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.append(node, data, event) }><i class="el-icon-plus"></i></el-button>
+            </span></span>)
+        }
+          return (<span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;"><span>
+            <span>{node.label}</span></span><span>
+          <el-button style="font-size: 12px;" type="text" on-click={ () => this.edit(node, data, event) }><i class="el-icon-edit"></i></el-button>
+          <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.append(node, data, event) }><i class="el-icon-plus"></i></el-button>
+          <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.remove(node, data, event) }><i class="el-icon-minus"></i></el-button>
+          </span></span>)
       }
     },
     created() {
@@ -188,6 +263,7 @@
     },
     data() {
       return {
+        deptMap: {},
         treeData: null,
         rules: {
           name: [{ required: true, message: '部门名称不能为空', trigger: 'blur'}],
