@@ -6,8 +6,8 @@
           <div slot="header" class="clearfix">
             <span>部门列表</span>
             <el-button style="float: right; padding: 3px 0" type="text"
-               v-html="expandBtn"
-               @click="expandOrShrink">
+                       v-html="expandBtn"
+                       @click="expandOrShrink">
             </el-button>
           </div>
           <div>
@@ -38,7 +38,7 @@
             <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
           </div>
           <div>
-        <user-list></user-list>
+            <user-list></user-list>
           </div>
         </el-card>
         <el-dialog width="27%" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
@@ -55,9 +55,9 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button  size="medium" @click="dialogFormVisible = false">取 消</el-button>
-            <el-button  size="medium" v-if="dialogStatus=='create'" type="primary" @click="createData">确 定</el-button>
-            <el-button  size="medium" v-else type="primary" @click="updateData">确 定</el-button>
+            <el-button size="medium" @click="dialogFormVisible = false">取 消</el-button>
+            <el-button size="medium" v-if="dialogStatus=='create'" type="primary" @click="createData">确 定</el-button>
+            <el-button size="medium" v-else type="primary" @click="updateData">确 定</el-button>
           </div>
         </el-dialog>
       </div>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-//  import UserList from 'components/acl/user/UserList'
+  //  import UserList from 'components/acl/user/UserList'
   import {listDept, addDept, deleteDept, updateDept} from 'api/dept'
   import {Message} from 'element-ui'
   export default {
@@ -91,7 +91,7 @@
     },
 
     methods: {
-      selectNode(a,b,c) {
+      selectNode(a, b, c) {
         alert('aaaa')
       },
       _recursiveRenderDept(deptList) {
@@ -107,7 +107,7 @@
         })
       },
       expandOrShrink() {
-        for(var i=0;i<this.$refs.tree2.store._getAllNodes().length;i++){
+        for (var i = 0; i < this.$refs.tree2.store._getAllNodes().length; i++) {
           this.$refs.tree2.store._getAllNodes()[i].expanded = !this.isExpand;
         }
         this.isExpand = !this.isExpand
@@ -156,8 +156,8 @@
           this.$refs.dataForm.clearValidate()
         })
       },
-      createTreeNode(id,label) {
-        const newChild = { id: id, label: label, children: [] }
+      createTreeNode(id, label) {
+        const newChild = {id: id, label: label, children: []}
         if (!this.treeData.children) {
           this.$set(this.treeData, 'children', [])
         }
@@ -166,30 +166,30 @@
       updateData() {
         this.$refs.dataForm.validate((valid) => {
           if (valid) {
-            this.createOrUpdate(updateDept(this.temp),function (data) {
+            this.createOrUpdate(updateDept(this.temp), function (data) {
               Message.success("编辑成功")
             }, null);
             /*updateDept(this.temp).then(() => {
-              this._listDept();
-              this.dialogFormVisible = false
-//              this.$notify({
-//                title: '成功',
-//                message: '编辑成功',
-//                type: 'success',
-//                duration: 2000
-//              })
-              this.$message({
-                type: 'success',
-                message: '编辑成功!'
-              });
-            })*/
+             this._listDept();
+             this.dialogFormVisible = false
+             //              this.$notify({
+             //                title: '成功',
+             //                message: '编辑成功',
+             //                type: 'success',
+             //                duration: 2000
+             //              })
+             this.$message({
+             type: 'success',
+             message: '编辑成功!'
+             });
+             })*/
           }
         })
       },
       createData() {
         this.$refs.dataForm.validate((valid) => {
           if (valid) {
-            this.createOrUpdate(addDept(this.temp),function (data) {
+            this.createOrUpdate(addDept(this.temp), function (data) {
 //              this.createTreeNode(res.data,this.temp.name)
               Message.success("添加成功")
             }, null);
@@ -205,20 +205,20 @@
           }
         })
       },
-      createOrUpdate(method,successCallback, failCallback) {
+      createOrUpdate(method, successCallback, failCallback) {
         method.then((result) => {
-            if (result.code === 2000) {
-              this.dialogFormVisible = false
-              this._listDept()
-              if (successCallback) {
-                successCallback(result);
-              }
-            } else {
-              if (failCallback) {
-                failCallback(result);
-              }
+          if (result.code === 2000) {
+            this.dialogFormVisible = false
+            this._listDept()
+            if (successCallback) {
+              successCallback(result);
             }
-          })
+          } else {
+            if (failCallback) {
+              failCallback(result);
+            }
+          }
+        })
       },
       remove(node, data, e) {
         e.preventDefault();
@@ -241,20 +241,73 @@
           Message.info("已取消删除")
         });
       },
-      renderContent(h, { node, data, store }) {
-        if(node.level === 1) {
-          return (<span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 27px;"><span>
-            <span>{node.label}</span></span><span>
-          <el-button style="font-size: 12px;" type="text" on-click={ () => this.edit(node, data, event) }><i class="el-icon-edit"></i></el-button>
-            <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.append(node, data, event) }><i class="el-icon-plus"></i></el-button>
-            </span></span>)
+      renderContent(h, {node, data, store}) {
+        if (node.level === 1) {
+          return ( < span
+          style = "flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 27px;" > < span >
+            < span > {node.label
+        }</
+          span > < / span > < span >
+          < el - button
+          style = "font-size: 12px;"
+          type = "text"
+          on - click = {()
+        =>
+          this.edit(node, data, event)
+        }><
+          i
+        class
+          = "el-icon-edit" > < / i > < / el - button >
+            < el - button
+          style = "font-size: 12px;margin-left: 5px;"
+          type = "text"
+          on - click = {()
+        =>
+          this.append(node, data, event)
+        }><
+          i
+        class
+          = "el-icon-plus" > < / i > < / el - button >
+            < / span > < / span >
+        )
         }
-          return (<span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;"><span>
-            <span>{node.label}</span></span><span>
-          <el-button style="font-size: 12px;" type="text" on-click={ () => this.edit(node, data, event) }><i class="el-icon-edit"></i></el-button>
-          <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.append(node, data, event) }><i class="el-icon-plus"></i></el-button>
-          <el-button style="font-size: 12px;margin-left: 5px;" type="text" on-click={ () => this.remove(node, data, event) }><i class="el-icon-minus"></i></el-button>
-          </span></span>)
+        return ( < span
+        style = "flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;" > < span >
+          < span > {node.label
+      }</
+        span > < / span > < span >
+        < el - button
+        style = "font-size: 12px;"
+        type = "text"
+        on - click = {()
+      =>
+        this.edit(node, data, event)
+      }><
+        i
+      class
+        = "el-icon-edit" > < / i > < / el - button >
+          < el - button
+        style = "font-size: 12px;margin-left: 5px;"
+        type = "text"
+        on - click = {()
+      =>
+        this.append(node, data, event)
+      }><
+        i
+      class
+        = "el-icon-plus" > < / i > < / el - button >
+          < el - button
+        style = "font-size: 12px;margin-left: 5px;"
+        type = "text"
+        on - click = {()
+      =>
+        this.remove(node, data, event)
+      }><
+        i
+      class
+        = "el-icon-minus" > < / i > < / el - button >
+          < / span > < / span >
+      )
       }
     },
     created() {
@@ -265,8 +318,8 @@
         deptMap: {},
         treeData: null,
         rules: {
-          name: [{ required: true, message: '部门名称不能为空', trigger: 'blur'}],
-          seq: [{ required: true, message: '顺序不能为空'}, { type: 'number', message: '必须为数字值', trigger: 'blur'}]
+          name: [{required: true, message: '部门名称不能为空', trigger: 'blur'}],
+          seq: [{required: true, message: '顺序不能为空'}, {type: 'number', message: '必须为数字值', trigger: 'blur'}]
         },
         temp: {
           id: undefined,
@@ -309,6 +362,7 @@
     height: 100%;
     display: inline-block;
   }
+
   .box-card-user {
     width: calc(100% - 270px);
     display: inline-block;
