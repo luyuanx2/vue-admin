@@ -12,7 +12,8 @@ Mock.mock(/\/authentication\/form/, 'post', loginAPI.loginByUsername)
 Mock.mock(/\/login\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 // 用户相关
-Mock.mock(/\/user\/list\.*/, 'get', userAPI.getUserList)
+Mock.mock(/\/sys\/user\/list\.*/, 'get', userAPI.getUserList)
+Mock.mock(/\/sys\/user\/addUser\.*/, 'post', userAPI.addUser)
 //部门相关
 Mock.mock(/\/sys\/dept\/listDept\.*/, 'get', deptAPI.listDept)
 Mock.mock(/\/sys\/dept\/addDept\.*/, 'post', deptAPI.addDept)

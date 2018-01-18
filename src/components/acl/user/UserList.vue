@@ -1,65 +1,99 @@
 <template>
   <div>
-    <div class="filter-container">
-      <el-input size="small" @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item"
-                placeholder="标题"
-                v-model="listQuery.title">
+    <el-card class="box-card-user">
+      <div slot="header" class="clearfix">
+        <span>用户列表</span>
+        <el-button @click="addUser" style="float: right; padding: 3px 0" type="text">新增用户</el-button>
+      </div>
+      <div>
+    <div class="small-filter-container">
+     <!-- <el-input size="small" @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item"
+                placeholder="用户名"
+                v-model="listQuery.username">
       </el-input>
-      <el-select size="small" clearable style="width: 90px" class="filter-item" v-model="listQuery.importance"
-                 placeholder="重要性">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item">
-        </el-option>
-      </el-select>
-      <el-select size="small" clearable class="filter-item" style="width: 130px" v-model="listQuery.type"
-                 placeholder="类型">
-        <el-option v-for="item in  calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'"
+      <el-input size="small" @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item"
+                placeholder="手机"
+                v-model="listQuery.telephone">
+      </el-input>
+      <el-select size="small" clearable class="filter-item" style="width: 100px" v-model="listQuery.status"
+                 placeholder="状态">
+        <el-option v-for="item in  statusOptions" :key="item.key" :label="item.display_name"
                    :value="item.key">
         </el-option>
-      </el-select>
-      <el-select size="small" @change='handleFilter' style="width: 120px" class="filter-item" v-model="listQuery.sort"
-                 placeholder="排序">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key">
-        </el-option>
-      </el-select>
-      <el-button size="small" class="filter-btn-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">
-        搜索
-      </el-button>
-      <el-button size="small" class="filter-btn-item" type="primary" v-waves
-                 icon="el-icon-edit">添加
-      </el-button>
+      </el-select>-->
+      <el-form ref="searchForm" size="small" :inline="true" :model="listQuery" class="demo-form-inline">
+        <el-form-item>
+          <el-input  @keyup.enter.native="handleFilter"
+                    placeholder="用户名"
+                    v-model="listQuery.username">
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input @keyup.enter.native="handleFilter"
+                    placeholder="手机"
+                    v-model="listQuery.telephone">
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-select clearable style="width: 100px" v-model="listQuery.status"
+                     placeholder="状态">
+            <el-option v-for="item in  statusOptions" :key="item.key" :label="item.display_name"
+                       :value="item.key">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">
+            查 询
+          </el-button>
+          <el-button type="default" v-waves icon="el-icon-refresh" @click="resetForm">
+            重 置
+          </el-button>
+        </el-form-item>
+      </el-form>
     </div>
 
     <div class="table-wrapper">
-      <div class="table-head-wrapper"></div>
+      <div class="table-head-wrapper">
+      </div>
       <div class="table-body-wrapper">
-        <el-table size="small" :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间"
+        <el-table size="small"
+                  :key='tableKey'
+                  :data="list"
+                  v-loading="listLoading"
+                  element-loading-text="加载中..."
                   header-row-style="background-color:#eee !important"
                   border
                   fit
                   highlight-current-row>
-          <el-table-column align="center" label="序号" width="50">
+          <el-table-column align="center" label="ID" width="50">
             <template slot-scope="scope">
               <span>{{scope.row.id}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="时间">
+          <el-table-column align="center" label="用户名" width="100">
             <template slot-scope="scope">
-              <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+              <span>{{scope.row.username}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="用户名">
+          <el-table-column align="center" label="手机" width="150">
             <template slot-scope="scope">
-              <span>{{scope.row.userName}}</span>
+              <span>{{scope.row.telephone}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="手机">
+          <el-table-column align="center" label="邮箱">
             <template slot-scope="scope">
-              <span>{{scope.row.mobile}}</span>
+              <span>{{scope.row.email}}</span>
             </template>
           </el-table-column>
           <el-table-column class-name="status-col" label="状态" width="80">
             <template slot-scope="scope">
-              <span class="badge badge-success" :type="scope.row.status | statusFilter">{{scope.row.status}}</span>
+              <status :status="scope.row.status | typeFilter" :text="scope.row.status | statusFilter"></status>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="备注">
+            <template slot-scope="scope">
+              <span>{{scope.row.remark}}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="操作" class-name="small-padding" width="120">
@@ -79,23 +113,55 @@
         </div>
       </div>
     </div>
+      </div>
+    </el-card>
+    <el-dialog width="30%" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form size="medium" :rules="rules" ref="userForm" :model="temp" label-width="70px" style="padding:0 24px">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="temp.username"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="telephone">
+          <el-input v-model.number="temp.telephone"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="temp.email"></el-input>
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-select clearable style="width: 150px" v-model="temp.status"
+                     placeholder="状态">
+            <el-option v-for="item in  statusOptions" :key="item.key" :label="item.display_name"
+                       :value="item.key">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" v-model="temp.remark">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="medium" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="medium" v-if="dialogStatus=='create'" type="primary" @click="createData">确 定</el-button>
+        <el-button size="medium" v-else type="primary" @click="updateData">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {getUserList} from 'api/user'
+  import Status from 'base/Status'
+  import {getUserList, addUser} from 'api/user'
   import waves from 'common/js/directive/waves' // 水波纹指令
   import {parseTime} from '@/utils'
+  import {Message} from 'element-ui'
 
-  const calendarTypeOptions = [
-    {key: 'CN', display_name: '中国'},
-    {key: 'US', display_name: '美国'},
-    {key: 'JP', display_name: '日本'},
-    {key: 'EU', display_name: '欧元区'}
+  const statusOptions = [
+    {key: '1', display_name: '正常'},
+    {key: '2', display_name: '冻结'}
   ]
 
-  // arr to obj ,such as { CN : "中国", US : "美国" }
-  const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+  // arr to obj ,such as { 1 : "正常", 2 : "冻结" }
+  const statusKeyValue = statusOptions.reduce((acc, cur) => {
     acc[cur.key] = cur.display_name
     return acc
   }, {})
@@ -104,29 +170,70 @@
     directives: {
       waves
     },
+    props: {
+      deptId: {
+        type: Number,
+        default: 0
+      },
+      text: {
+        type: String,
+        required: false
+      }
+    },
+    components: {
+      Status
+    },
     data() {
       return {
-        tableKey: 0,
+        tableKey: 1,
         list: null,
         total: null,
         listLoading: true,
         listQuery: {
+          deptId: this.deptId,
           page: 1,
           limit: 20,
-          importance: undefined,
-          title: undefined,
-          type: undefined,
-          sort: '+id'
+          status: undefined,
+          username: undefined,
+          telephone: undefined
         },
-        importanceOptions: [1, 2, 3],
-        calendarTypeOptions,
-        sortOptions: [{label: '按ID升序列', key: '+id'}, {label: '按ID降序', key: '-id'}],
+        temp: {
+          id: undefined,
+          username: '',
+          email: '',
+          telephone: '',
+          remark: '',
+          status: '',
+          deptId: undefined
+        },
+        statusOptions,
         dialogFormVisible: false,
+        textMap: {
+          update: '编辑用户',
+          create: '新增用户'
+        },
         dialogStatus: '',
         rules: {
-          type: [{required: true, message: 'type is required', trigger: 'change'}],
-          timestamp: [{type: 'date', required: true, message: 'timestamp is required', trigger: 'change'}],
-          title: [{required: true, message: 'title is required', trigger: 'blur'}]
+          username: [
+            { required: true, message: '请输入登录名称', trigger: 'blur' },
+            { min: 1, max: 20, message: '用户名长度需要在20个字以内', trigger: 'blur' }
+          ],
+          telephone: [
+            { required: true, message: '请输入电话号码', trigger: 'blur' },
+            { min: 1, max: 13, message: '电话长度需要在13个字以内', trigger: 'blur' },
+            { type: 'number', message: '必须是数字', trigger: 'blur' }
+          ],
+          remark: [
+            { min: 1, max: 200, message: '备注长度需要在200个字以内', trigger: 'blur' }
+          ],
+          status: [
+            { required: true, message: '必须指定用户的状态', trigger: 'change' },
+            { type: 'number', message: '必须是数字', trigger: 'blur' }
+          ],
+          email: [
+            { required: true, message: '邮箱不允许为空', trigger: 'blur' },
+            { min: 5, max: 50, message: '邮箱长度需要在5 - 50个字符以内', trigger: 'blur' }
+          ]
         },
         downloadLoading: false
       }
@@ -134,27 +241,88 @@
     filters: {
       statusFilter(status) {
         const statusMap = {
-          published: 'success',
-          draft: 'info',
-          deleted: 'danger'
+          1: '正常',
+          2: '冻结'
         }
         return statusMap[status]
       },
-      typeFilter(type) {
-        return calendarTypeKeyValue[type]
+      typeFilter(status) {
+        const statusTypeMap = {
+          1: 'success',
+          2: 'error'
+        }
+        return statusTypeMap[status]
       }
     },
     created() {
       this.getList()
     },
     methods: {
+      addUser() {
+        this.resetTemp()
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs.userForm.clearValidate()
+        })
+      },
+      createData() {
+        this.$refs.userForm.validate((valid) => {
+          if (valid) {
+            this.createOrUpdate(addUser(this.temp), function (data) {
+              Message.success("添加成功")
+            }, null);
+//            addDept(this.temp).then((res) => {
+////              this.list.unshift(this.temp)
+//             this.createTreeNode(res.data,this.temp.name)
+//              this.dialogFormVisible = false
+//              this.$message({
+//                type: 'success',
+//                message: '添加成功!'
+//              });
+//            })
+          }
+        })
+      },
+      updateData() {
+
+      },
+      createOrUpdate(method, successCallback, failCallback) {
+        method.then((result) => {
+          if (result.code === 2000) {
+            this.dialogFormVisible = false
+            this.getList()
+            if (successCallback) {
+              successCallback(result);
+            }
+          } else {
+            if (failCallback) {
+              failCallback(result);
+            }
+          }
+        })
+      },
+      resetTemp() {
+        this.temp = {
+          id: undefined,
+            username: '',
+            email: '',
+            telephone: '',
+            remark: '',
+            status: '',
+            deptId: this.deptId
+        }
+      },
       getList() {
         this.listLoading = true
         getUserList(this.listQuery).then(response => {
-          this.list = response.items
-          this.total = response.total
+          this.list = response.data.list
+          this.total = response.data.total
           this.listLoading = false
         })
+      },
+      resetForm() {
+        this.$refs['searchForm'].resetFields()
       },
       handleFilter() {
         this.listQuery.page = 1
@@ -180,3 +348,4 @@
     }
   }
 </script>
+

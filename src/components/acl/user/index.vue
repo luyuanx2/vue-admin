@@ -32,15 +32,7 @@
             </el-tree>
           </div>
         </el-card>
-        <el-card class="box-card-user">
-          <div slot="header" class="clearfix">
-            <span>用户列表</span>
-            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-          </div>
-          <div>
-            <user-list></user-list>
-          </div>
-        </el-card>
+        <user-list></user-list>
         <el-dialog width="27%" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
           <el-form size="medium" :rules="rules" ref="dataForm" :model="temp" label-width="50px" style="padding:0 24px">
             <el-form-item label="名称" prop="name">
@@ -49,7 +41,7 @@
             <el-form-item label="顺序" prop="seq">
               <el-input type="number" v-model.number="temp.seq"></el-input>
             </el-form-item>
-            <el-form-item label="备注">
+            <el-form-item label="备注" prop="remark">
               <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" v-model="temp.remark">
               </el-input>
             </el-form-item>
@@ -66,13 +58,13 @@
 </template>
 
 <script>
-  //  import UserList from 'components/acl/user/UserList'
+  import UserList from 'components/acl/user/UserList'
   import {listDept, addDept, deleteDept, updateDept} from 'api/dept'
   import {Message} from 'element-ui'
   export default {
-//    components: {
-//      UserList
-//    },
+    components: {
+      UserList
+    },
     computed: {
       expandAll() {
         return this.isExpand
@@ -243,71 +235,22 @@
       },
       renderContent(h, {node, data, store}) {
         if (node.level === 1) {
-          return ( < span
-          style = "flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 27px;" > < span >
-            < span > {node.label
-        }</
-          span > < / span > < span >
-          < el - button
-          style = "font-size: 12px;"
-          type = "text"
-          on - click = {()
-        =>
-          this.edit(node, data, event)
-        }><
-          i
-        class
-          = "el-icon-edit" > < / i > < / el - button >
-            < el - button
-          style = "font-size: 12px;margin-left: 5px;"
-          type = "text"
-          on - click = {()
-        =>
-          this.append(node, data, event)
-        }><
-          i
-        class
-          = "el-icon-plus" > < / i > < / el - button >
-            < / span > < / span >
-        )
+          return (<span style = "flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 27px;" > < span >
+            <span>{node.label}</span ></span><span>
+          <el-button style = "font-size: 12px;" type = "text" on-click = {()=>this.edit(node, data, event)}><i class= "el-icon-edit"></i></el-button>
+            <el-button style = "font-size: 12px;margin-left: 5px;" type ="text" on-click = {()=>this.append(node, data, event)}>
+        <i class= "el-icon-plus"></i></el-button>
+            </span></span>)
         }
-        return ( < span
-        style = "flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;" > < span >
-          < span > {node.label
-      }</
-        span > < / span > < span >
-        < el - button
-        style = "font-size: 12px;"
-        type = "text"
-        on - click = {()
-      =>
-        this.edit(node, data, event)
-      }><
-        i
-      class
-        = "el-icon-edit" > < / i > < / el - button >
-          < el - button
-        style = "font-size: 12px;margin-left: 5px;"
-        type = "text"
-        on - click = {()
-      =>
-        this.append(node, data, event)
-      }><
-        i
-      class
-        = "el-icon-plus" > < / i > < / el - button >
-          < el - button
-        style = "font-size: 12px;margin-left: 5px;"
-        type = "text"
-        on - click = {()
-      =>
+        return (<span style = "flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;" > < span >
+          <span>{node.label}</span></span><span>
+        <el-button style = "font-size: 12px;" type = "text" on-click = {()=>this.edit(node, data, event)}>
+      <i class="el-icon-edit"></i></el-button>
+          <el-button style = "font-size: 12px;margin-left: 5px;" type = "text" on-click = {()=>this.append(node, data, event)}>
+      <i class="el-icon-plus"></i></el-button >
+          <el-button style = "font-size: 12px;margin-left: 5px;" type = "text" on-click = {()=>
         this.remove(node, data, event)
-      }><
-        i
-      class
-        = "el-icon-minus" > < / i > < / el - button >
-          < / span > < / span >
-      )
+      }><i class="el-icon-minus"></i></el-button></span></span>)
       }
     },
     created() {
@@ -319,7 +262,10 @@
         treeData: null,
         rules: {
           name: [{required: true, message: '部门名称不能为空', trigger: 'blur'}],
-          seq: [{required: true, message: '顺序不能为空'}, {type: 'number', message: '必须为数字值', trigger: 'blur'}]
+          seq: [{required: true, message: '顺序不能为空'}, {type: 'number', message: '必须为数字值', trigger: 'blur'}],
+          remark: [
+            { min: 1, max: 200, message: '备注长度需要在200个字以内', trigger: 'blur' }
+          ]
         },
         temp: {
           id: undefined,
