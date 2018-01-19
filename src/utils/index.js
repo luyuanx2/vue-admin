@@ -269,3 +269,19 @@ export function getVersion(name) {
   const p = require('../../package')
   return p.dependencies[name]
 }
+// 深度拷贝对象和数组
+export function deepCopy(obj){
+  var str, newobj = obj.constructor === Array ? [] : {}
+  if(typeof obj !== 'object'){
+    return
+  } else if(window.JSON){
+    str = JSON.stringify(obj), //系列化对象
+      newobj = JSON.parse(str) //还原
+  } else {
+    for(var i in obj){
+      newobj[i] = typeof obj[i] === 'object' ?
+        cloneObj(obj[i]) : obj[i]
+    }
+  }
+  return newobj
+}

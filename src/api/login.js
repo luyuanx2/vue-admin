@@ -16,7 +16,7 @@ export function loginByUsername (username, password) {
     transformRequest: [function (data) {
       // 对 data 进行任意转换处理
       data = qs.stringify(data)
-      return data;
+      return data
     }],
     auth: {
       username: 'lyy',

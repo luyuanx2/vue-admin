@@ -8,14 +8,14 @@ import {getToken} from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api的base_url
-  baseURL: 'http://192.168.202.1:8999/manage',
+  baseURL: 'http://192.168.1.55:8999/manage',
   timeout: 15000                  // 请求超时时间
 })
 
 // request拦截器
 service.interceptors.request.use(config => {
   if (store.getters.token) {
-    config.headers['Authorization'] = 'bearer '+getToken()
+    config.headers['Authorization'] = 'bearer ' + getToken()
   }
   // config.data = qs.stringify(config.data)
   return config
@@ -33,7 +33,7 @@ service.interceptors.response.use(
      * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中
      */
     const res = response.data
-    console.log(res)
+    console.log(res + '响应拦截器')
     if (res.code !== 2000) {
       Message({
         message: res.message,
@@ -48,11 +48,11 @@ service.interceptors.response.use(
           type: 'warning'
         }).then(() => {
           store.dispatch('FedLogOut').then(() => {
-            location.reload();// 为了重新实例化vue-router对象 避免bug
+            location.reload() // 为了重新实例化vue-router对象 避免bug
           });
         })
       }
-      return Promise.reject('error');
+      return Promise.reject('error')
     } else {
       return res
     }

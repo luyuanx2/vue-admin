@@ -1,5 +1,5 @@
 import Mock from 'mockjs'
-import { param2Obj } from '@/utils'
+import { param2Obj, deepCopy} from '@/utils'
 
 const List = []
 const count = 100
@@ -13,7 +13,7 @@ for (let i = 0; i < count; i++) {
     email: '@email',
     status: '@pick([1,2])',
     deptId: '@pick([1,2,3,4,5,6,7])',
-    remark: '备注信息'
+    remark: '用户备注信息'
   }))
 }
 
@@ -23,23 +23,33 @@ const addUser = Mock.mock({
   data: {
   }
 })
+
+
 export default {
   getUserList: config => {
-    const { page = 1, limit = 20 } = param2Obj(config.url)
-
+    const { page = 1, limit = 20, deptId} = param2Obj(config.url)
     let mockList = List
     // if (sort === '-id') {
     //   mockList = mockList.reverse()
     // }
-    const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
-
+    let pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+    let pageList1 = []
+    let flag = true
+    if(deptId != 0){
+      flag = false
+      // 深度拷贝数组
+      pageList1 = deepCopy(pageList)
+      pageList1.forEach((item) => {
+        item.deptId = deptId
+      })
+    }
     return {
       code: 2000,
       data: {
         total: mockList.length,
-        list: pageList
+        list: flag ? pageList : pageList1
       }
     }
   },
-  addUser: config => addUser,
+  addUser: config => addUser
 }

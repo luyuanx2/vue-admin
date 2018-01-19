@@ -50,7 +50,7 @@
   height: 50px !important;
   background-color: #00b4ef;//32A7B8 #49ABE8 3F87FF #52B2E8 007BB6 #01B4FF e6e6e6 #00b4ef
   color: #333;
-  text-align: center;
+  text-align: left;
   z-index: 1100;
   padding: 0;
 }

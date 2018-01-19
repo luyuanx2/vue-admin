@@ -32,7 +32,7 @@
             </el-tree>
           </div>
         </el-card>
-        <user-list></user-list>
+        <user-list v-if="deptMap" :deptMap="deptMap" :deptId="deptId"></user-list>
         <el-dialog width="27%" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
           <el-form size="medium" :rules="rules" ref="dataForm" :model="temp" label-width="50px" style="padding:0 24px">
             <el-form-item label="名称" prop="name">
@@ -83,12 +83,16 @@
     },
 
     methods: {
-      selectNode(a, b, c) {
-        alert('aaaa')
+      selectNode(a, node, c) {
+        if(node.level !== 1) {
+          this.deptId = node.key
+        } else {
+          this.deptId = 0
+        }
       },
       _recursiveRenderDept(deptList) {
         deptList.forEach((dept) => {
-          this.deptMap[dept.id] = dept;
+          this.deptMap[dept.id] = dept
           this._recursiveRenderDept(dept.children)
         })
       },
@@ -125,8 +129,8 @@
         this.temp.seq = editDept.seq
       },
       edit(node, data, e) {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault()
+        e.stopPropagation()
         let deptId = node.key
         let editDept = this.deptMap[deptId]
         this.editTemp(editDept)
@@ -137,9 +141,9 @@
         })
       },
       append(node, data, e) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.treeData = data;
+        e.preventDefault()
+        e.stopPropagation()
+        this.treeData = data
         this.resetTemp()
         this.temp.parentId = node.key
         this.dialogStatus = 'create'
@@ -159,7 +163,7 @@
         this.$refs.dataForm.validate((valid) => {
           if (valid) {
             this.createOrUpdate(updateDept(this.temp), function (data) {
-              Message.success("编辑成功")
+              Message.success('编辑成功')
             }, null);
             /*updateDept(this.temp).then(() => {
              this._listDept();
@@ -183,10 +187,10 @@
           if (valid) {
             this.createOrUpdate(addDept(this.temp), function (data) {
 //              this.createTreeNode(res.data,this.temp.name)
-              Message.success("添加成功")
+              Message.success('添加成功')
             }, null);
 //            addDept(this.temp).then((res) => {
-////              this.list.unshift(this.temp)
+//             this.list.unshift(this.temp)
 //             this.createTreeNode(res.data,this.temp.name)
 //              this.dialogFormVisible = false
 //              this.$message({
@@ -203,18 +207,18 @@
             this.dialogFormVisible = false
             this._listDept()
             if (successCallback) {
-              successCallback(result);
+              successCallback(result)
             }
           } else {
             if (failCallback) {
-              failCallback(result);
+              failCallback(result)
             }
           }
         })
       },
       remove(node, data, e) {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault()
+        e.stopPropagation()
         let deptId = node.key
         this.$confirm('删除部门, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -226,11 +230,11 @@
             const children = parent.data.children || parent.data
             const index = children.findIndex(d => d.id === data.id)
             children.splice(index, 1)
-            delete this.deptMap[deptId];
-            Message.success("删除成功")
+            delete this.deptMap[deptId]
+            Message.success('删除成功')
           })
         }).catch(() => {
-          Message.info("已取消删除")
+          Message.info('已取消删除')
         });
       },
       renderContent(h, {node, data, store}) {
@@ -258,6 +262,7 @@
     },
     data() {
       return {
+        deptId: 0,
         deptMap: {},
         treeData: null,
         rules: {

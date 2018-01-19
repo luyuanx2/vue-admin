@@ -7,34 +7,20 @@
       </div>
       <div>
     <div class="small-filter-container">
-     <!-- <el-input size="small" @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item"
-                placeholder="用户名"
-                v-model="listQuery.username">
-      </el-input>
-      <el-input size="small" @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item"
-                placeholder="手机"
-                v-model="listQuery.telephone">
-      </el-input>
-      <el-select size="small" clearable class="filter-item" style="width: 100px" v-model="listQuery.status"
-                 placeholder="状态">
-        <el-option v-for="item in  statusOptions" :key="item.key" :label="item.display_name"
-                   :value="item.key">
-        </el-option>
-      </el-select>-->
       <el-form ref="searchForm" size="small" :inline="true" :model="listQuery" class="demo-form-inline">
-        <el-form-item>
+        <el-form-item prop="username">
           <el-input  @keyup.enter.native="handleFilter"
                     placeholder="用户名"
                     v-model="listQuery.username">
           </el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="telephone">
           <el-input @keyup.enter.native="handleFilter"
                     placeholder="手机"
                     v-model="listQuery.telephone">
           </el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="status">
           <el-select clearable style="width: 100px" v-model="listQuery.status"
                      placeholder="状态">
             <el-option v-for="item in  statusOptions" :key="item.key" :label="item.display_name"
@@ -46,13 +32,12 @@
           <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">
             查 询
           </el-button>
-          <el-button type="default" v-waves icon="el-icon-refresh" @click="resetForm">
+          <el-button type="default" v-waves icon="el-icon-refresh" @click="resetForm('searchForm')">
             重 置
           </el-button>
         </el-form-item>
       </el-form>
     </div>
-
     <div class="table-wrapper">
       <div class="table-head-wrapper">
       </div>
@@ -61,8 +46,8 @@
                   :key='tableKey'
                   :data="list"
                   v-loading="listLoading"
-                  element-loading-text="加载中..."
-                  header-row-style="background-color:#eee !important"
+                  element-loading-text="玩命加载中..."
+                  :header-row-style="tableHeadBgd"
                   border
                   fit
                   highlight-current-row>
@@ -74,6 +59,11 @@
           <el-table-column align="center" label="用户名" width="100">
             <template slot-scope="scope">
               <span>{{scope.row.username}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="部门" width="100">
+            <template slot-scope="scope">
+              <span v-text="deptFilter(scope.row.deptId)"></span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="手机" width="150">
@@ -152,7 +142,6 @@
   import Status from 'base/Status'
   import {getUserList, addUser} from 'api/user'
   import waves from 'common/js/directive/waves' // 水波纹指令
-  import {parseTime} from '@/utils'
   import {Message} from 'element-ui'
 
   const statusOptions = [
@@ -171,6 +160,10 @@
       waves
     },
     props: {
+      deptMap: {
+        type: Object,
+        required: true
+      },
       deptId: {
         type: Number,
         default: 0
@@ -185,6 +178,7 @@
     },
     data() {
       return {
+        tableHeadBgd: 'background-color:#eee !important',
         tableKey: 1,
         list: null,
         total: null,
@@ -254,10 +248,20 @@
         return statusTypeMap[status]
       }
     },
+    watch: {
+      deptId(newDeptId) {
+        this.listQuery.deptId = newDeptId
+        this.handleFilter()
+      }
+    },
     created() {
       this.getList()
     },
     methods: {
+      deptFilter(deptId) {
+        let dept = this.deptMap[deptId]
+        return dept.label
+      },
       addUser() {
         this.resetTemp()
         this.dialogStatus = 'create'
@@ -270,17 +274,8 @@
         this.$refs.userForm.validate((valid) => {
           if (valid) {
             this.createOrUpdate(addUser(this.temp), function (data) {
-              Message.success("添加成功")
+              Message.success('添加成功')
             }, null);
-//            addDept(this.temp).then((res) => {
-////              this.list.unshift(this.temp)
-//             this.createTreeNode(res.data,this.temp.name)
-//              this.dialogFormVisible = false
-//              this.$message({
-//                type: 'success',
-//                message: '添加成功!'
-//              });
-//            })
           }
         })
       },
@@ -293,11 +288,11 @@
             this.dialogFormVisible = false
             this.getList()
             if (successCallback) {
-              successCallback(result);
+              successCallback(result)
             }
           } else {
             if (failCallback) {
-              failCallback(result);
+              failCallback(result)
             }
           }
         })
@@ -305,12 +300,12 @@
       resetTemp() {
         this.temp = {
           id: undefined,
-            username: '',
-            email: '',
-            telephone: '',
-            remark: '',
-            status: '',
-            deptId: this.deptId
+          username: '',
+          email: '',
+          telephone: '',
+          remark: '',
+          status: '',
+          deptId: this.deptId
         }
       },
       getList() {
@@ -321,8 +316,8 @@
           this.listLoading = false
         })
       },
-      resetForm() {
-        this.$refs['searchForm'].resetFields()
+      resetForm(form) {
+        this.$refs[form].resetFields()
       },
       handleFilter() {
         this.listQuery.page = 1
@@ -335,15 +330,6 @@
       handleCurrentChange(val) {
         this.listQuery.page = val
         this.getList()
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => {
-          if (j === 'timestamp') {
-            return parseTime(v[j])
-          } else {
-            return v[j]
-          }
-        }))
       }
     }
   }

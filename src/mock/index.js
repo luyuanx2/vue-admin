@@ -14,7 +14,7 @@ Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 // 用户相关
 Mock.mock(/\/sys\/user\/list\.*/, 'get', userAPI.getUserList)
 Mock.mock(/\/sys\/user\/addUser\.*/, 'post', userAPI.addUser)
-//部门相关
+// 部门相关
 Mock.mock(/\/sys\/dept\/listDept\.*/, 'get', deptAPI.listDept)
 Mock.mock(/\/sys\/dept\/addDept\.*/, 'post', deptAPI.addDept)
 Mock.mock(/\/sys\/dept\/delete\.*/, 'delete', deptAPI.deleteDept)

@@ -13,7 +13,7 @@ export function addDept(obj) {
     data: obj,
     transformRequest: [function (data) {
       data = qs.stringify(data)
-      return data;
+      return data
     }]
   })
 }
@@ -32,7 +32,7 @@ export function updateDept(obj) {
     data: obj,
     transformRequest: [function (data) {
       data = qs.stringify(data)
-      return data;
+      return data
     }]
   })
 }

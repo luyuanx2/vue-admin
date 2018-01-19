@@ -31,7 +31,7 @@ export default {
   },
   getUserInfo: config => {
     console.log(config.body)
-    const  token  = 'admin'
+    const token = 'admin'
     if (userMap[token]) {
       return userMap[token]
     } else {
