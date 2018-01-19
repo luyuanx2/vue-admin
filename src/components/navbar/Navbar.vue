@@ -3,8 +3,8 @@
   <el-dropdown class="avatar-container" trigger="click">
     <div class="avatar-wrapper">
       <img class="user-avatar" src="src/common/image/default.png">
-      <span style="vertical-align: middle">admin</span>
-      <i style="vertical-align: middle" class="el-icon-caret-bottom"></i>
+      <span style="vertical-align: middle;font-size: 16px">admin</span>
+      <!--<i style="vertical-align: middle" class="el-icon-caret-bottom"></i>-->
     </div>
     <el-dropdown-menu class="user-dropdown" slot="dropdown">
       <router-link class="inlineBlock" to="/">
@@ -52,16 +52,18 @@
       height: 50px;
       display: inline-block;
       position: absolute;
-      right: 35px;
+      right: 12px;
+      padding: 0px 12px;
       .avatar-wrapper {
         height: 50px;
+        line-height: 50px;
         cursor: pointer;
         position: relative;
         .user-avatar {
           vertical-align: middle;
-          width: 40px;
-          height: 40px;
-          border-radius: 25px;
+          width: 32px;
+          height: 32px;
+          border-radius: 16px;
         }
         .el-icon-caret-bottom {
           position: absolute;
