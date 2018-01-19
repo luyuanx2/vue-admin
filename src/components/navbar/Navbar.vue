@@ -54,9 +54,11 @@
       position: absolute;
       right: 35px;
       .avatar-wrapper {
+        height: 50px;
         cursor: pointer;
         position: relative;
         .user-avatar {
+          vertical-align: middle;
           width: 40px;
           height: 40px;
           border-radius: 25px;
