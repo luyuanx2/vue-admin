@@ -39,3 +39,11 @@ export function getUserInfo (token) {
     params: { token }
   })
 }
+
+export function loginByThirdparty (code) {
+  return request({
+    url: '/qqLogin/weixin',
+    method: 'get',
+    params: { code }
+  })
+}

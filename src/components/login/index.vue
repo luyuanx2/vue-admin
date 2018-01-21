@@ -28,15 +28,26 @@
         <span style="margin-right:20px;">username: admin</span>
         </span> password: admin</span>
       </div>
+      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">第三方登录</el-button>
     </el-form>
+    <el-dialog title="讲课快加快急" :visible.sync="showDialog">
+      <br/>
+      <br/>
+      <br/>
+      <social-sign />
+    </el-dialog>
+
+
   </div>
 </template>
 
 <script>
   import { isvalidUsername } from '@/utils/validate'
-
+  import SocialSign from './socialsignin'
+  import { getQueryObject } from '@/utils'
   export default {
     name: 'login',
+    components: { SocialSign },
     data () {
       const validateUsername = (rule, value, callback) => {
         if (!isvalidUsername(value)) {
@@ -67,6 +78,10 @@
       }
     },
     methods: {
+      hashCli() {
+
+        window.location.hash = new Date().getTime().toString()
+      },
       showPwd () {
         if (this.pwdType === 'password') {
           this.pwdType = ''
@@ -90,13 +105,37 @@
             return false
           }
         })
+      },
+      afterQRScan() {
+        console.log('aaaaaaaaaaaa')
+//        const hash = window.location.hash.slice(1)
+        const hash1 = window.location.hash
+        const hash = window.location.href
+        alert('第二个hash'+hash1)
+        alert('第二个href'+hash)
+        const hashObj = getQueryObject(hash)
+        const originUrl = window.location.origin
+        history.replaceState({}, '', originUrl)
+        const codeMap = {
+          wechat: 'code',
+          tencent: 'code'
+        }
+        const codeName = 'hgjhghghg77'//hashObj['code']
+        alert(codeName)
+        if (!codeName) {
+          alert('第三方登录失败')
+        } else {
+          this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
+            this.$router.push({ path: '/' })
+          })
+        }
       }
     },
     created () {
-      // window.addEventListener('hashchange', this.afterQRScan)
+       window.addEventListener('hashchange', this.afterQRScan())
     },
     destroyed () {
-      // window.removeEventListener('hashchange', this.afterQRScan)
+       window.removeEventListener('hashchange', this.afterQRScan())
     }
   }
 </script>

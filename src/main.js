@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import './permission' // 权限
-import './mock' // 该项目所有请求使用mockjs模拟
+// import './mock' // 该项目所有请求使用mockjs模拟
 import './common/icons' // icon
 
 Vue.use(ElementUI)
