@@ -81,13 +81,19 @@ const user = {
 
     // 第三方验证登录
     LoginByThirdparty({ commit, state }, code) {
+      console.log('进入第三方登录')
       return new Promise((resolve, reject) => {
         commit('SET_CODE', code)
         loginByThirdparty(state.code).then(response => {
-          console.log('第三方登录响应===========')
-          commit('SET_TOKEN', response.data.token)
-          setToken(response.data.token)
-          resolve()
+          if (response.status === 401) {
+            resolve(response)
+          }else {
+            console.log(response)
+            console.log('第三方登录响应===========')
+            commit('SET_TOKEN', response.data.token)
+            setToken(response.data.token)
+            resolve()
+          }
         }).catch(error => {
           reject(error)
         })

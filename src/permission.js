@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
   } else {
     alert(to.path)
     console.log(to.path)
-    if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
+    if (whiteList.indexOf(to.path) !== -1 || to.path.indexOf('code=') !== -1) { // 在免登录白名单，直接进入
       alert("进入免登陆白名单")
       next()
     } else {

@@ -1,42 +1,52 @@
 <template>
   <div class="login-container">
-    <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
-             label-width="0px"
-             class="card-box login-form">
-      <h3 class="title">vue-element-admin</h3>
-      <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user"/>
-        </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username"/>
-      </el-form-item>
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password"></svg-icon>
-        </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password"
-                  autoComplete="on"
-                  placeholder="password"></el-input>
-        <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye"/></span>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
-          Sign in
-        </el-button>
-      </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        </span> password: admin</span>
-      </div>
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">第三方登录</el-button>
-    </el-form>
-    <el-dialog title="讲课快加快急" :visible.sync="showDialog">
+    <!--<el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"-->
+             <!--label-width="0px"-->
+             <!--class="card-box login-form">-->
+      <!--<h3 class="title">vue-element-admin</h3>-->
+      <!--<el-form-item prop="username">-->
+        <!--<span class="svg-container svg-container_login">-->
+          <!--<svg-icon icon-class="user"/>-->
+        <!--</span>-->
+        <!--<el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username"/>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item prop="password">-->
+        <!--<span class="svg-container">-->
+          <!--<svg-icon icon-class="password"></svg-icon>-->
+        <!--</span>-->
+        <!--<el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password"-->
+                  <!--autoComplete="on"-->
+                  <!--placeholder="password"></el-input>-->
+        <!--<span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye"/></span>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item>-->
+        <!--<el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">-->
+          <!--Sign in-->
+        <!--</el-button>-->
+      <!--</el-form-item>-->
+      <!--<div class="tips">-->
+        <!--<span style="margin-right:20px;">username: admin</span>-->
+        <!--</span> password: admin</span>-->
+      <!--</div>-->
+      <!--<el-button class="thirdparty-button" type="primary" @click="showDialog=true">第三方登录</el-button>-->
+    <!--</el-form>-->
+    <div style="width: 420px;height:450px; position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    margin: auto;background-color: #fff;
+    box-shadow: 0 2px 10px #999;border-radius: 4px;">
+    <iframe  style="width: 100%;height: 100%;display: block" key="tag"
+            :src="weixinUrl" frameborder="0"></iframe></div>
+    <social-sign />
+    <el-dialog title="第一次请绑定账号" :visible.sync="showDialog">
+      <img :src="img">
+      <input v-model="nickname"/>
       <br/>
       <br/>
       <br/>
-      <social-sign />
     </el-dialog>
-
 
   </div>
 </template>
@@ -45,6 +55,7 @@
   import { isvalidUsername } from '@/utils/validate'
   import SocialSign from './socialsignin'
   import { getQueryObject } from '@/utils'
+  import openWindow from '@/utils/openWindow'
   export default {
     name: 'login',
     components: { SocialSign },
@@ -64,6 +75,9 @@
         }
       }
       return {
+        weixinUrl: '',
+        img: '',
+        nickname: '',
         loginForm: {
           username: 'admin',
           password: '1111111'
@@ -108,11 +122,7 @@
       },
       afterQRScan() {
         console.log('aaaaaaaaaaaa')
-//        const hash = window.location.hash.slice(1)
-        const hash1 = window.location.hash
-        const hash = window.location.href
-        alert('第二个hash'+hash1)
-        alert('第二个href'+hash)
+        const hash = window.location.hash.slice(1)
         const hashObj = getQueryObject(hash)
         const originUrl = window.location.origin
         history.replaceState({}, '', originUrl)
@@ -120,22 +130,38 @@
           wechat: 'code',
           tencent: 'code'
         }
-        const codeName = 'hgjhghghg77'//hashObj['code']
+        const codeName = hashObj['code']
         alert(codeName)
         if (!codeName) {
           alert('第三方登录失败')
         } else {
-          this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-            this.$router.push({ path: '/' })
+          this.$store.dispatch('LoginByThirdparty', codeName).then((response) => {
+              if(response.status === 401) {
+                this.showDialog = true
+                this.img = response.data.headimg
+                this.nickname = response.data.nickname
+              }else {
+                this.$router.push({ path: '/' })
+              }
           })
         }
       }
     },
+//    mounted() {
+//      const appid = 'wxd99431bbff8305a0'
+//      const redirect_uri = encodeURIComponent('http://www.pinzhi365.com/manage/redirect?redirect=' + window.location.origin + '/authredirect')
+//      const url = 'https://open.weixin.qq.com/connect/qrconnect?appid=' + appid + '&redirect_uri=' + redirect_uri + '&response_type=code&scope=snsapi_login#wechat_redirect'
+//      openWindow(url, 'wechat', 450, 450)
+//    },
     created () {
-       window.addEventListener('hashchange', this.afterQRScan())
+      const appid = 'wxd99431bbff8305a0'
+      const redirect_uri = encodeURIComponent('http://www.pinzhi365.com/manage/redirect?redirect=' + window.location.origin + '/authredirect')
+      const url = 'https://open.weixin.qq.com/connect/qrconnect?appid=' + appid + '&redirect_uri=' + redirect_uri + '&response_type=code&scope=snsapi_login#wechat_redirect'
+      this.weixinUrl = url
+       window.addEventListener('hashchange', this.afterQRScan)
     },
     destroyed () {
-       window.removeEventListener('hashchange', this.afterQRScan())
+       window.removeEventListener('hashchange', this.afterQRScan)
     }
   }
 </script>
@@ -149,7 +175,9 @@
     position: fixed;
     height: 100%;
     width: 100%;
-    background-color: $bg;
+    /*background-color: $bg;*/
+    background: #f0f2f5;
+    background-image: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
       -webkit-text-fill-color: #fff !important;
