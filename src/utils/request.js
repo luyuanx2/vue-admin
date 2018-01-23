@@ -8,8 +8,8 @@ import {getToken} from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
-  // baseURL: process.env.BASE_API, // api的base_url
-  baseURL: 'http://192.168.1.55:8999/manage',
+  baseURL: process.env.BASE_API, // api的base_url
+  // baseURL: 'http://192.168.1.55:8999/manage',
   timeout: 15000                  // 请求超时时间
 })
 const deviceId = new Fingerprint().get();
@@ -35,7 +35,11 @@ service.interceptors.response.use(
      * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中
      */
     const res = response.data
-    console.log(res + '响应拦截器')
+    console.log('响应拦截器')
+    console.log(res)
+    if (res.code === 4001) { //没有登录
+      return res
+    }
     if (res.code !== 2000) {
       Message({
         message: res.message,
@@ -60,9 +64,9 @@ service.interceptors.response.use(
     }
   },
   error => {
-    if (error.response.status === 401 && error.response.data.headimg !== undefined) {
-      return error.response
-    }
+    // if (error.response.status === 401 && error.response.data.headimg !== undefined) {
+    //   return error.response
+    // }
     console.log('err' + error)// for debug
     Message({
       message: error.message,

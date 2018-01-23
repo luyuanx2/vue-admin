@@ -1,4 +1,5 @@
 import { param2Obj } from '@/utils'
+import Mock from 'mockjs'
 
 const userMap = {
   admin: {
@@ -23,8 +24,20 @@ const userMap = {
   }
 }
 
+const sendCode = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {}
+})
+
+
 export default {
   loginByUsername: config => {
+    // const { username } = JSON.parse(config.body)
+    console.log(config.body)
+    return userMap['admin']
+  },
+  loginByMobile: config => {
     // const { username } = JSON.parse(config.body)
     console.log(config.body)
     return userMap['admin']
@@ -38,5 +51,6 @@ export default {
       return false
     }
   },
-  logout: () => 'success'
+  logout: () => 'success',
+  sendCode: config => sendCode
 }

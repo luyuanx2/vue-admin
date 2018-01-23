@@ -1,4 +1,4 @@
-import {loginByUsername, logout, getUserInfo, loginByThirdparty} from '@/api/login'
+import {loginByUsername, logout, getUserInfo, loginByThirdparty, loginByMobile} from '@/api/login'
 import {getToken, setToken, removeToken} from '@/utils/auth'
 
 const user = {
@@ -49,10 +49,25 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
-          console.log(response)
           const data = response
           commit('SET_TOKEN', data.data.access_token)
           setToken(data.data.access_token)
+          resolve()
+        }).catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+    // 手机号码登录
+    LoginByMobile ({commit}, userInfo) {
+      const mobile = userInfo.telephone
+      const authCode = userInfo.authCode
+      return new Promise((resolve, reject) => {
+        loginByMobile(mobile, authCode).then(response => {
+          console.log(response)
+          commit('SET_TOKEN', response.access_token)
+          setToken(response.access_token)
           resolve()
         }).catch(error => {
           console.log(error)
@@ -85,7 +100,7 @@ const user = {
       return new Promise((resolve, reject) => {
         commit('SET_CODE', code)
         loginByThirdparty(state.code).then(response => {
-          if (response.status === 401) {
+          if (response.code === 4001) {
             resolve(response)
           }else {
             console.log(response)

@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
-    <el-form  v-if="isForm" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
+    <el-form  v-if="isForm" autoComplete="on" :model="loginForm"
+              :rules="loginRules" ref="loginForm" label-position="left"
               label-width="0px"
               class="card-box login-form">
       <h3 class="title">后台管理系统</h3>
@@ -8,13 +9,15 @@
         <el-tab-pane label="账户密码登录" name="password">
           <el-form-item prop="username" v-if="isPassword">
             <el-input
-              placeholder="用户名" name="username" type="text" v-model="loginForm.username" autoComplete="on">
+              placeholder="用户名" name="username" type="text"
+              v-model="loginForm.username" autoComplete="on">
               <i slot="prefix" class="el-input__icon iconfont yy-yonghu"></i>
             </el-input>
           </el-form-item>
           <el-form-item prop="password" v-if="isPassword">
             <el-input
-              placeholder="密码" name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password"
+              placeholder="密码" name="password" :type="pwdType" @keyup.enter.native="handleLogin"
+              v-model="loginForm.password"
               autoComplete="on">
               <i slot="prefix" class="el-input__icon iconfont yy-password"></i>
             </el-input>
@@ -24,17 +27,19 @@
 
         <el-tab-pane label="手机号登录" name="mobile">
           <el-form-item prop="telephone" v-if="isMobile">
-            <el-input prefix-icon="el-icon-mobile-phone" name="telephone" type="text" v-model.number="loginForm.telephone" autoComplete="on" placeholder="手机号"/>
+            <el-input prefix-icon="el-icon-mobile-phone" name="telephone" type="text"
+                      v-model.number="loginForm.telephone" autoComplete="on" placeholder="手机号"/>
           </el-form-item>
           <el-form-item prop="authCode" v-if="isMobile">
             <el-input  class="message-code" prefix-icon="el-icon-message" name="authCode" :type="pwdType"
                        @keyup.enter.native="handleLogin" v-model.number="loginForm.authCode"
-                      placeholder="验证码"></el-input>
-            <el-button style="display: inline-block" type="default"
-                       :disabled="false"
-                       @click.native="sendCode">
-              {{sendCodeText}}
-            </el-button>
+                      placeholder="验证码">
+              <template slot="append" class="message-code">
+                <el-button type="default" :disabled="disabled" @click.native="sendCode">
+                {{sendCodeText}}
+              </el-button>
+              </template>
+            </el-input>
           </el-form-item>
         </el-tab-pane>
       </el-tabs>
@@ -77,6 +82,7 @@
 
 <script>
   import { isvalidTelephone, isvalidAuthCode } from '@/utils/validate'
+  import { sendCode } from 'api/login'
   import SocialSign from './socialsignin'
   import { getQueryObject } from '@/utils'
   import openWindow from '@/utils/openWindow'
@@ -116,13 +122,16 @@
         time: 0,
         timer: '',
         sendCodeText: '获取验证码',
+        disabled: false,
         activeName: 'password',
         weixinUrl: '',
         img: '',
         nickname: '',
         loginForm: {
           username: 'admin',
-          password: '1111111'
+          password: '1111111',
+          telephone: 15675505060,
+          authCode: 123456
         },
         loginRules: {
           username: [
@@ -151,9 +160,7 @@
           this.$refs.loginForm.validateField('telephone',valid => {
             if (valid === '') {
               this.disabled = true
-              this.$store
-                .dispatch('sendCode', this.loginForm.telephone)
-                .then(() => {
+              sendCode(this.loginForm.telephone).then(() => {
                   Message.success('发送成功')
                   this.time = 60
                   this.countDown()
@@ -162,16 +169,14 @@
                   this.disabled = false
                   Message.error('系统异常')
                 })
-              } else {
-              Message.error('请填写正确的手机号码')
-            }
+              }
           })
         }
       },
       countDown() {
         if (this.time > 0) {
           this.time--
-          this.sendCodeText = `${this.time}秒后发送`
+          this.sendCodeText = `${this.time} s后发送`
           this.timer = setTimeout(this.countDown, 1000)
         } else {
           this.disabled = false
@@ -200,17 +205,24 @@
        this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.loading = true
-            this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-              this.loading = false
-              this.$router.push({ path: '/' })
-              // this.showDialog = true
-            }).catch(() => {
-              this.loading = false
-            })
+           if(this.activeName === PASSWORD_MODE) {
+             this.commonLogin('LoginByUsername')
+           } else {
+             this.commonLogin('LoginByMobile')
+           }
           } else {
             console.log('error submit!!')
             return false
           }
+        })
+      },
+      commonLogin(loginMethod) {
+        this.$store.dispatch(loginMethod, this.loginForm).then(() => {
+          this.loading = false
+          this.$router.push({ path: '/' })
+          // this.showDialog = true
+        }).catch(() => {
+          this.loading = false
         })
       },
       afterQRScan() {
@@ -244,10 +256,10 @@
       const redirect_uri = encodeURIComponent('http://www.pinzhi365.com/manage/redirect?redirect=' + window.location.origin + '/authredirect')
       const url = 'https://open.weixin.qq.com/connect/qrconnect?appid=' + appid + '&redirect_uri=' + redirect_uri + '&response_type=code&scope=snsapi_login#wechat_redirect'
       this.weixinUrl = url
-       window.addEventListener('hashchange', this.afterQRScan)
+//       window.addEventListener('hashchange', this.afterQRScan)
     },
     destroyed () {
-       window.removeEventListener('hashchange', this.afterQRScan)
+//       window.removeEventListener('hashchange', this.afterQRScan)
     }
   }
 </script>
@@ -297,8 +309,16 @@
   .el-tabs__content .el-form-item {
     margin-bottom: 24px;
   }
-  .el-tabs__content .message-code {
-    width: calc(100% - 116px);
+  .el-button.is-disabled, .el-button.is-disabled:focus,
+  .el-button.is-disabled:hover {
+     background-color: transparent;
+     border-color: transparent;
+  }
+
+  .el-tabs__content .message-code
+  .el-input-group__append {
+    background-color: #fff;
+    padding: 0 15px;
   }
   .svg-icon-weixin, .svg-icon-qq {
     font-size: 24px;
