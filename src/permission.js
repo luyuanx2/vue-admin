@@ -46,13 +46,9 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    alert(to.path)
-    console.log(to.path)
     if (whiteList.indexOf(to.path) !== -1 || to.path.indexOf('code=') !== -1) { // 在免登录白名单，直接进入
-      alert("进入免登陆白名单")
       next()
     } else {
-      alert("否则全部重定向到登录页")
       next('/login') // 否则全部重定向到登录页
       NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
     }
