@@ -105,8 +105,8 @@ const user = {
           }else {
             console.log(response)
             console.log('第三方登录响应===========')
-            commit('SET_TOKEN', response.data.token)
-            setToken(response.data.token)
+            commit('SET_TOKEN', response.data.access_token)
+            setToken(response.data.access_token)
             resolve()
           }
         }).catch(error => {

@@ -2,7 +2,6 @@
   <div class="login-container">
     <el-form  v-if="isForm" autoComplete="on" :model="loginForm"
               :rules="loginRules" ref="loginForm" label-position="left"
-              label-width="0px"
               class="card-box login-form">
       <h3 class="title">后台管理系统</h3>
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -69,14 +68,6 @@
             :src="weixinUrl" frameborder="0"></iframe>
     </div>
 
-    <el-dialog title="第一次请绑定账号" :visible.sync="showDialog" append-to-body>
-      <img :src="img">
-      <input v-model="nickname"/>
-      <br/>
-      <br/>
-      <br/>
-    </el-dialog>
-
   </div>
 </template>
 
@@ -125,8 +116,6 @@
         disabled: false,
         activeName: 'password',
         weixinUrl: '',
-        img: '',
-        nickname: '',
         loginForm: {
           username: 'admin',
           password: '1111111',
@@ -145,8 +134,7 @@
             { required: true, trigger: 'blur',validator: validateAuthCode }]
         },
         pwdType: 'password',
-        loading: false,
-        showDialog: false
+        loading: false
       }
     },
     methods: {

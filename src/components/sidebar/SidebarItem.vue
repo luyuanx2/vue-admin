@@ -3,6 +3,7 @@
     <template v-for="item in routes">
 
       <router-link v-if="!item.hidden&&item.children&&item.children.length===1" :to="item.path+'/'+item.children[0].path" :key="item.children[0].name">
+        <!--<router-link v-if="item.children.length===1 && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path" :key="item.children[0].name">-->
         <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
           <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
           <span v-if="item.children[0].meta&&item.children[0].meta.title">{{item.children[0].meta.title}}</span>

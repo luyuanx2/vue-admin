@@ -1,6 +1,11 @@
 import request from '@/utils/request'
 import qs from 'qs'
 
+
+const authData =  {
+  username: 'lyy',
+  password: 'lyysecret'
+}
 export function loginByUsername (username, password) {
   const data = {
     username,
@@ -18,10 +23,7 @@ export function loginByUsername (username, password) {
       data = qs.stringify(data)
       return data
     }],
-    auth: {
-      username: 'lyy',
-      password: 'lyysecret'
-    }
+    auth: authData
   })
 }
 
@@ -42,10 +44,7 @@ export function loginByMobile (mobile, smsCode) {
       data = qs.stringify(data)
       return data
     }],
-    auth: {
-      username: 'lyy',
-      password: 'lyysecret'
-    }
+    auth: authData
   })
 }
 
@@ -68,7 +67,8 @@ export function loginByThirdparty (code) {
   return request({
     url: '/qqLogin/weixin',
     method: 'get',
-    params: { code }
+    params: { code },
+    auth: authData
   })
 }
 
@@ -77,5 +77,18 @@ export function sendCode (mobile) {
     url: '/code/sms/',
     method: 'get',
     params: { mobile }
+  })
+}
+
+export function bindSocial (obj) {
+  return request({
+    url: '/sys/user/regist',
+    method: 'post',
+    data: obj,
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      data = qs.stringify(data)
+      return data
+    }]
   })
 }
