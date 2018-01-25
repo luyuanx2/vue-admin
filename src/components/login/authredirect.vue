@@ -1,6 +1,6 @@
 <template>
   <div class="authredirect-wrapper">
-    <el-dialog width="20%" :before-close="handleClose" title="绑定账号" :visible.sync="showDialog" append-to-body>
+    <el-dialog width="360px" :before-close="handleClose" title="绑定账号" :visible.sync="showDialog" append-to-body>
       <el-form :model="bindForm" :rules="rules" ref="socialForm">
         <el-form-item>
           <div style="text-align: center">
@@ -110,7 +110,6 @@
             background: 'rgba(0, 0, 0, 0.7)'
           });
           this.$store.dispatch('LoginByThirdparty', codeName).then((response) => {
-            loading.close()
             if (response.code === 4001) {
               this.showDialog = true
               this.bindForm.headimg = response.data.headimg
@@ -119,6 +118,7 @@
             if (response.code === 2000) {
               this.$router.push({path: '/'})
             }
+            loading.close()
           })
         }
       }
@@ -132,10 +132,6 @@
     /*background-color: $bg;*/
     background: #f0f2f5;
     background-image: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
-    input:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
-      -webkit-text-fill-color: #fff !important;
-    }
   }
   .wechat-avatar {
     font-size: 14px;

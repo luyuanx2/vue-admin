@@ -33,7 +33,7 @@
           </div>
         </el-card>
         <user-list v-if="deptMap" :deptMap="deptMap" :deptId="deptId"></user-list>
-        <el-dialog width="27%" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+        <el-dialog width="410px" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
           <el-form size="medium" :rules="rules" ref="dataForm" :model="temp" label-width="50px" style="padding:0 24px">
             <el-form-item label="名称" prop="name">
               <el-input v-model="temp.name"></el-input>

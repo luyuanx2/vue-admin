@@ -262,8 +262,8 @@
     background: #f0f2f5;
     background-image: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
     input:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
-      -webkit-text-fill-color: #fff !important;
+      -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
+      /*-webkit-text-fill-color: #fff !important;*/
     }
     .title {
       font-size: 25px;

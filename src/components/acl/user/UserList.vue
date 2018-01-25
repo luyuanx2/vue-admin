@@ -105,7 +105,7 @@
     </div>
       </div>
     </el-card>
-    <el-dialog width="30%" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog width="455px" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form size="medium" :rules="rules" ref="userForm" :model="temp" label-width="70px" style="padding:0 24px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="temp.username"></el-input>
