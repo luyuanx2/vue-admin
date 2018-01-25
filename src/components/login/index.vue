@@ -118,7 +118,7 @@
         weixinUrl: '',
         loginForm: {
           username: 'admin',
-          password: '1111111',
+          password: '123456',
           telephone: 15675505060,
           authCode: 123456
         },

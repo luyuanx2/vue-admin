@@ -46,8 +46,8 @@
         return {
           bindForm: {
             headimg: '',
-            username: '',
-            password: ''
+            username: 'admin',
+            password: '123456'
           },
           nickname: '',
           showDialog: false,
@@ -102,14 +102,21 @@
         const codeName = hashObj['code']
 //        alert(codeName)
         if (!codeName) {
-          alert('第三方登录失败')
+          Message.error('第三方登录失败')
         } else {
+          const loading = this.$loading({
+            lock: true,
+            text: 'Loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          });
           this.$store.dispatch('LoginByThirdparty', codeName).then((response) => {
+            loading.close()
             if (response.code === 4001) {
               this.showDialog = true
               this.bindForm.headimg = response.data.headimg
               this.nickname = response.data.nickname
-            } else {
+            }
+            if (response.code === 2000) {
               this.$router.push({path: '/'})
             }
           })

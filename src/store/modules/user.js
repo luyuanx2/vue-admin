@@ -100,15 +100,13 @@ const user = {
       return new Promise((resolve, reject) => {
         commit('SET_CODE', code)
         loginByThirdparty(state.code).then(response => {
-          if (response.code === 4001) {
-            resolve(response)
-          }else {
+          if (response.code === 2000) {
             console.log(response)
             console.log('第三方登录响应===========')
             commit('SET_TOKEN', response.data.access_token)
             setToken(response.data.access_token)
-            resolve()
           }
+          resolve(response)
         }).catch(error => {
           reject(error)
         })
