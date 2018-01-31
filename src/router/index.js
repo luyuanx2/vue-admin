@@ -63,5 +63,19 @@ export const asyncRouterMap = [
       {path: 'user', component: _import('acl/user/index'), name: 'UserManage', meta: {title: '用户管理'}},
       {path: 'userList1', component: _import('user/index'), name: 'UserList', meta: {title: '用户列表'}}
     ]
+  },
+  {
+    path: '/iframe',
+    component: Layout,
+    redirect: '/iframe', // you can set roles in root nav
+    children: [{
+      path: ':routerPath',
+      component: _import('iframe/index'),
+      name: 'iframe',
+      meta: {
+        title: 'iframe',
+        icon: 'people'
+      }
+    }]
   }
 ]
