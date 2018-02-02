@@ -262,7 +262,7 @@
     },
     data() {
       return {
-        deptId: 0,
+        deptId: undefined,
         deptMap: {},
         treeData: null,
         rules: {

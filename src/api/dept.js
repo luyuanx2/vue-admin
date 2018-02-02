@@ -10,11 +10,7 @@ export function addDept(obj) {
   return request({
     url: '/sys/dept/addDept',
     method: 'post',
-    data: obj,
-    transformRequest: [function (data) {
-      data = qs.stringify(data)
-      return data
-    }]
+    data: obj
   })
 }
 

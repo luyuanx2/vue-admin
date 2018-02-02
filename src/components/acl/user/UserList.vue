@@ -73,7 +73,7 @@
           </el-table-column>
           <el-table-column align="center" label="邮箱">
             <template slot-scope="scope">
-              <span>{{scope.row.email}}</span>
+              <span>{{scope.row.mail}}</span>
             </template>
           </el-table-column>
           <el-table-column class-name="status-col" label="状态" width="80">
@@ -113,8 +113,8 @@
         <el-form-item label="手机号" prop="telephone">
           <el-input v-model.number="temp.telephone"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="temp.email"></el-input>
+        <el-form-item label="邮箱" prop="mail">
+          <el-input v-model="temp.mail"></el-input>
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-select clearable style="width: 150px" v-model="temp.status"
@@ -139,14 +139,15 @@
 </template>
 
 <script>
+  import { isvalidTelephone } from '@/utils/validate'
   import Status from 'base/Status'
   import {getUserList, addUser} from 'api/user'
   import waves from 'common/js/directive/waves' // 水波纹指令
   import {Message} from 'element-ui'
 
   const statusOptions = [
-    {key: '1', display_name: '正常'},
-    {key: '2', display_name: '冻结'}
+    {key: 1, display_name: '正常'},
+    {key: 2, display_name: '冻结'}
   ]
 
   // arr to obj ,such as { 1 : "正常", 2 : "冻结" }
@@ -166,7 +167,7 @@
       },
       deptId: {
         type: Number,
-        default: 0
+        default: undefined
       },
       text: {
         type: String,
@@ -177,6 +178,13 @@
       Status
     },
     data() {
+      const validateTelephone = (rule, value, callback) => {
+        if (!isvalidTelephone(value)) {
+          callback(new Error('请输入正确的手机号码'))
+        } else {
+          callback()
+        }
+      }
       return {
         tableHeadBgd: 'background-color:#eee !important',
         tableKey: 1,
@@ -194,7 +202,7 @@
         temp: {
           id: undefined,
           username: '',
-          email: '',
+          mail: '',
           telephone: '',
           remark: '',
           status: '',
@@ -213,8 +221,7 @@
             { min: 1, max: 20, message: '用户名长度需要在20个字以内', trigger: 'blur' }
           ],
           telephone: [
-            { required: true, message: '请输入电话号码', trigger: 'blur' },
-            { min: 1, max: 13, message: '电话长度需要在13个字以内', trigger: 'blur' },
+            { required: true, trigger: 'blur',validator: validateTelephone},
             { type: 'number', message: '必须是数字', trigger: 'blur' }
           ],
           remark: [
@@ -224,7 +231,7 @@
             { required: true, message: '必须指定用户的状态', trigger: 'change' },
             { type: 'number', message: '必须是数字', trigger: 'blur' }
           ],
-          email: [
+          mail: [
             { required: true, message: '邮箱不允许为空', trigger: 'blur' },
             { min: 5, max: 50, message: '邮箱长度需要在5 - 50个字符以内', trigger: 'blur' }
           ]
@@ -250,7 +257,12 @@
     },
     watch: {
       deptId(newDeptId) {
-        this.listQuery.deptId = newDeptId
+        if(newDeptId === 0){
+          this.listQuery.deptId = undefined
+        } else {
+          this.listQuery.deptId = newDeptId
+        }
+
         this.handleFilter()
       }
     },
@@ -301,7 +313,7 @@
         this.temp = {
           id: undefined,
           username: '',
-          email: '',
+          mail: '',
           telephone: '',
           remark: '',
           status: '',
