@@ -21,7 +21,7 @@
           <el-col class="line" :span="2">&nbsp;</el-col>
           <el-col :span="11">
             <el-form-item prop="password">
-              <el-input type="text" placeholder="密码" name="password" type="password" v-model="bindForm.password">
+              <el-input placeholder="密码" name="password" type="password" v-model="bindForm.password">
                 <i slot="prefix" class="el-input__icon iconfont yy-password"></i>
               </el-input>
             </el-form-item>

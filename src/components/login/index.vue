@@ -281,7 +281,7 @@
       right: 0;
       width: 400px;
       padding: 35px 35px 15px 35px;
-      margin: 120px auto;
+      margin: 150px auto;
     }
 
     .show-pwd {

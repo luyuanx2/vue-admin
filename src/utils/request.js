@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Fingerprint from 'fingerprintjs'
-import qs from 'qs'
+// import qs from 'qs'
 // import {Message, MessageBox} from 'element-ui'
 import {Message} from 'element-ui'
 import store from '../store'
@@ -9,7 +9,7 @@ import {getToken} from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api的base_url
-  baseURL: 'http://192.168.202.1:8999/manage',
+  baseURL: 'http://192.168.1.55:8999/manage',
   timeout: 15000                  // 请求超时时间
 })
 const deviceId = new Fingerprint().get();
@@ -18,9 +18,9 @@ service.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers['Authorization'] = 'bearer ' + getToken()
   }
-  if (config.method.toLowerCase() === 'post') {
-    config.data = qs.stringify(config.data)
-  }
+  // if (config.method.toLowerCase() === 'post') {
+  //   config.data = qs.stringify(config.data)
+  // }
   config.headers['deviceId'] = deviceId
   return config
 }, error => {

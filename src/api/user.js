@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import qs from 'qs'
 
 export function getUserList(query) {
   return request({
@@ -12,6 +13,10 @@ export function addUser(obj) {
   return request({
     url: 'sys/user/addUser',
     method: 'post',
-    data: obj
+    data: obj,
+    transformRequest: [function (data) {
+      data = qs.stringify(data)
+      return data
+    }]
   })
 }
