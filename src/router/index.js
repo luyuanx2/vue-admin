@@ -61,7 +61,7 @@ export const asyncRouterMap = [
     },
     children: [
       {path: 'user', component: _import('acl/user/index'), name: 'UserManage', meta: {title: '用户管理'}},
-      {path: 'userList1', component: _import('user/index'), name: 'UserList', meta: {title: '用户列表'}}
+      {path: 'acl', component: _import('acl/acl/index'), name: 'AclManage', meta: {title: '权限管理'}}
     ]
   },
   {
