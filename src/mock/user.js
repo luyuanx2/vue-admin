@@ -10,7 +10,7 @@ for (let i = 0; i < count; i++) {
     // timestamp: +Mock.Random.date('T'),
     username: '@cname',
     telephone: /^1[0-9]{10}$/,
-    email: '@email',
+    mail: '@email',
     status: '@pick([1,2])',
     deptId: '@pick([1,2,3,4,5,6,7])',
     remark: '用户备注信息'
