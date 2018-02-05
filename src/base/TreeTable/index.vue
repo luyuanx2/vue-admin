@@ -13,12 +13,12 @@
     :data="formatData" :row-style="showRow" v-bind="$attrs">
     <el-table-column label="权限名称" v-if="columns.length===0" width="200">
       <template slot-scope="scope">
-        <span v-for="space in level(scope.row.level)" class="ms-tree-space" :key="space"></span>
+        <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
         <span class="tree-ctrl" v-if="iconShow(0,scope.row)" @click="toggleExpanded(scope.$index)">
           <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
           <i v-else class="el-icon-minus"></i>
         </span>
-        {{scope.row.name}}
+        {{scope.$index}}
       </template>
     </el-table-column>
     <el-table-column v-else v-for="(column, index) in columns" :key="column.value" :label="column.text" :width="column.width">
