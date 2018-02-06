@@ -20,7 +20,7 @@ const aclTree = Mock.mock({
           name: '首页',
           icon: 'dashboard',
           seq: 1,
-          type: 3,
+          type: 2,
           level: '0.2',
           url: 'www.baidu.com',
         },
@@ -180,6 +180,13 @@ const aclTree = Mock.mock({
   ]
 })
 
+const addAcl = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {}
+})
+
 export default {
-  aclTree: config => aclTree
+  aclTree: config => aclTree,
+  addAcl: config => addAcl,
 }

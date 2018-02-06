@@ -9,7 +9,7 @@ import {getToken} from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api的base_url
-  baseURL: 'http://192.168.1.55:8999/manage',
+  // baseURL: 'http://192.168.1.55:8999/manage',
   timeout: 15000                  // 请求超时时间
 })
 const deviceId = new Fingerprint().get();

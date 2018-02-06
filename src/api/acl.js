@@ -7,3 +7,15 @@ export function getAclTree() {
   })
 }
 
+export function addAcl(obj) {
+  return request({
+    url: '/sys/acl/save',
+    method: 'post',
+    data: obj,
+    transformRequest: [function (data) {
+      data = qs.stringify(data)
+      return data
+    }]
+  })
+}
+

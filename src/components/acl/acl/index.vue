@@ -1,6 +1,13 @@
 <template>
   <div class="app-container">
-
+    <div class="table-wrapper">
+      <div class="table-head-wrapper">
+          <el-button size="small" class="table-head-button" type="primary">展开所有</el-button>
+          <el-button size="small" class="table-head-button" type="primary">收缩所有</el-button>
+          <el-button size="small" class="table-head-button" type="primary"
+                     @click="refresh">刷新</el-button>
+      </div>
+      <div class="table-body-wrapper">
     <tree-table :data="data" :evalFunc="func" :columns="columns" :evalArgs="args" :expandAll="expandAll" border>
       <el-table-column align="center" label="图标">
         <template slot-scope="scope">
@@ -25,26 +32,27 @@
       </el-table-column>
       <el-table-column align="center" label="操作" class-name="small-padding" width="180">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.type !== 3" type="primary"
+          <el-button class="table-operate-button" v-if="scope.row.type !== 3" type="primary"
                      size="mini"  @click="add(scope.row.id,scope.row.type)">添加</el-button>
-          <el-button type="success" size="mini" @click="edit(scope.row.id,scope.row.type)">编辑</el-button>
-          <el-button size="mini" type="danger">删除</el-button>
+          <el-button class="table-operate-button" type="success" size="mini" @click="edit(scope.row.id,scope.row.type)">编辑</el-button>
+          <el-button class="table-operate-button" size="mini" type="danger">删除</el-button>
         </template>
       </el-table-column>
     </tree-table>
-
+      </div>
+    </div>
     <el-dialog width="600px" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form size="medium" :rules="rules" ref="aclForm" :model="temp" label-width="70px" style="padding:0 24px">
+      <el-form size="medium" :rules="rules" ref="aclForm" :model="temp" label-width="80px" style="padding:0 24px">
         <el-form-item label="类型" prop="type">
         <el-radio-group v-model="temp.type">
-          <el-radio :label="1">目录</el-radio>
-          <el-radio :label="2">菜单</el-radio>
-          <el-radio :label="3">按钮</el-radio>
+          <el-radio v-if="contentShow" :label="1">目录</el-radio>
+          <el-radio v-if="menuShow" :label="2">菜单</el-radio>
+          <el-radio v-if="bottonShow" :label="3">按钮</el-radio>
           <el-radio :label="4">其他</el-radio>
         </el-radio-group>
         </el-form-item>
         <el-form-item label="父级权限" prop="parentId">
-          <el-select v-model="parentId" placeholder="请选择">
+          <el-select v-model.number="parentId" placeholder="请选择">
 
           </el-select>
         </el-form-item>
@@ -52,10 +60,10 @@
         <el-form-item label="权限名称" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item label="图标" prop="icon">
+        <el-form-item v-if="temp.type === 1 || temp.type === 4" label="图标" prop="icon">
           <el-input v-model="temp.icon"></el-input>
         </el-form-item>
-        <el-form-item label="URL" prop="url">
+        <el-form-item v-if="temp.type === 3 || temp.type === 2 || temp.type === 4" label="URL" prop="url">
           <el-input v-model="temp.url"></el-input>
         </el-form-item>
         <el-form-item label="状态" prop="status">
@@ -69,7 +77,7 @@
         <el-form-item label="顺序" prop="seq">
           <el-input type="number" v-model.number="temp.seq"></el-input>
         </el-form-item>
-        <el-form-item label="备注">
+        <el-form-item label="备注" prop="remark">
           <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" v-model="temp.remark">
           </el-input>
         </el-form-item>
@@ -90,13 +98,14 @@
 */
 import treeTable from 'base/TreeTable'
 import treeToArray from './aclEval'
-import { getAclTree } from 'api/acl'
+import { getAclTree, addAcl} from 'api/acl'
+import {Message} from 'element-ui'
 const statusOptions = [
-  {key: 1, display_name: '正常'},
-  {key: 2, display_name: '冻结'}
+  {key: 1, display_name: '有效'},
+  {key: 2, display_name: '无效'}
 ]
 export default {
-  name: 'customTreeTableDemo',
+  name: 'acl',
   components: { treeTable },
   data() {
     return {
@@ -121,6 +130,32 @@ export default {
       contentShow: false,
       menuShow: false,
       bottonShow: false,
+      rules: {
+        name: [
+          { required: true, message: '权限名称不能为空', trigger: 'blur' },
+          { min: 2, max: 20, message: '权限名称长度需要在2-20个字之间', trigger: 'blur' }
+        ],
+        parentId: [
+          { required: true, trigger: 'blur',message: '父级权限不能为空'},
+          { type: 'number', message: '必须是数字', trigger: 'blur' }
+        ],
+        remark: [
+          { min: 1, max: 200, message: '备注长度需要在200个字以内', trigger: 'blur' }
+        ],
+        status: [
+          { required: true, message: '必须指定用户的状态', trigger: 'change' },
+          { type: 'number', message: '必须是数字', trigger: 'blur' }
+        ],
+        icon: [
+          { required: true, message: '图标不允许为空', trigger: 'blur' },
+          { min: 1, max: 30, message: '图标名称长度需要在30个字符以内', trigger: 'blur' }
+        ],
+        url: [
+          { required: true, message: 'url不允许为空', trigger: 'blur' },
+          { min: 6, max: 100, message: '权限URL长度需要在6-100个字符之间', trigger: 'blur' }
+        ],
+        seq: [{required: true, message: '顺序不能为空'}, {type: 'number', message: '必须为数字值', trigger: 'blur'}],
+      },
       temp: {
         type: undefined,
         parentId: undefined,
@@ -128,7 +163,7 @@ export default {
         icon: '',
         url: '',
         remark: '',
-        status: '',
+        status: undefined,
         seq:undefined
       }
     }
@@ -171,15 +206,20 @@ export default {
     },
     add(parentId,type) {
       this.resetTemp()
+      this.temp.parentId = parentId
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       if(type === 1) { // 目录下面只能添加菜单和目录
-         this.contentShow = true
+        this.contentShow = true
         this.menuShow = true
         this.bottonShow = false
+        this.temp.type = 1
       }
       if(type === 2) { // 菜单下面只能添加按钮
-
+        this.contentShow = false
+        this.menuShow = false
+        this.bottonShow = true
+        this.temp.type = 3
       }
       this.$nextTick(() => {
         this.$refs.aclForm.clearValidate()
@@ -189,13 +229,19 @@ export default {
 
     },
     createData() {
-
+      this.$refs.aclForm.validate((valid) => {
+        if (valid) {
+          this.createOrUpdate(addAcl(this.temp), function (data) {
+            Message.success('添加成功')
+          }, null);
+        }
+      })
     },
     createOrUpdate(method, successCallback, failCallback) {
       method.then((result) => {
         if (result.code === 2000) {
           this.dialogFormVisible = false
-          this._listDept()
+          this.getAclTree()
           if (successCallback) {
             successCallback(result)
           }
@@ -214,9 +260,12 @@ export default {
         icon: '',
         url: '',
         remark: '',
-        status: '',
+        status: 1,
         seq:undefined
       }
+    },
+    refresh() {
+      this.getAclTree()
     },
     message(row) {
       this.$message.info(row.event)

@@ -1,8 +1,4 @@
 <template>
-  <div class="table-wrapper">
-    <div class="table-head-wrapper">
-    </div>
-    <div class="table-body-wrapper">
   <el-table
     size="small"
     :key='aclTreeTableKey'
@@ -33,8 +29,6 @@
     </el-table-column>
     <slot></slot>
   </el-table>
-    </div>
-  </div>
 </template>
 
 <script>

@@ -23,6 +23,7 @@ Mock.mock(/\/sys\/dept\/delete\.*/, 'delete', deptAPI.deleteDept)
 Mock.mock(/\/sys\/dept\/update\.*/, 'put', deptAPI.updateDept)
 // 权限相关
 Mock.mock(/\/sys\/acl\/tree\.*/, 'get', aclAPI.aclTree)
+Mock.mock(/\/sys\/acl\/save\.*/, 'post', aclAPI.addAcl)
 // 发送短信验证码
 Mock.mock(/\/code\/sms\.*/, 'get', loginAPI.sendCode)
 export default Mock

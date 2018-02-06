@@ -88,8 +88,8 @@
           </el-table-column>
           <el-table-column align="center" label="操作" class-name="small-padding" width="120">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini">编辑</el-button>
-              <el-button size="mini" type="danger">删除</el-button>
+              <el-button class="table-operate-button" type="primary" size="mini">编辑</el-button>
+              <el-button class="table-operate-button" size="mini" type="danger">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -124,7 +124,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="备注">
+        <el-form-item label="备注" prop="remark">
           <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" v-model="temp.remark">
           </el-input>
         </el-form-item>
@@ -205,7 +205,7 @@
           mail: '',
           telephone: '',
           remark: '',
-          status: '',
+          status: undefined,
           deptId: undefined
         },
         statusOptions,
@@ -316,7 +316,7 @@
           mail: '',
           telephone: '',
           remark: '',
-          status: '',
+          status: 1,
           deptId: this.deptId
         }
       },
