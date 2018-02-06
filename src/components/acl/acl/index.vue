@@ -23,10 +23,11 @@
           <span>{{scope.row.url}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" class-name="small-padding" width="200">
+      <el-table-column align="center" label="操作" class-name="small-padding" width="180">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini"  @click="add(scope.row.id)">添加</el-button>
-          <el-button type="success" size="mini" @click="edit(scope.row.id)">编辑</el-button>
+          <el-button v-if="scope.row.type !== 3" type="primary"
+                     size="mini"  @click="add(scope.row.id,scope.row.type)">添加</el-button>
+          <el-button type="success" size="mini" @click="edit(scope.row.id,scope.row.type)">编辑</el-button>
           <el-button size="mini" type="danger">删除</el-button>
         </template>
       </el-table-column>
@@ -90,6 +91,10 @@
 import treeTable from 'base/TreeTable'
 import treeToArray from './aclEval'
 import { getAclTree } from 'api/acl'
+const statusOptions = [
+  {key: 1, display_name: '正常'},
+  {key: 2, display_name: '冻结'}
+]
 export default {
   name: 'customTreeTableDemo',
   components: { treeTable },
@@ -112,6 +117,10 @@ export default {
         create: '新增权限'
       },
       dialogStatus: '',
+      statusOptions,
+      contentShow: false,
+      menuShow: false,
+      bottonShow: false,
       temp: {
         type: undefined,
         parentId: undefined,
@@ -153,17 +162,25 @@ export default {
       }
       return typeTextMap[type]
     },
-    edit(id) {
+    edit(id,type) {
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs.aclForm.clearValidate()
       })
     },
-    add(parentId) {
-//      this.resetTemp()
+    add(parentId,type) {
+      this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      if(type === 1) { // 目录下面只能添加菜单和目录
+         this.contentShow = true
+        this.menuShow = true
+        this.bottonShow = false
+      }
+      if(type === 2) { // 菜单下面只能添加按钮
+
+      }
       this.$nextTick(() => {
         this.$refs.aclForm.clearValidate()
       })
@@ -188,6 +205,18 @@ export default {
           }
         }
       })
+    },
+    resetTemp() {
+      this.temp = {
+        type: undefined,
+        parentId: undefined,
+        name: '',
+        icon: '',
+        url: '',
+        remark: '',
+        status: '',
+        seq:undefined
+      }
     },
     message(row) {
       this.$message.info(row.event)
