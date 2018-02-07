@@ -209,13 +209,13 @@ export default {
       this.temp.parentId = parentId
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      if(type === 1) { // 目录下面只能添加菜单和目录
+      if (type === 1) { // 目录下面只能添加菜单和目录
         this.contentShow = true
         this.menuShow = true
         this.bottonShow = false
         this.temp.type = 1
       }
-      if(type === 2) { // 菜单下面只能添加按钮
+      if (type === 2) { // 菜单下面只能添加按钮
         this.contentShow = false
         this.menuShow = false
         this.bottonShow = true
@@ -233,7 +233,7 @@ export default {
         if (valid) {
           this.createOrUpdate(addAcl(this.temp), function (data) {
             Message.success('添加成功')
-          }, null);
+          }, null)
         }
       })
     },
@@ -261,7 +261,7 @@ export default {
         url: '',
         remark: '',
         status: 1,
-        seq:undefined
+        seq: undefined
       }
     },
     refresh() {

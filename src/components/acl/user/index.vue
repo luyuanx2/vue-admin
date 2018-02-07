@@ -296,7 +296,7 @@
   }
 </script>
 
-<style>
+<style rel="stylesheet/scss" lang="scss" scoped>
   .clearfix:before,
   .clearfix:after {
     display: table;
@@ -314,8 +314,4 @@
     display: inline-block;
   }
 
-  .box-card-user {
-    width: calc(100% - 270px);
-    display: inline-block;
-  }
 </style>

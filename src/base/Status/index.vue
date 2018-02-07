@@ -52,7 +52,7 @@ export default {
     }
   }
   .el-status {
-    font-size: 14px;
+    /*font-size: 14px;*/
     color: rgba(0, 0, 0, 0.65);
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -83,7 +83,7 @@ export default {
   }
   .el-yy-status-text {
     color: rgba(0, 0, 0, 0.65);
-    font-size: 14px;
+    font-size: 13px;
     margin-left: 8px;
   }
   .el-yy-status-processing {

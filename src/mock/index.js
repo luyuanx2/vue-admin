@@ -3,6 +3,7 @@ import loginAPI from './login'
 import userAPI from './user'
 import deptAPI from './dept'
 import aclAPI from './acl'
+import roleAPI from './role'
 
 // Mock.setup({
 //   timeout: '350-600'
@@ -24,6 +25,9 @@ Mock.mock(/\/sys\/dept\/update\.*/, 'put', deptAPI.updateDept)
 // 权限相关
 Mock.mock(/\/sys\/acl\/tree\.*/, 'get', aclAPI.aclTree)
 Mock.mock(/\/sys\/acl\/save\.*/, 'post', aclAPI.addAcl)
+// 角色相关
+Mock.mock(/\/sys\/role\/list\.*/, 'get', roleAPI.getRoleList)
+Mock.mock(/\/sys\/role\/save\.*/, 'post', roleAPI.addRole)
 // 发送短信验证码
 Mock.mock(/\/code\/sms\.*/, 'get', loginAPI.sendCode)
 export default Mock

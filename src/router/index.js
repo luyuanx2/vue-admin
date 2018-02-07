@@ -30,7 +30,7 @@ export const constantRouterMap = [
   }
 ]
 export default new Router({
-  mode: 'history', // 后端支持可开
+  // mode: 'history', // 后端支持可开
   scrollBehavior: () => ({y: 0}),
   routes: constantRouterMap
 })
@@ -53,7 +53,7 @@ export const asyncRouterMap = [
   {
     path: '/acl',
     component: Layout,
-    redirect: '/example/table/complex-table',
+    redirect: 'noredirect',
     name: 'Acl',
     meta: {
       title: '权限管理',
@@ -61,7 +61,8 @@ export const asyncRouterMap = [
     },
     children: [
       {path: 'user', component: _import('acl/user/index'), name: 'UserManage', meta: {title: '用户管理'}},
-      {path: 'acl', component: _import('acl/acl/index'), name: 'AclManage', meta: {title: '权限管理'}}
+      {path: 'acl', component: _import('acl/acl/index'), name: 'AclManage', meta: {title: '权限管理'}},
+      {path: 'role', component: _import('acl/role/index'), name: 'RoleManage', meta: {title: '角色管理'}}
     ]
   },
   {
