@@ -2,7 +2,7 @@
   <transition name="fade" mode="out-in">
     <keep-alive :include='cachedViews'>
       <div class="app-container">
-        <el-col :span="8">
+        <el-col :sm="8" :lg="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>角色列表</span>
@@ -60,7 +60,7 @@
           </div>
         </el-card>
         </el-col>
-        <el-col :span="5">
+        <el-col :sm="5" :lg="4">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>角色与权限</span>
@@ -79,7 +79,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span="11">
+        <el-col :sm="11" :lg="8">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>角色与用户</span>
@@ -87,7 +87,7 @@
                 保 存
               </el-button>
             </div>
-            <div style="margin-left: 28px">
+            <div style="text-align: center">
               <el-transfer
                 :titles="['待选用户列表', '已选用户列表']"
                 v-model="value2"
