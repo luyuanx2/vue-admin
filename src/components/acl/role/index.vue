@@ -2,8 +2,7 @@
   <transition name="fade" mode="out-in">
     <keep-alive :include='cachedViews'>
       <div class="app-container">
-        <el-col :sm="8" :lg="12">
-        <el-card class="box-card">
+        <el-card class="box-card-role">
           <div slot="header" class="clearfix">
             <span>角色列表</span>
             <el-button style="float: right; padding: 3px 0" type="text">
@@ -12,8 +11,6 @@
           </div>
           <div>
             <div class="table-wrapper">
-              <div class="table-head-wrapper">
-              </div>
               <div class="table-body-wrapper">
                 <el-table size="small"
                           :key='tableKey'
@@ -59,9 +56,7 @@
             </div>
           </div>
         </el-card>
-        </el-col>
-        <el-col :sm="5" :lg="4">
-          <el-card class="box-card">
+          <el-card class="box-card-acl">
             <div slot="header" class="clearfix">
               <span>角色与权限</span>
               <el-button style="float: right; padding: 3px 0" type="text">
@@ -78,9 +73,7 @@
             </el-tree>
             </div>
           </el-card>
-        </el-col>
-        <el-col :sm="11" :lg="8">
-          <el-card class="box-card">
+          <el-card class="box-card-user">
             <div slot="header" class="clearfix">
               <span>角色与用户</span>
               <el-button style="float: right; padding: 3px 0" type="text">
@@ -102,7 +95,6 @@
               </el-transfer>
             </div>
           </el-card>
-        </el-col>
       </div>
     </keep-alive>
   </transition>
@@ -271,11 +263,23 @@
     clear: both
   }
 
-  /*.box-card {*/
-    /*float: left;*/
-    /*width: 440px;*/
-    /*height: 100%;*/
-    /*display: inline-block;*/
-  /*}*/
+
+
+  .box-card-role {
+    float: left;
+    width: calc(100% - 810px);
+    display: inline-block;
+  }
+
+  .box-card-acl {
+    width: 270px;
+    float: left;
+    display: inline-block;
+  }
+
+  .box-card-user {
+    width: 540px;
+    display: inline-block;
+  }
 
 </style>
