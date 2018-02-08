@@ -28,6 +28,7 @@ Mock.mock(/\/sys\/acl\/save\.*/, 'post', aclAPI.addAcl)
 // 角色相关
 Mock.mock(/\/sys\/role\/list\.*/, 'get', roleAPI.getRoleList)
 Mock.mock(/\/sys\/role\/save\.*/, 'post', roleAPI.addRole)
+Mock.mock(/\/sys\/role\/users\.*/, 'get', roleAPI.getRoleUserList)
 // 发送短信验证码
 Mock.mock(/\/code\/sms\.*/, 'get', loginAPI.sendCode)
 export default Mock

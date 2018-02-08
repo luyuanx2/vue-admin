@@ -22,6 +22,22 @@ const addRole = Mock.mock({
   }
 })
 
+const getRoleUserList = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {
+    'users|15': [
+      {
+        id: '@increment',
+        username: '@cname',
+        status: '@pick([1,2])'
+      }
+    ],
+    'selected|5': [
+      '@increment'
+    ]
+  }
+})
 
 export default {
   getRoleList: config => {
@@ -37,5 +53,6 @@ export default {
       }
     }
   },
-  addRole: config => addRole
+  addRole: config => addRole,
+  getRoleUserList: config => getRoleUserList
 }

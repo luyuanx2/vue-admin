@@ -89,9 +89,16 @@
             </div>
             <div style="text-align: center">
               <el-transfer
+                filterable
+                :filter-method="filterMethod"
+                filter-placeholder="请输入用户名"
                 :titles="['待选用户列表', '已选用户列表']"
-                v-model="value2"
-                :data="data2">
+                v-model="selected"
+                :data="unselected"
+                :props="{
+                  key: 'id',
+                  label: 'username'
+                  }">
               </el-transfer>
             </div>
           </el-card>
@@ -103,7 +110,7 @@
 
 <script>
   import Status from 'base/Status'
-  import {getRoleList} from 'api/role'
+  import {getRoleList, getRoleUserList} from 'api/role'
   import {Message} from 'element-ui'
 
   const statusOptions = [
@@ -128,8 +135,8 @@
         return data;
       };
       return {
-        data2: generateData(),
-        value2: [1, 4],
+        unselected: [],
+        selected: [],
         tableHeadBgd: 'background-color:#eee !important',
         tableKey: 'role',
         list: null,
@@ -166,7 +173,10 @@
               disabled: true
             }]
           }]
-        }]
+        }],
+        filterMethod(query, item) {
+          return item.username.indexOf(query) > -1;
+        }
       }
     },
     filters: {
@@ -190,6 +200,7 @@
     },
     created() {
       this.getList()
+      this.getTransferData()
     },
     methods: {
       createData() {
@@ -226,6 +237,12 @@
           this.list = response.data.list
           this.total = response.data.total
           this.listLoading = false
+        })
+      },
+      getTransferData(roleId) {
+        getRoleUserList(roleId).then(response => {
+          this.selected =  response.data.selected
+          this.unselected = response.data.users
         })
       },
       handleSizeChange(val) {
