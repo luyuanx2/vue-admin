@@ -36,20 +36,20 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  {
-    path: '/user',
-    component: Layout,
-    redirect: '/example/table/complex-table',
-    name: 'User',
-    meta: {
-      title: '用户管理',
-      icon: 'example'
-    },
-    children: [
-      {path: 'userList', component: _import('user/index'), name: 'UserList', meta: {title: '用户列表'}},
-      {path: 'userList1', component: _import('user/index'), name: 'UserList', meta: {title: '用户列表'}}
-    ]
-  },
+  // {
+  //   path: '/user',
+  //   component: Layout,
+  //   redirect: '/example/table/complex-table',
+  //   name: 'User',
+  //   meta: {
+  //     title: '用户管理',
+  //     icon: 'example'
+  //   },
+  //   children: [
+  //     {path: 'userList', component: _import('user/index'), name: 'UserList', meta: {title: '用户列表'}},
+  //     {path: 'userList1', component: _import('user/index'), name: 'UserList', meta: {title: '用户列表'}}
+  //   ]
+  // },
   {
     path: '/acl',
     component: Layout,

@@ -2,7 +2,7 @@
   <div class="navbar-wrapper">
   <el-dropdown class="avatar-container" trigger="click">
     <div class="avatar-wrapper">
-      <img class="user-avatar" src="src/common/image/default.png">
+      <img class="user-avatar" src="../../common/image/default.png">
       <span style="vertical-align: middle;font-size: 16px">admin</span>
       <!--<i style="vertical-align: middle" class="el-icon-caret-bottom"></i>-->
     </div>
