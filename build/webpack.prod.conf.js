@@ -12,7 +12,11 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 
+// const env = require('../config/'+process.env.env_config+'.env')
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
@@ -63,6 +67,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: config.build.index,
       template: 'index.html',
       inject: true,
+      favicon: resolve('favicon.ico'),
+      title: 'vue-admin',
+      path: config.build.assetsPublicPath + config.build.assetsSubDirectory,
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -107,6 +114,14 @@ const webpackConfig = merge(baseWebpackConfig, {
       minChunks: 3
     }),
 
+    // 自定义添加split echarts into its own file
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'echarts',
+      minChunks(module) {
+        var context = module.context;
+        return context && (context.indexOf('echarts') >= 0 || context.indexOf('zrender') >= 0);
+      }
+    }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {
