@@ -34,7 +34,7 @@
         <template slot-scope="scope">
           <el-button class="table-operate-button" v-if="scope.row.type !== 3" type="primary"
                      size="mini"  @click="add(scope.row.id,scope.row.type)">添加</el-button>
-          <el-button class="table-operate-button" type="success" size="mini" @click="edit(scope.row.id,scope.row.type)">编辑</el-button>
+          <el-button class="table-operate-button" type="success" size="mini" @click="edit(scope.row)">编辑</el-button>
           <el-button class="table-operate-button" size="mini" type="danger">删除</el-button>
         </template>
       </el-table-column>
@@ -98,7 +98,7 @@
 */
 import treeTable from 'base/TreeTable'
 import treeToArray from './aclEval'
-import { getAclTree, addAcl} from 'api/acl'
+import { getAclTree, addAcl, updateAcl} from 'api/acl'
 import {Message} from 'element-ui'
 const statusOptions = [
   {key: 1, display_name: '有效'},
@@ -197,18 +197,7 @@ export default {
       }
       return typeTextMap[type]
     },
-    edit(id,type) {
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs.aclForm.clearValidate()
-      })
-    },
-    add(parentId,type) {
-      this.resetTemp()
-      this.temp.parentId = parentId
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
+    modalType(type) {
       if (type === 1) { // 目录下面只能添加菜单和目录
         this.contentShow = true
         this.menuShow = true
@@ -221,12 +210,63 @@ export default {
         this.bottonShow = true
         this.temp.type = 3
       }
+    },
+    editTemp(row) {
+      this.temp.type = row.type
+      this.temp.parentId = row.parentId
+      this.temp.name = row.name
+      this.temp.icon = row.icon
+      this.temp.url = row.url
+      this.temp.remark = row.remark
+      this.temp.status = row.status
+      this.temp.seq = row.seq
+    },
+    edit(row) {
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      switch(row.type)
+      {
+        case 1:
+          this.contentShow = true
+          this.menuShow = false
+          this.bottonShow = false
+          break;
+        case 2:
+          this.contentShow = false
+          this.menuShow = true
+          this.bottonShow = false
+          break;
+        case 3:
+          this.contentShow = false
+          this.menuShow = false
+          this.bottonShow = true
+          break;
+        default:
+          break;
+      }
+      this.editTemp(row)
+      this.$nextTick(() => {
+        this.$refs.aclForm.clearValidate()
+      })
+    },
+    add(parentId,type) {
+      this.resetTemp()
+      this.temp.parentId = parentId
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.modalType(type)
       this.$nextTick(() => {
         this.$refs.aclForm.clearValidate()
       })
     },
     updateData() {
-
+      this.$refs.aclForm.validate((valid) => {
+        if (valid) {
+          this.createOrUpdate(updateAcl(this.temp), function (data) {
+            Message.success('编辑成功')
+          }, null)
+        }
+      })
     },
     createData() {
       this.$refs.aclForm.validate((valid) => {

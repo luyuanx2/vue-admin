@@ -13,6 +13,7 @@
             <div class="table-wrapper">
               <div class="table-body-wrapper">
                 <el-table size="small"
+                          @row-click="rowClick"
                           :key='tableKey'
                           :data="list"
                           v-loading="listLoading"
@@ -59,24 +60,31 @@
           <el-card class="box-card-acl">
             <div slot="header" class="clearfix">
               <span>角色与权限</span>
-              <el-button style="float: right; padding: 3px 0" type="text">
+              <el-button @click="changeAcls" style="float: right; padding: 3px 0" type="text">
                 保 存
               </el-button>
             </div>
             <div>
             <el-tree
-              :data="data3"
+              :data="roleTreeData"
+              ref="roleTree"
+              :props="{
+                  key: 'id',
+                  label: 'name',
+                  children: 'aclList'
+                  }"
               show-checkbox
               node-key="id"
-              :default-expanded-keys="[2, 3]"
-              :default-checked-keys="[5]">
+              :default-expanded-keys="expandedKeys"
+              default-expand-all
+              :default-checked-keys="checkedKeys">
             </el-tree>
             </div>
           </el-card>
           <el-card class="box-card-user">
             <div slot="header" class="clearfix">
               <span>角色与用户</span>
-              <el-button style="float: right; padding: 3px 0" type="text">
+              <el-button @click="changeUsers" style="float: right; padding: 3px 0" type="text">
                 保 存
               </el-button>
             </div>
@@ -87,7 +95,7 @@
                 filter-placeholder="请输入用户名"
                 :titles="['待选用户列表', '已选用户列表']"
                 v-model="selected"
-                :data="unselected"
+                :data="users"
                 :props="{
                   key: 'id',
                   label: 'username'
@@ -102,8 +110,9 @@
 
 <script>
   import Status from 'base/Status'
-  import {getRoleList, getRoleUserList} from 'api/role'
+  import {getRoleList, getRoleUserList, getRoleTreeData, changeAcls, changeUsers} from 'api/role'
   import {Message} from 'element-ui'
+  import { mergeArray } from '@/utils'
 
   const statusOptions = [
     {key: 1, display_name: '有效'},
@@ -127,9 +136,11 @@
         return data;
       };
       return {
-        unselected: [],
+        currentRoleId: undefined,
+        expandedKeys: [],
+        checkedKeys: [],
+        users: [],
         selected: [],
-        tableHeadBgd: 'background-color:#eee !important',
         tableKey: 'role',
         list: null,
         total: null,
@@ -138,34 +149,7 @@
           page: 1,
           limit: 10
         },
-        data3: [{
-          id: 1,
-          label: '一级 2',
-          children: [{
-            id: 3,
-            label: '二级 2-1',
-            children: [{
-              id: 4,
-              label: '三级 3-1-1'
-            }, {
-              id: 5,
-              label: '三级 3-1-2',
-              disabled: true
-            }]
-          }, {
-            id: 2,
-            label: '二级 2-2',
-            disabled: true,
-            children: [{
-              id: 6,
-              label: '三级 3-2-1'
-            }, {
-              id: 7,
-              label: '三级 3-2-2',
-              disabled: true
-            }]
-          }]
-        }],
+        roleTreeData: undefined,
         filterMethod(query, item) {
           return item.username.indexOf(query) > -1;
         }
@@ -192,7 +176,6 @@
     },
     created() {
       this.getList()
-      this.getTransferData()
     },
     methods: {
       createData() {
@@ -234,7 +217,21 @@
       getTransferData(roleId) {
         getRoleUserList(roleId).then(response => {
           this.selected =  response.data.selected
-          this.unselected = response.data.users
+          this.users = response.data.users
+        })
+      },
+      getRoleTreeData(roleId) {
+        getRoleTreeData(roleId).then(response => {
+          this.roleTreeData =  response.data
+          this.recursiveRenderRoleTree(this.roleTreeData)
+        })
+      },
+      recursiveRenderRoleTree(data) {
+        data.forEach((item) =>{
+          if (item.checked && item.aclList.length === 0) {
+            this.checkedKeys.push(item.id)
+          }
+          this.recursiveRenderRoleTree(item.aclList)
         })
       },
       handleSizeChange(val) {
@@ -244,6 +241,49 @@
       handleCurrentChange(val) {
         this.listQuery.page = val
         this.getList()
+      },
+      rowClick(row, event, column) {
+        this.currentRoleId = row.id
+        //根据角色id查找角色树
+        this.getRoleTreeData(this.currentRoleId);
+        //根据角色id绑定的用户
+        this.getTransferData(this.currentRoleId)
+      },
+      changeAcls() {
+        if(!this.currentRoleId){
+          Message.warning('请选择角色')
+          return
+        }
+        let checkedKes = this.$refs.roleTree.getCheckedKeys()
+//        let halfCheckedKeys = this.$refs.roleTree.getHalfCheckedKeys()
+        changeAcls({
+            roleId: this.currentRoleId,
+            aclIds: checkedKes.join(',')
+        }).then(response => {
+          if (response.code === 2000) {
+            Message.success('保存成功')
+          }
+        })
+      },
+      changeUsers() {
+        if(!this.currentRoleId){
+          Message.warning('请选择角色')
+          return
+        }
+        let checkedKes = this.$refs.roleTree.getCheckedKeys()
+//        let halfCheckedKeys = this.$refs.roleTree.getHalfCheckedKeys()
+        alert(this.selected.join(','))
+        changeUsers({
+          roleId: this.currentRoleId,
+          userIds: this.selected.join(',')
+        }).then(response => {
+          if (response.code === 2000) {
+            Message.success('保存成功')
+          }
+        })
+      },
+      tableHeadBgd() {
+        return 'background-color:#eee !important'
       },
       resetForm(form) {
         this.$refs[form].resetFields()

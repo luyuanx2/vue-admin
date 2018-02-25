@@ -185,8 +185,14 @@ const addAcl = Mock.mock({
   message: 'OK',
   data: {}
 })
+const updateAcl = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {}
+})
 
 export default {
   aclTree: config => aclTree,
   addAcl: config => addAcl,
+  updateAcl: config => updateAcl
 }

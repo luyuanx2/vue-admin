@@ -19,3 +19,15 @@ export function addAcl(obj) {
   })
 }
 
+export function updateAcl(obj) {
+  return request({
+    url: '/sys/acl/update',
+    method: 'put',
+    data: obj,
+    transformRequest: [function (data) {
+      data = qs.stringify(data)
+      return data
+    }]
+  })
+}
+

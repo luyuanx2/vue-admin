@@ -284,3 +284,12 @@ export function deepCopy(obj){
   }
   return newobj
 }
+
+// 连接两个数组得到一个新数组
+export function mergeArray(a,b){
+  a = b.reduce( function(coll,item){
+    coll.push( item );
+    return coll;
+  }, a );
+  return a
+}
