@@ -270,9 +270,6 @@
           Message.warning('请选择角色')
           return
         }
-        let checkedKes = this.$refs.roleTree.getCheckedKeys()
-//        let halfCheckedKeys = this.$refs.roleTree.getHalfCheckedKeys()
-        alert(this.selected.join(','))
         changeUsers({
           roleId: this.currentRoleId,
           userIds: this.selected.join(',')

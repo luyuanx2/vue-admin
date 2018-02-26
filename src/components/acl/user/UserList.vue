@@ -275,6 +275,10 @@
         return dept.label
       },
       addUser() {
+        if(!this.deptId || this.deptId === 0) {
+          Message.warning('请选择部门')
+          return
+        }
         this.resetTemp()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true

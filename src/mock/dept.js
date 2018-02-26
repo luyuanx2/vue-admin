@@ -5,48 +5,48 @@ const listDept = Mock.mock({
   message: 'OK',
   data: [{
     id: 1,
-    label: '部门列表',
-    children: [{
+    name: '部门列表',
+    deptList: [{
       id: 2,
-      label: '总经理室',
-      children: []
+      name: '总经理室',
+      deptList: []
     }, {
       id: 3,
-      label: '市场部',
+      name: '市场部',
       disabled: true,
-      children: [{
+      deptList: [{
         id: 7,
-        label: '招生部',
-        children: []
+        name: '招生部',
+        deptList: []
       }, {
         id: 8,
-        label: '咨询部',
+        name: '咨询部',
         disabled: true,
-        children: []
+        deptList: []
       }]
     },{
       id: 4,
-      label: '教学部',
+      name: '教学部',
       disabled: true,
-      children: []
+      deptList: []
     },{
       id: 5,
-      label: '后勤部',
+      name: '后勤部',
       disabled: true,
-      children: []
+      deptList: []
     },{
       id: 6,
-      label: '技术部',
+      name: '技术部',
       disabled: true,
-      children: [{
+      deptList: [{
         id: 9,
-        label: '前端开发',
-        children: []
+        name: '前端开发',
+        deptList: []
       }, {
         id: 10,
-        label: '后端开发',
+        name: '后端开发',
         disabled: true,
-        children: []
+        deptList: []
       }]
     }]
   }]

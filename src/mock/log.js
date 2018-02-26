@@ -11,20 +11,21 @@ for (let i = 0; i < count; i++) {
     operator: '@cname',
     type: '@pick([1,2,3,4,5,6])',
     operateTime: +Mock.Random.date('T'),
+    status: '@pick([0,1])',
     oldValue: "{\n" +
     "  \"operatorTime\" : \"2018-2-18 14:21\",\n" +
-    "  \"name\" : \"greely\",\n" +
+    "  \"name\" : \"admin\",\n" +
     "  \"mobile\" : \"15675504080\",\n" +
     "  \"id\" : 23,\n" +
-    "  \"email\" : \"geely@happymmall.com\",\n" +
+    "  \"email\" : \"admin@qq.com\",\n" +
     "  \"age\" : 18\n" +
     "}",
     newValue: "{\n" +
     "  \"operatorTime\" : \"2018-2-18 14:21\",\n" +
-    "  \"name\" : \"greely\",\n" +
+    "  \"name\" : \"adnmin\",\n" +
     "  \"mobile\" : \"15675504080\",\n" +
     "  \"id\" : 23,\n" +
-    "  \"email\" : \"geely@happymmall.com\",\n" +
+    "  \"email\" : \"admin@qq.com\",\n" +
     "  \"age\" : 18\n" +
     "}"
   }))

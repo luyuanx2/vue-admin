@@ -67,14 +67,16 @@
                       highlight-current-row>
               <el-table-column type="expand">
                 <template slot-scope="props">
-                  <div style="text-align: center">
+                  <div>
                     <el-col :span="11">
                       <el-card class="box-card">
                         <div slot="header" class="clearfix">
                           <span>操作前的值</span>
                         </div>
                         <div>
-                          {{ props.row.oldValue }}
+                          <pre>
+                          {{ props.row.oldValue | prettyJson}}
+                          </pre>
                         </div>
                       </el-card>
                     </el-col>
@@ -89,7 +91,9 @@
                           <span>操作后的值</span>
                         </div>
                         <div>
-                          {{ props.row.newValue }}
+                          <pre>
+                          {{ props.row.newValue | prettyJson}}
+                          </pre>
                         </div>
                       </el-card>
                     </el-col>
@@ -123,7 +127,8 @@
               </el-table-column>
               <el-table-column align="center" label="操作" class-name="small-padding" width="100">
                 <template slot-scope="scope">
-                  <el-button class="table-operate-button"  @click="recover(scope.row.id)" type="success" size="mini">还原</el-button>
+                  <el-button v-if="scope.row.status === 0" class="table-operate-button"  @click="recover(scope.row.id)" type="success" size="mini">还原</el-button>
+                  <el-button v-if="scope.row.status === 1" class="table-operate-button"  disabled type="success" size="mini">已还原</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -144,7 +149,7 @@
 
 <script>
   import { Message } from 'element-ui'
-  import { parseTime } from '@/utils'
+  import { parseTime, pickerOptions, prettyJson } from '@/utils'
   import { getLogList, recover } from 'api/log'
   const typeOptions = [
     {key: 1, display_name: '部门'},
@@ -170,31 +175,7 @@
         listLoading: true,
         typeOptions,
         pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
+          shortcuts: pickerOptions
         },
         listQuery: {
           type: undefined,
@@ -210,6 +191,7 @@
     },
     filters: {
       parseTime,
+      prettyJson,
       typeFilter(type) {
         return typeKeyValue[type]
       }

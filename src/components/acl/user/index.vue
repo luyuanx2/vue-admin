@@ -93,7 +93,7 @@
       _recursiveRenderDept(deptList) {
         deptList.forEach((dept) => {
           this.deptMap[dept.id] = dept
-          this._recursiveRenderDept(dept.children)
+          this._recursiveRenderDept(dept.deptList)
         })
       },
       _listDept() {
@@ -125,7 +125,7 @@
         this.temp.id = editDept.id
         this.temp.parentId = editDept.parentId
         this.temp.remark = editDept.remark
-        this.temp.name = editDept.label
+        this.temp.name = editDept.name
         this.temp.seq = editDept.seq
       },
       edit(node, data, e) {
@@ -288,8 +288,8 @@
         filterText: '',
         data2: [],
         defaultProps: {
-          children: 'children',
-          label: 'label'
+          children: 'deptList',
+          label: 'name'
         }
       }
     }
