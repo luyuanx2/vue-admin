@@ -48,11 +48,11 @@
         this.addViewTags()
         this.moveToCurrentTag()
       },
-      visible (value) {
+      visible(value) {
         if (value) {
-          window.addEventListener('click', this.closeMenu)
+          document.body.addEventListener('click', this.closeMenu)
         } else {
-          window.removeEventListener('click', this.closeMenu)
+          document.body.removeEventListener('click', this.closeMenu)
         }
       }
     },

@@ -4,6 +4,7 @@ import userAPI from './user'
 import deptAPI from './dept'
 import aclAPI from './acl'
 import roleAPI from './role'
+import logAPI from './log'
 
 // Mock.setup({
 //   timeout: '350-600'
@@ -33,6 +34,9 @@ Mock.mock(/\/sys\/role\/users\.*/, 'get', roleAPI.getRoleUserList)
 Mock.mock(/\/sys\/role\/roleTree\.*/, 'get', roleAPI.getRoleTreeData)
 Mock.mock(/\/sys\/role\/changeAcls\.*/, 'post', roleAPI.changeAcls)
 Mock.mock(/\/sys\/role\/changeUsers\.*/, 'post', roleAPI.changeUsers)
+// 权限操作记录
+Mock.mock(/\/sys\/log\/list\.*/, 'get', logAPI.getLogList)
+Mock.mock(/\/sys\/log\/recover\.*/, 'post', logAPI.recover)
 // 发送短信验证码
 Mock.mock(/\/code\/sms\.*/, 'get', loginAPI.sendCode)
 export default Mock

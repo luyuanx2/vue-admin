@@ -303,8 +303,6 @@
     clear: both
   }
 
-
-
   .box-card-role {
     float: left;
     width: calc(100% - 810px);

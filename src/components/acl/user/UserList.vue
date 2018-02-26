@@ -6,103 +6,103 @@
         <el-button @click="addUser" style="float: right; padding: 3px 0" type="text">新增用户</el-button>
       </div>
       <div>
-    <div class="small-filter-container">
-      <el-form ref="searchForm" size="small" :inline="true" :model="listQuery" class="demo-form-inline">
-        <el-form-item prop="username">
-          <el-input  @keyup.enter.native="handleFilter"
-                    placeholder="用户名"
-                    v-model="listQuery.username">
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="telephone">
-          <el-input @keyup.enter.native="handleFilter"
-                    placeholder="手机"
-                    v-model="listQuery.telephone">
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="status">
-          <el-select clearable style="width: 100px" v-model="listQuery.status"
-                     placeholder="状态">
-            <el-option v-for="item in  statusOptions" :key="item.key" :label="item.display_name"
-                       :value="item.key">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">
-            查 询
-          </el-button>
-          <el-button type="default" v-waves icon="el-icon-refresh" @click="resetForm('searchForm')">
-            重 置
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="table-wrapper">
-      <div class="table-head-wrapper">
-      </div>
-      <div class="table-body-wrapper">
-        <el-table size="small"
-                  :key='tableKey'
-                  :data="list"
-                  v-loading="listLoading"
-                  element-loading-text="玩命加载中..."
-                  :header-row-style="tableHeadBgd"
-                  border
-                  fit
-                  highlight-current-row>
-          <el-table-column align="center" label="ID" width="50">
-            <template slot-scope="scope">
-              <span>{{scope.row.id}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="用户名" width="100">
-            <template slot-scope="scope">
-              <span>{{scope.row.username}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="部门" width="100">
-            <template slot-scope="scope">
-              <span v-text="deptFilter(scope.row.deptId)"></span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="手机" width="150">
-            <template slot-scope="scope">
-              <span>{{scope.row.telephone}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="邮箱">
-            <template slot-scope="scope">
-              <span>{{scope.row.mail}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column class-name="status-col" label="状态" width="80">
-            <template slot-scope="scope">
-              <status :status="scope.row.status | typeFilter" :text="scope.row.status | statusFilter"></status>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="备注">
-            <template slot-scope="scope">
-              <span>{{scope.row.remark}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="操作" class-name="small-padding" width="120">
-            <template slot-scope="scope">
-              <el-button class="table-operate-button" type="primary" size="mini">编辑</el-button>
-              <el-button class="table-operate-button" size="mini" type="danger">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-
-        <div class="pagination-container">
-          <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                         :current-page.sync="listQuery.page"
-                         :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                         layout="total, sizes, prev, pager, next, jumper" :total="total">
-          </el-pagination>
+        <div class="small-filter-container">
+          <el-form ref="searchForm" size="small" :inline="true" :model="listQuery" class="demo-form-inline">
+            <el-form-item prop="username">
+              <el-input  @keyup.enter.native="handleFilter"
+                        placeholder="用户名"
+                        v-model="listQuery.username">
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="telephone">
+              <el-input @keyup.enter.native="handleFilter"
+                        placeholder="手机"
+                        v-model="listQuery.telephone">
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="status">
+              <el-select clearable style="width: 100px" v-model="listQuery.status"
+                         placeholder="状态">
+                <el-option v-for="item in  statusOptions" :key="item.key" :label="item.display_name"
+                           :value="item.key">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">
+                查 询
+              </el-button>
+              <el-button type="default" v-waves icon="el-icon-refresh" @click="resetForm('searchForm')">
+                重 置
+              </el-button>
+            </el-form-item>
+          </el-form>
         </div>
-      </div>
-    </div>
+        <div class="table-wrapper">
+          <div class="table-head-wrapper">
+          </div>
+          <div class="table-body-wrapper">
+            <el-table size="small"
+                      :key='tableKey'
+                      :data="list"
+                      v-loading="listLoading"
+                      element-loading-text="玩命加载中..."
+                      :header-row-style="tableHeadBgd"
+                      border
+                      fit
+                      highlight-current-row>
+              <el-table-column align="center" label="ID" width="50">
+                <template slot-scope="scope">
+                  <span>{{scope.row.id}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="用户名" width="100">
+                <template slot-scope="scope">
+                  <span>{{scope.row.username}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="部门" width="100">
+                <template slot-scope="scope">
+                  <span v-text="deptFilter(scope.row.deptId)"></span>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="手机" width="150">
+                <template slot-scope="scope">
+                  <span>{{scope.row.telephone}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="邮箱">
+                <template slot-scope="scope">
+                  <span>{{scope.row.mail}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column class-name="status-col" label="状态" width="80">
+                <template slot-scope="scope">
+                  <status :status="scope.row.status | typeFilter" :text="scope.row.status | statusFilter"></status>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="备注">
+                <template slot-scope="scope">
+                  <span>{{scope.row.remark}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="操作" class-name="small-padding" width="120">
+                <template slot-scope="scope">
+                  <el-button class="table-operate-button" type="primary" size="mini">编辑</el-button>
+                  <el-button class="table-operate-button" size="mini" type="danger">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+
+            <div class="pagination-container">
+              <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                             :current-page.sync="listQuery.page"
+                             :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                             layout="total, sizes, prev, pager, next, jumper" :total="total">
+              </el-pagination>
+            </div>
+          </div>
+        </div>
       </div>
     </el-card>
     <el-dialog width="455px" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
