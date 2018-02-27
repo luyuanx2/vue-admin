@@ -13,7 +13,7 @@ const aclTree = Mock.mock({
       type: 1,
       level: '0',
       url: 'www.baidu.com',
-      children: [
+      aclList: [
         {
           id: 2,
           parentId: 1,
@@ -33,7 +33,7 @@ const aclTree = Mock.mock({
           type: 1,
           url: '',
           level: '0.3',
-          children: [
+          aclList: [
 
           ]
         },
@@ -46,7 +46,7 @@ const aclTree = Mock.mock({
           type: 1,
           url: '',
           level: '0.4',
-          children: [
+          aclList: [
             {
               id: 5,
               parentId: 4,
@@ -56,7 +56,7 @@ const aclTree = Mock.mock({
               type: 2,
               url: 'www.baidu.com',
               level: '0.4.5',
-              children: [
+              aclList: [
                 {
                   id: 8,
                   parentId: 5,
@@ -98,7 +98,7 @@ const aclTree = Mock.mock({
               type: 2,
               url: 'www.baidu.com',
               level: '0.4.6',
-              children: [
+              aclList: [
                 {
                   id: 11,
                   parentId: 6,
@@ -140,7 +140,7 @@ const aclTree = Mock.mock({
               type: 2,
               url: 'www.baidu.com',
               level: '0.4.7',
-              children: [
+              aclList: [
                 {
                   id: 14,
                   parentId: 5,

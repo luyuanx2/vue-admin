@@ -4,17 +4,20 @@
 */
 'use strict'
 import Vue from 'vue'
-export default function treeToArray(data, expandAll, parent, level, item) {
+export default function treeToArray(data, expandAll,props, parent, level) {
   const marLTemp = []
   let tmp = []
   Array.from(data).forEach(function(record) {
     if (record._expanded === undefined) {
-      if(record.type === 2) {
-        Vue.set(record, '_expanded', false)
-      }else {
-        Vue.set(record, '_expanded', expandAll)
-      }
+      Vue.set(record, '_expanded', expandAll)
     }
+    // if (record._expanded === undefined) {
+    //   if(record.type === 2) {
+    //     Vue.set(record, '_expanded', false)
+    //   }else {
+    //     Vue.set(record, '_expanded', expandAll)
+    //   }
+    // }
     let _level = 1
     if (level !== undefined && level !== null) {
       _level = level + 1
@@ -29,7 +32,7 @@ export default function treeToArray(data, expandAll, parent, level, item) {
         marLTemp[_level] = 0
       }
       Vue.set(record, '_marginLeft', marLTemp[_level] + parent._marginLeft)
-      Vue.set(record, '_width', record[item] / parent[item] * parent._width)
+      // Vue.set(record, '_width', record[item] / parent[item] * parent._width)
       // 在本次计算过偏移量后加上自己长度，以供下一个元素使用
       marLTemp[_level] += record._width
     } else {
@@ -43,8 +46,8 @@ export default function treeToArray(data, expandAll, parent, level, item) {
       Vue.set(record, '_width', 1)
     }
     tmp.push(record)
-    if (record.children && record.children.length > 0) {
-      const children = treeToArray(record.children, expandAll, record, _level, item)
+    if (record[props['children']] && record[props['children']].length > 0) {
+      const children = treeToArray(record[props['children']], expandAll, props, record, _level)
       tmp = tmp.concat(children)
     }
   })

@@ -7,7 +7,7 @@
     fit
     highlight-current-row
     :data="formatData" :row-style="showRow" v-bind="$attrs">
-    <el-table-column label="权限名称" v-if="columns.length===0" width="200">
+    <el-table-column v-if="columns.length===0" width="200">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
         <span class="tree-ctrl" v-if="iconShow(0,scope.row)" @click="toggleExpanded(scope.$index)">
@@ -53,7 +53,14 @@ export default {
     expandAll: {
       type: Boolean,
       default: false
-    }
+    },
+    props: {
+      default() {
+        return {
+          children: 'children'
+        };
+      }
+    },
   },
   computed: {
     // 格式化数据源
@@ -65,7 +72,7 @@ export default {
         tmp = this.data
       }
       const func = this.evalFunc || treeToArray
-      const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll]
+      const args = this.evalArgs ? Array.concat([tmp, this.expandAll,this.props], this.evalArgs) : [tmp, this.expandAll]
       return func.apply(null, args)
     }
   },
@@ -89,7 +96,7 @@ export default {
     },
     // 图标显示
     iconShow(index, record) {
-      return (index === 0 && record.children && record.children.length > 0)
+      return (index === 0 && record[this.props['children']] && record[this.props['children']].length > 0)
     }
   }
 }

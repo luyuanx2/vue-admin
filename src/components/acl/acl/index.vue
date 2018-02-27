@@ -8,7 +8,13 @@
                      @click="refresh">刷新</el-button>
       </div>
       <div class="table-body-wrapper">
-    <tree-table :data="data" :evalFunc="func" :columns="columns" :evalArgs="args" :expandAll="expandAll" border>
+    <tree-table :data="data"
+                :evalFunc="func"
+                :columns="columns"
+                :evalArgs="args"
+                :expandAll="expandAll"
+                :props="defaultProps"
+                border>
       <el-table-column align="center" label="图标">
         <template slot-scope="scope">
           <span><svg-icon :icon-class="scope.row.icon" /></span>
@@ -60,7 +66,7 @@
         <el-form-item label="权限名称" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item v-if="temp.type === 1 || temp.type === 4" label="图标" prop="icon">
+        <el-form-item v-if="temp.type === 1 || temp.type === 2 || temp.type === 4" label="图标">
           <el-input v-model="temp.icon"></el-input>
         </el-form-item>
         <el-form-item v-if="temp.type === 3 || temp.type === 2 || temp.type === 4" label="URL" prop="url">
@@ -111,7 +117,7 @@ export default {
     return {
       func: treeToArray,
       expandAll: true,
-      data: null,
+      data: [],
       columns: [
         {
           text: '权限名称',
@@ -119,7 +125,10 @@ export default {
           width: 250
         }
       ],
-      args: [null, null, 'timeLine'],
+      defaultProps: {
+        children: 'aclList'
+      },
+      args: [null, null],
       dialogFormVisible: false,
       textMap: {
         update: '编辑权限',
@@ -146,10 +155,10 @@ export default {
           { required: true, message: '必须指定用户的状态', trigger: 'change' },
           { type: 'number', message: '必须是数字', trigger: 'blur' }
         ],
-        icon: [
-          { required: true, message: '图标不允许为空', trigger: 'blur' },
-          { min: 1, max: 30, message: '图标名称长度需要在30个字符以内', trigger: 'blur' }
-        ],
+//        icon: [
+//          { required: true, message: '图标不允许为空', trigger: 'blur' },
+//          { min: 1, max: 30, message: '图标名称长度需要在30个字符以内', trigger: 'blur' }
+//        ],
         url: [
           { required: true, message: 'url不允许为空', trigger: 'blur' },
           { min: 6, max: 100, message: '权限URL长度需要在6-100个字符之间', trigger: 'blur' }
@@ -157,11 +166,12 @@ export default {
         seq: [{required: true, message: '顺序不能为空'}, {type: 'number', message: '必须为数字值', trigger: 'blur'}],
       },
       temp: {
+        id: undefined,
         type: undefined,
         parentId: undefined,
         name: '',
-        icon: '',
-        url: '',
+        icon: undefined,
+        url: undefined,
         remark: '',
         status: undefined,
         seq:undefined
@@ -212,6 +222,7 @@ export default {
       }
     },
     editTemp(row) {
+      this.temp.id = row.id
       this.temp.type = row.type
       this.temp.parentId = row.parentId
       this.temp.name = row.name
@@ -294,11 +305,12 @@ export default {
     },
     resetTemp() {
       this.temp = {
+        id: undefined,
         type: undefined,
         parentId: undefined,
         name: '',
-        icon: '',
-        url: '',
+        icon: undefined,
+        url: undefined,
         remark: '',
         status: 1,
         seq: undefined

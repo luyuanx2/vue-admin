@@ -97,7 +97,7 @@
             <div class="pagination-container">
               <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                              :current-page.sync="listQuery.page"
-                             :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                             :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
             </div>
@@ -194,7 +194,7 @@
         listQuery: {
           deptId: this.deptId,
           page: 1,
-          limit: 20,
+          pageSize: 20,
           status: undefined,
           username: undefined,
           telephone: undefined
@@ -272,7 +272,7 @@
     methods: {
       deptFilter(deptId) {
         let dept = this.deptMap[deptId]
-        return dept.label
+        return dept.name
       },
       addUser() {
         if(!this.deptId || this.deptId === 0) {
@@ -340,7 +340,7 @@
         this.getList()
       },
       handleSizeChange(val) {
-        this.listQuery.limit = val
+        this.listQuery.pageSize = val
         this.getList()
       },
       handleCurrentChange(val) {

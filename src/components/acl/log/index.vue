@@ -136,7 +136,7 @@
             <div class="pagination-container">
               <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                              :current-page.sync="listQuery.page"
-                             :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                             :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
             </div>
@@ -180,7 +180,7 @@
         listQuery: {
           type: undefined,
           page: 1,
-          limit: 20,
+          pageSize: 20,
           beforeSeg: undefined,
           afterSeg: undefined,
           operator: undefined,
@@ -223,6 +223,7 @@
           recover({id: logId}).then((response) => {
             if (response.code === 2000) {
               Message.success('还原成功')
+              this.getList()
             }
           })
         }).catch(() => {
@@ -234,7 +235,7 @@
         this.getList()
       },
       handleSizeChange(val) {
-        this.listQuery.limit = val
+        this.listQuery.pageSize = val
         this.getList()
       },
       handleCurrentChange(val) {
