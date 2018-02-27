@@ -64,3 +64,15 @@ export function addRole(obj) {
     }]
   })
 }
+
+export function updateRole(obj) {
+  return request({
+    url: '/sys/role/update',
+    method: 'put',
+    data: obj,
+    transformRequest: [function (data) {
+      data = qs.stringify(data)
+      return data
+    }]
+  })
+}

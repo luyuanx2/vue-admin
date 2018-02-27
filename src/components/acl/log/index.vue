@@ -135,7 +135,7 @@
 
             <div class="pagination-container">
               <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                             :current-page.sync="listQuery.page"
+                             :current-page.sync="listQuery.pageNo"
                              :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
@@ -179,7 +179,7 @@
         },
         listQuery: {
           type: undefined,
-          page: 1,
+          pageNo: 1,
           pageSize: 20,
           beforeSeg: undefined,
           afterSeg: undefined,
@@ -231,7 +231,7 @@
         });
       },
       handleFilter() {
-        this.listQuery.page = 1
+        this.listQuery.pageNo = 1
         this.getList()
       },
       handleSizeChange(val) {
@@ -239,7 +239,7 @@
         this.getList()
       },
       handleCurrentChange(val) {
-        this.listQuery.page = val
+        this.listQuery.pageNo = val
         this.getList()
       },
       resetForm(form) {

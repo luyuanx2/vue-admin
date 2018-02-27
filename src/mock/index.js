@@ -18,6 +18,7 @@ Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 // 用户相关
 Mock.mock(/\/sys\/user\/list\.*/, 'get', userAPI.getUserList)
 Mock.mock(/\/sys\/user\/addUser\.*/, 'post', userAPI.addUser)
+Mock.mock(/\/sys\/user\/update\.*/, 'put', userAPI.updateUser)
 // 部门相关
 Mock.mock(/\/sys\/dept\/listDept\.*/, 'get', deptAPI.listDept)
 Mock.mock(/\/sys\/dept\/addDept\.*/, 'post', deptAPI.addDept)
@@ -30,6 +31,7 @@ Mock.mock(/\/sys\/acl\/update\.*/, 'put', aclAPI.updateAcl)
 // 角色相关
 Mock.mock(/\/sys\/role\/list\.*/, 'get', roleAPI.getRoleList)
 Mock.mock(/\/sys\/role\/save\.*/, 'post', roleAPI.addRole)
+Mock.mock(/\/sys\/role\/update\.*/, 'put', roleAPI.updateRole)
 Mock.mock(/\/sys\/role\/users\.*/, 'get', roleAPI.getRoleUserList)
 Mock.mock(/\/sys\/role\/roleTree\.*/, 'get', roleAPI.getRoleTreeData)
 Mock.mock(/\/sys\/role\/changeAcls\.*/, 'post', roleAPI.changeAcls)

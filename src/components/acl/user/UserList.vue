@@ -88,7 +88,7 @@
               </el-table-column>
               <el-table-column align="center" label="操作" class-name="small-padding" width="120">
                 <template slot-scope="scope">
-                  <el-button class="table-operate-button" type="primary" size="mini">编辑</el-button>
+                  <el-button class="table-operate-button"  @click.stop="edit(scope.row)" type="primary" size="mini">编辑</el-button>
                   <el-button class="table-operate-button" size="mini" type="danger">删除</el-button>
                 </template>
               </el-table-column>
@@ -96,7 +96,7 @@
 
             <div class="pagination-container">
               <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                             :current-page.sync="listQuery.page"
+                             :current-page.sync="listQuery.pageNo"
                              :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize"
                              layout="total, sizes, prev, pager, next, jumper" :total="total">
               </el-pagination>
@@ -105,13 +105,16 @@
         </div>
       </div>
     </el-card>
-    <el-dialog width="455px" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog width="480px" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form size="medium" :rules="rules" ref="userForm" :model="temp" label-width="70px" style="padding:0 24px">
+        <el-form-item label="部门">
+          <el-input disabled v-model="currentDeptName"></el-input>
+        </el-form-item>
         <el-form-item label="用户名" prop="username">
           <el-input v-model="temp.username"></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="telephone">
-          <el-input v-model.number="temp.telephone"></el-input>
+          <el-input type="number" v-model="temp.telephone"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="mail">
           <el-input v-model="temp.mail"></el-input>
@@ -141,20 +144,11 @@
 <script>
   import { isvalidTelephone } from '@/utils/validate'
   import Status from 'base/Status'
-  import {getUserList, addUser} from 'api/user'
+  import {getUserList, addUser, updateUser} from 'api/user'
   import waves from 'common/js/directive/waves' // 水波纹指令
   import {Message} from 'element-ui'
+  import { statusOptions, textMap, statusKeyValue, statusTypeMap } from 'common/js/common'
 
-  const statusOptions = [
-    {key: 1, display_name: '正常'},
-    {key: 2, display_name: '冻结'}
-  ]
-
-  // arr to obj ,such as { 1 : "正常", 2 : "冻结" }
-  const statusKeyValue = statusOptions.reduce((acc, cur) => {
-    acc[cur.key] = cur.display_name
-    return acc
-  }, {})
 
   export default {
     directives: {
@@ -186,6 +180,7 @@
         }
       }
       return {
+        currentDeptName: undefined,
         tableHeadBgd: 'background-color:#eee !important',
         tableKey: 1,
         list: null,
@@ -193,7 +188,7 @@
         listLoading: true,
         listQuery: {
           deptId: this.deptId,
-          page: 1,
+          pageNo: 1,
           pageSize: 20,
           status: undefined,
           username: undefined,
@@ -210,10 +205,7 @@
         },
         statusOptions,
         dialogFormVisible: false,
-        textMap: {
-          update: '编辑用户',
-          create: '新增用户'
-        },
+        textMap,
         dialogStatus: '',
         rules: {
           username: [
@@ -221,8 +213,7 @@
             { min: 1, max: 20, message: '用户名长度需要在20个字以内', trigger: 'blur' }
           ],
           telephone: [
-            { required: true, trigger: 'blur',validator: validateTelephone},
-            { type: 'number', message: '必须是数字', trigger: 'blur' }
+            { required: true, trigger: 'blur',validator: validateTelephone}
           ],
           remark: [
             { min: 1, max: 200, message: '备注长度需要在200个字以内', trigger: 'blur' }
@@ -241,17 +232,9 @@
     },
     filters: {
       statusFilter(status) {
-        const statusMap = {
-          1: '正常',
-          2: '冻结'
-        }
-        return statusMap[status]
+        return statusKeyValue[status]
       },
       typeFilter(status) {
-        const statusTypeMap = {
-          1: 'success',
-          2: 'error'
-        }
         return statusTypeMap[status]
       }
     },
@@ -260,9 +243,9 @@
         if(newDeptId === 0){
           this.listQuery.deptId = undefined
         } else {
+          this.currentDeptName = this.deptMap[newDeptId].name
           this.listQuery.deptId = newDeptId
         }
-
         this.handleFilter()
       }
     },
@@ -273,6 +256,24 @@
       deptFilter(deptId) {
         let dept = this.deptMap[deptId]
         return dept.name
+      },
+      editTemp(row) {
+        this.temp.id = row.id
+        this.temp.username = row.username
+        this.temp.mail = row.mail
+        this.temp.remark = row.remark
+        this.temp.status = row.status
+        this.temp.telephone = row.telephone
+        this.temp.deptId = row.deptId
+      },
+      edit(row) {
+        this.currentDeptName = this.deptMap[row.deptId].name
+        this.dialogStatus = 'update'
+        this.dialogFormVisible = true
+        this.editTemp(row)
+        this.$nextTick(() => {
+          this.$refs.userForm.clearValidate()
+        })
       },
       addUser() {
         if(!this.deptId || this.deptId === 0) {
@@ -296,7 +297,13 @@
         })
       },
       updateData() {
-
+        this.$refs.userForm.validate((valid) => {
+          if (valid) {
+            this.createOrUpdate(updateUser(this.temp), function (data) {
+              Message.success('编辑成功')
+            }, null);
+          }
+        })
       },
       createOrUpdate(method, successCallback, failCallback) {
         method.then((result) => {
@@ -336,7 +343,7 @@
         this.$refs[form].resetFields()
       },
       handleFilter() {
-        this.listQuery.page = 1
+        this.listQuery.pageNo = 1
         this.getList()
       },
       handleSizeChange(val) {
@@ -344,7 +351,7 @@
         this.getList()
       },
       handleCurrentChange(val) {
-        this.listQuery.page = val
+        this.listQuery.pageNo = val
         this.getList()
       }
     }

@@ -5,7 +5,7 @@
         <el-card class="box-card-role">
           <div slot="header" class="clearfix">
             <span>角色列表</span>
-            <el-button style="float: right; padding: 3px 0" type="text">
+            <el-button @click="add" style="float: right; padding: 3px 0" type="text">
               添 加
             </el-button>
           </div>
@@ -39,8 +39,8 @@
                   </el-table-column>
                   <el-table-column align="center" label="操作" class-name="small-padding" width="110">
                     <template slot-scope="scope">
-                      <el-button class="table-operate-button" type="primary" size="mini">编辑</el-button>
-                      <el-button class="table-operate-button" size="mini" type="danger">删除</el-button>
+                      <el-button class="table-operate-button" @click.stop="edit(scope.row)" type="primary" size="mini">编辑</el-button>
+                      <el-button class="table-operate-button" @click.stop="delete(scope.row.id)" size="mini" type="danger">删除</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -48,8 +48,8 @@
                 <div class="pagination-container">
                   <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                  small
-                                 :current-page.sync="listQuery.page"
-                                 :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                                 :current-page.sync="listQuery.pageNo"
+                                 :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize"
                                  layout="total, prev, pager, next" :total="total">
                   </el-pagination>
                 </div>
@@ -103,6 +103,37 @@
               </el-transfer>
             </div>
           </el-card>
+
+        <el-dialog width="480px" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+          <el-form size="medium" :rules="rules" ref="roleForm" :model="temp" label-width="80px" style="padding:0 24px">
+            <el-form-item label="类型" prop="type">
+              <el-radio-group v-model="temp.type">
+                <el-radio :label="1">管理员角色</el-radio>
+                <el-radio :label="2">其他</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="角色名称" prop="name">
+              <el-input v-model="temp.name"></el-input>
+            </el-form-item>
+            <el-form-item label="状态" prop="status">
+              <el-select clearable style="width: 150px" v-model="temp.status"
+                         placeholder="状态">
+                <el-option v-for="item in  statusOptions" :key="item.key" :label="item.display_name"
+                           :value="item.key">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="备注" prop="remark">
+              <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" v-model="temp.remark">
+              </el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button size="medium" @click="dialogFormVisible = false">取 消</el-button>
+            <el-button size="medium" v-if="dialogStatus=='create'" type="primary" @click="createData">确 定</el-button>
+            <el-button size="medium" v-else type="primary" @click="updateData">确 定</el-button>
+          </div>
+        </el-dialog>
       </div>
     </keep-alive>
   </transition>
@@ -110,14 +141,13 @@
 
 <script>
   import Status from 'base/Status'
-  import {getRoleList, getRoleUserList, getRoleTreeData, changeAcls, changeUsers} from 'api/role'
+  import { statusOptions, textMap
+    , statusTypeMap, statusKeyValue } from 'common/js/common'
+  import {getRoleList, getRoleUserList
+    , getRoleTreeData, changeAcls
+    , changeUsers, addRole, updateRole} from 'api/role'
   import {Message} from 'element-ui'
   import { mergeArray } from '@/utils'
-
-  const statusOptions = [
-    {key: 1, display_name: '有效'},
-    {key: 2, display_name: '无效'}
-  ]
 
   export default {
     components: {
@@ -136,6 +166,30 @@
         return data;
       };
       return {
+        rules: {
+          name: [
+            { required: true, message: '权限名称不能为空', trigger: 'blur' },
+            { min: 2, max: 20, message: '权限名称长度需要在2-20个字之间', trigger: 'blur' }
+          ],
+          remark: [
+            { min: 1, max: 200, message: '备注长度需要在200个字以内', trigger: 'blur' }
+          ],
+          status: [
+            { required: true, message: '必须指定用户的状态', trigger: 'change' },
+            { type: 'number', message: '必须是数字', trigger: 'blur' }
+          ]
+        },
+        temp: {
+          id: undefined,
+          type: undefined,
+          name: '',
+          remark: '',
+          status: undefined
+        },
+        textMap,
+        statusOptions,
+        dialogFormVisible: false,
+        dialogStatus: '',
         currentRoleId: undefined,
         expandedKeys: [],
         checkedKeys: [],
@@ -146,8 +200,8 @@
         total: null,
         listLoading: true,
         listQuery: {
-          page: 1,
-          limit: 10
+          pageNo: 1,
+          pageSize: 10
         },
         roleTreeData: undefined,
         filterMethod(query, item) {
@@ -157,17 +211,9 @@
     },
     filters: {
       statusFilter(status) {
-        const statusMap = {
-          1: '有效',
-          2: '无效'
-        }
-        return statusMap[status]
+        return statusKeyValue[status]
       },
       typeFilter(status) {
-        const statusTypeMap = {
-          1: 'success',
-          2: 'error'
-        }
         return statusTypeMap[status]
       }
     },
@@ -178,11 +224,63 @@
       this.getList()
     },
     methods: {
-      createData() {
+      editTemp(row) {
+        this.temp.id = row.id
+        this.temp.type = row.type
+        this.temp.name = row.name
+        this.temp.remark = row.remark
+        this.temp.status = row.status
+      },
+      edit(row) {
+        this.dialogStatus = 'update'
+        this.dialogFormVisible = true
+        this.editTemp(row)
+        this.$nextTick(() => {
+          this.$refs.aclForm.clearValidate()
+        })
+      },
+      add() {
+        this.resetTemp()
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+        this.modalType(type)
+        this.$nextTick(() => {
+          this.$refs.aclForm.clearValidate()
+        })
+      },
+      delete(roleId) {
 
       },
+      resetTemp() {
+        this.temp = {
+          id: undefined,
+          type: 1,
+          parentId: undefined,
+          name: '',
+          icon: undefined,
+          url: undefined,
+          remark: '',
+          status: 1,
+          seq: undefined
+        }
+      },
       updateData() {
-
+        this.$refs.roleForm.validate((valid) => {
+          if (valid) {
+            this.createOrUpdate(updateRole(this.temp), function (data) {
+              Message.success('编辑成功')
+            }, null)
+          }
+        })
+      },
+      createData() {
+        this.$refs.roleForm.validate((valid) => {
+          if (valid) {
+            this.createOrUpdate(addRole(this.temp), function (data) {
+              Message.success('添加成功')
+            }, null)
+          }
+        })
       },
       createOrUpdate(method, successCallback, failCallback) {
         method.then((result) => {
@@ -223,6 +321,7 @@
       getRoleTreeData(roleId) {
         getRoleTreeData(roleId).then(response => {
           this.roleTreeData =  response.data
+          this.checkedKeys = []
           this.recursiveRenderRoleTree(this.roleTreeData)
         })
       },
@@ -235,11 +334,11 @@
         })
       },
       handleSizeChange(val) {
-        this.listQuery.limit = val
+        this.listQuery.pageSize = val
         this.getList()
       },
       handleCurrentChange(val) {
-        this.listQuery.page = val
+        this.listQuery.pageNo = val
         this.getList()
       },
       rowClick(row, event, column) {

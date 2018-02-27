@@ -259,6 +259,20 @@ const changeUsers = Mock.mock({
   data: {
   }
 })
+
+const addRole = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {
+  }
+})
+
+const updateRole = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {
+  }
+})
 export default {
   getRoleList: config => {
     const { page = 1, limit = 20} = param2Obj(config.url)
@@ -277,5 +291,7 @@ export default {
   getRoleUserList: config => getRoleUserList,
   getRoleTreeData: config => getRoleTreeData,
   changeAcls: config => changeAcls,
-  changeUsers: config => changeUsers
+  changeUsers: config => changeUsers,
+  addRole: config => addRole,
+  updateRole: config => updateRole
 }

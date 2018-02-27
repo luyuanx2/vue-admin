@@ -106,10 +106,7 @@ import treeTable from 'base/TreeTable'
 import treeToArray from './aclEval'
 import { getAclTree, addAcl, updateAcl} from 'api/acl'
 import {Message} from 'element-ui'
-const statusOptions = [
-  {key: 1, display_name: '有效'},
-  {key: 2, display_name: '无效'}
-]
+import { statusOptions, textMap } from 'common/js/common'
 export default {
   name: 'acl',
   components: { treeTable },
@@ -130,10 +127,7 @@ export default {
       },
       args: [null, null],
       dialogFormVisible: false,
-      textMap: {
-        update: '编辑权限',
-        create: '新增权限'
-      },
+      textMap,
       dialogStatus: '',
       statusOptions,
       contentShow: false,

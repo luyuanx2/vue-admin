@@ -24,6 +24,13 @@ const addUser = Mock.mock({
   }
 })
 
+const updateUser = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {
+  }
+})
+
 
 export default {
   getUserList: config => {
@@ -51,5 +58,6 @@ export default {
       }
     }
   },
-  addUser: config => addUser
+  addUser: config => addUser,
+  updateUser: config => updateUser
 }
