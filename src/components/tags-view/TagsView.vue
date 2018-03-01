@@ -57,7 +57,6 @@
       }
     },
     mounted () {
-      this.deleteOne()
       this.addViewTags()
     },
     methods: {

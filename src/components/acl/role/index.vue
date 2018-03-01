@@ -2,6 +2,7 @@
   <transition name="fade" mode="out-in">
     <keep-alive :include='cachedViews'>
       <div class="app-container">
+
         <el-card class="box-card-role">
           <div slot="header" class="clearfix">
             <span>角色列表</span>
@@ -57,52 +58,55 @@
             </div>
           </div>
         </el-card>
-          <el-card class="box-card-acl">
-            <div slot="header" class="clearfix">
-              <span>角色与权限</span>
-              <el-button @click="changeAcls" style="float: right; padding: 3px 0" type="text">
-                保 存
-              </el-button>
-            </div>
-            <div>
-            <el-tree
-              :data="roleTreeData"
-              ref="roleTree"
+
+        <el-card class="box-card-acl">
+          <div slot="header" class="clearfix">
+            <span>角色与权限</span>
+            <el-button @click="changeAcls" style="float: right; padding: 3px 0" type="text">
+              关 联
+            </el-button>
+          </div>
+          <div>
+          <el-tree
+            :data="roleTreeData"
+            ref="roleTree"
+            :props="{
+                key: 'id',
+                label: 'name',
+                children: 'aclList'
+                }"
+            show-checkbox
+            node-key="id"
+            :default-expanded-keys="expandedKeys"
+            default-expand-all
+            :default-checked-keys="checkedKeys">
+          </el-tree>
+          </div>
+        </el-card>
+
+        <el-card class="box-card-user">
+          <div slot="header" class="clearfix">
+            <span>角色与用户</span>
+            <el-button @click="changeUsers" style="float: right; padding: 3px 0" type="text">
+              关 联
+            </el-button>
+          </div>
+          <div style="text-align: center">
+            <el-transfer
+              filterable
+              :filter-method="filterMethod"
+              filter-placeholder="请输入用户名"
+              :titles="['待选用户列表', '已选用户列表']"
+              v-model="selected"
+              :data="users"
               :props="{
-                  key: 'id',
-                  label: 'name',
-                  children: 'aclList'
-                  }"
-              show-checkbox
-              node-key="id"
-              :default-expanded-keys="expandedKeys"
-              default-expand-all
-              :default-checked-keys="checkedKeys">
-            </el-tree>
-            </div>
-          </el-card>
-          <el-card class="box-card-user">
-            <div slot="header" class="clearfix">
-              <span>角色与用户</span>
-              <el-button @click="changeUsers" style="float: right; padding: 3px 0" type="text">
-                保 存
-              </el-button>
-            </div>
-            <div style="text-align: center">
-              <el-transfer
-                filterable
-                :filter-method="filterMethod"
-                filter-placeholder="请输入用户名"
-                :titles="['待选用户列表', '已选用户列表']"
-                v-model="selected"
-                :data="users"
-                :props="{
-                  key: 'id',
-                  label: 'username'
-                  }">
-              </el-transfer>
-            </div>
-          </el-card>
+                key: 'id',
+                label: 'username'
+                }">
+            </el-transfer>
+          </div>
+        </el-card>
+
 
         <el-dialog width="480px" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
           <el-form size="medium" :rules="rules" ref="roleForm" :model="temp" label-width="80px" style="padding:0 24px">

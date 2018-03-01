@@ -8,16 +8,16 @@ export default function treeToArray(data, expandAll,props, parent, level) {
   const marLTemp = []
   let tmp = []
   Array.from(data).forEach(function(record) {
-    if (record._expanded === undefined) {
-      Vue.set(record, '_expanded', expandAll)
-    }
     // if (record._expanded === undefined) {
-    //   if(record.type === 2) {
-    //     Vue.set(record, '_expanded', false)
-    //   }else {
-    //     Vue.set(record, '_expanded', expandAll)
-    //   }
+    //   Vue.set(record, '_expanded', expandAll)
     // }
+    if (record._expanded === undefined) {
+      if(record.type === 2) {
+        Vue.set(record, '_expanded', false)
+      }else {
+        Vue.set(record, '_expanded', expandAll)
+      }
+    }
     let _level = 1
     if (level !== undefined && level !== null) {
       _level = level + 1

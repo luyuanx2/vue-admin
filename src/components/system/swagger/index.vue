@@ -1,5 +1,7 @@
 <template>
+  <keep-alive>
   <my-iframe routerPath="/manage/swagger-ui.html"></my-iframe>
+  </keep-alive>
 </template>
 
 <script>
