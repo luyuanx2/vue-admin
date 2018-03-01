@@ -14,14 +14,6 @@ for (let i = 0; i < count; i++) {
   }))
 }
 
-
-const addRole = Mock.mock({
-  code: 2000,
-  message: 'OK',
-  data: {
-  }
-})
-
 const getRoleUserList = Mock.mock({
   code: 2000,
   message: 'OK',
@@ -287,7 +279,6 @@ export default {
       }
     }
   },
-  addRole: config => addRole,
   getRoleUserList: config => getRoleUserList,
   getRoleTreeData: config => getRoleTreeData,
   changeAcls: config => changeAcls,

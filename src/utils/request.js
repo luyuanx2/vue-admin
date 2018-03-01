@@ -8,8 +8,8 @@ import {getToken} from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
-  // baseURL: process.env.BASE_API, // api的base_url
-  baseURL: 'http://192.168.1.55:8999/manage',
+  baseURL: process.env.BASE_API, // api的base_url
+  // baseURL: 'http://106.14.156.240/manage',
   // baseURL: 'http://localhost:8999',
   timeout: 15000                  // 请求超时时间
 })

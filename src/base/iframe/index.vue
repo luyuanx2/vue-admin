@@ -1,32 +1,40 @@
 <template>
-  <iframe v-if="$route.query.src" :src='$route.query.src' class="iframe" ref="iframe" v-loading.fullscreen.lock="fullscreenLoading"></iframe>
-  <iframe v-else :src="urlPath" class="iframe" ref="iframe" v-loading.fullscreen.lock="fullscreenLoading"></iframe>
+  <iframe v-if="$route.query.src" :src='$route.query.src'
+          class="iframe" ref="iframe" v-loading.fullscreen.lock="fullscreenLoading"
+          element-loading-text="加载中...">
+  </iframe>
+  <iframe v-else :src="urlPath" class="iframe"
+          ref="iframe" v-loading.body.lock="fullscreenLoading"
+          element-loading-text="加载中...">
+  </iframe>
 </template>
 
 <script>
   export default {
-    name: 'myiframe',
+    name: 'MyIframe',
     data() {
       return {
         fullscreenLoading: false,
-        urlPath: this.getUrlPath()
+        urlPath: undefined
       }
     },
     created() {
       this.fullscreenLoading = true
+
     },
     mounted() {
       this.iframeInit()
       window.onresize = () => {
         this.iframeInit()
       }
+      this.urlPath = this.routerPath
     },
     props: ['routerPath'],
-    watch: {
-      routerPath: function(val) {
-        this.urlPath = this.getUrlPath()
-      }
-    },
+//    watch: {
+//      routerPath: function(val) {
+//        this.urlPath = this.getUrlPath()
+//      }
+//    },
     components: {},
     methods: {
       iframeInit() {
