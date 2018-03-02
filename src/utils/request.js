@@ -8,9 +8,8 @@ import {getToken} from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
-  // baseURL: process.env.BASE_API, // api的base_url
-  baseURL: 'http://192.168.202.1:8999/manage',
-  // baseURL: 'http://localhost:8999',
+  baseURL: process.env.BASE_API, // api的base_url
+  // baseURL: 'http://192.168.1.55:8999/manage',
   timeout: 15000                  // 请求超时时间
 })
 const deviceId = new Fingerprint().get();
@@ -70,6 +69,15 @@ service.interceptors.response.use(
     // if (error.response.status === 401 && error.response.data.headimg !== undefined) {
     //   return error.response
     // }
+
+    if (error.response.status === 403) {
+      Message({
+        message: '您无权访问！',
+        type: 'warning',
+        duration: 5 * 1000
+      })
+      return
+    }
     console.log('err' + error)// for debug
     Message({
       message: error.message,

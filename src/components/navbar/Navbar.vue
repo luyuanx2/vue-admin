@@ -3,7 +3,7 @@
   <el-dropdown class="avatar-container" trigger="click">
     <div class="avatar-wrapper">
       <img class="user-avatar" src="../../common/image/default.png">
-      <span style="vertical-align: middle;font-size: 16px">admin</span>
+      <span style="vertical-align: middle;font-size: 16px">{{name}}</span>
       <!--<i style="vertical-align: middle" class="el-icon-caret-bottom"></i>-->
     </div>
     <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -25,7 +25,8 @@
   export default {
     computed: {
       ...mapGetters([
-        'avatar'
+        'avatar',
+        'name'
       ])
     },
     methods: {
