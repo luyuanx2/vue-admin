@@ -31,3 +31,11 @@ export function updateAcl(obj) {
   })
 }
 
+export function deleteAcl(obj) {
+  return request({
+    url: '/sys/acl/delete',
+    method: 'delete',
+    params: obj
+  })
+}
+

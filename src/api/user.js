@@ -32,3 +32,11 @@ export function updateUser(obj) {
     }]
   })
 }
+
+export function deleteUser(obj) {
+  return request({
+    url: '/sys/user/delete',
+    method: 'delete',
+    params: obj
+  })
+}

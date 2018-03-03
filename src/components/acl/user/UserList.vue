@@ -89,7 +89,7 @@
               <el-table-column align="center" label="操作" class-name="small-padding" width="120">
                 <template slot-scope="scope">
                   <el-button class="table-operate-button"  @click.stop="edit(scope.row)" type="primary" size="mini">编辑</el-button>
-                  <el-button class="table-operate-button" size="mini" type="danger">删除</el-button>
+                  <el-button class="table-operate-button" @click.stop="delete(scope.row)" size="mini" type="danger">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -144,7 +144,7 @@
 <script>
   import { isvalidTelephone } from '@/utils/validate'
   import Status from 'base/Status'
-  import {getUserList, addUser, updateUser} from 'api/user'
+  import {getUserList, addUser, updateUser, deleteUser} from 'api/user'
   import waves from 'common/js/directive/waves' // 水波纹指令
   import {Message} from 'element-ui'
   import { statusOptions, textMap, statusKeyValue, statusTypeMap } from 'common/js/common'
@@ -253,6 +253,21 @@
       this.getList()
     },
     methods: {
+      delete(row) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.$confirm(`删除${row.name}, 是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteUser({id: row.id}).then(() => {
+            Message.success('删除成功')
+          })
+        }).catch(() => {
+          Message.info('已取消删除')
+        });
+      },
       deptFilter(deptId) {
         let dept = this.deptMap[deptId]
         return dept.name

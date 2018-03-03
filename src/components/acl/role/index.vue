@@ -41,7 +41,7 @@
                   <el-table-column align="center" label="操作" class-name="small-padding" width="110">
                     <template slot-scope="scope">
                       <el-button class="table-operate-button" @click.stop="edit(scope.row)" type="primary" size="mini">编辑</el-button>
-                      <el-button class="table-operate-button" @click.stop="delete(scope.row.id)" size="mini" type="danger">删除</el-button>
+                      <el-button class="table-operate-button" @click.stop="delete(scope.row)" size="mini" type="danger">删除</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -149,7 +149,7 @@
     , statusTypeMap, statusKeyValue } from 'common/js/common'
   import {getRoleList, getRoleUserList
     , getRoleTreeData, changeAcls
-    , changeUsers, addRole, updateRole} from 'api/role'
+    , changeUsers, addRole, updateRole, deleteRole} from 'api/role'
   import {Message} from 'element-ui'
   import { mergeArray } from '@/utils'
 
@@ -252,8 +252,20 @@
           this.$refs.aclForm.clearValidate()
         })
       },
-      delete(roleId) {
-
+      delete(row) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.$confirm(`删除${row.name}, 是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteRole({id: row.id}).then(() => {
+            Message.success('删除成功')
+          })
+        }).catch(() => {
+          Message.info('已取消删除')
+        })
       },
       resetTemp() {
         this.temp = {

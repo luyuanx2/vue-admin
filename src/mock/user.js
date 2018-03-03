@@ -31,6 +31,13 @@ const updateUser = Mock.mock({
   }
 })
 
+const deleteUser = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {
+  }
+})
+
 
 export default {
   getUserList: config => {
@@ -59,5 +66,6 @@ export default {
     }
   },
   addUser: config => addUser,
-  updateUser: config => updateUser
+  updateUser: config => updateUser,
+  deleteUser: config => deleteUser,
 }

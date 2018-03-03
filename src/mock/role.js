@@ -238,6 +238,13 @@ const getRoleTreeData = Mock.mock({
   ]
 })
 
+const deleteRole = Mock.mock({
+  code: 2000,
+  message: 'OK',
+  data: {
+  }
+})
+
 const changeAcls = Mock.mock({
   code: 2000,
   message: 'OK',
@@ -284,5 +291,6 @@ export default {
   changeAcls: config => changeAcls,
   changeUsers: config => changeUsers,
   addRole: config => addRole,
-  updateRole: config => updateRole
+  updateRole: config => updateRole,
+  deleteRole: config => deleteRole
 }

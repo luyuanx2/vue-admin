@@ -41,7 +41,7 @@
           <el-button class="table-operate-button" v-if="scope.row.type !== 3" type="primary"
                      size="mini"  @click="add(scope.row.id,scope.row.type)">添加</el-button>
           <el-button class="table-operate-button" type="success" size="mini" @click="edit(scope.row)">编辑</el-button>
-          <el-button class="table-operate-button" size="mini" type="danger">删除</el-button>
+          <el-button class="table-operate-button" size="mini" @click="delete(scope.row)" type="danger">删除</el-button>
         </template>
       </el-table-column>
     </tree-table>
@@ -104,7 +104,7 @@
 */
 import treeTable from 'base/TreeTable'
 import treeToArray from './aclEval'
-import { getAclTree, addAcl, updateAcl} from 'api/acl'
+import { getAclTree, addAcl, updateAcl, deleteAcl} from 'api/acl'
 import {Message} from 'element-ui'
 import { statusOptions, textMap } from 'common/js/common'
 export default {
@@ -187,6 +187,21 @@ export default {
     }
   },
   methods: {
+    delete(row) {
+      e.preventDefault()
+      e.stopPropagation()
+      this.$confirm(`删除${row.name}, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteAcl({id: row.id}).then(() => {
+          Message.success('删除成功')
+        })
+      }).catch(() => {
+        Message.info('已取消删除')
+      })
+    },
     getAclTree(){
       getAclTree().then(response => {
         this.data = response.data
