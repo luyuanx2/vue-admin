@@ -89,7 +89,7 @@
               <el-table-column align="center" label="操作" class-name="small-padding" width="120">
                 <template slot-scope="scope">
                   <el-button class="table-operate-button"  @click.stop="edit(scope.row)" type="primary" size="mini">编辑</el-button>
-                  <el-button class="table-operate-button" @click.stop="delete(scope.row)" size="mini" type="danger">删除</el-button>
+                  <el-button class="table-operate-button" @click.stop="deleteUser(scope.row)" size="mini" type="danger">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -253,9 +253,7 @@
       this.getList()
     },
     methods: {
-      delete(row) {
-        e.preventDefault()
-        e.stopPropagation()
+      deleteUser(row) {
         this.$confirm(`删除${row.name}, 是否继续?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
