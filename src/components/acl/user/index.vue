@@ -263,7 +263,7 @@
     data() {
       return {
         deptId: undefined,
-        deptMap: {},
+        deptMap: null,
         treeData: null,
         rules: {
           name: [{required: true, message: '部门名称不能为空', trigger: 'blur'}],
