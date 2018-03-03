@@ -77,7 +77,7 @@ export function updateRole(obj) {
   })
 }
 
-export function deleteAcl(obj) {
+export function deleteRole(obj) {
   return request({
     url: '/sys/role/delete',
     method: 'delete',
