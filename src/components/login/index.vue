@@ -30,7 +30,7 @@
                       v-model.number="loginForm.telephone" autoComplete="on" placeholder="手机号"/>
           </el-form-item>
           <el-form-item prop="authCode" v-if="isMobile">
-            <el-input  class="message-code" prefix-icon="el-icon-message" name="authCode" :type="pwdType"
+            <el-input  class="message-code" prefix-icon="el-icon-message" name="authCode"
                        @keyup.enter.native="handleLogin" v-model.number="loginForm.authCode"
                       placeholder="验证码">
               <template slot="append" class="message-code">
@@ -117,10 +117,10 @@
         activeName: 'password',
         weixinUrl: '',
         loginForm: {
-          username: 'admin',
+          username: 'test',
           password: '123456',
-          telephone: 15675505060,
-          authCode: 123456
+          telephone: 18255316459,
+          authCode: '演示项目无法收到验证码'
         },
         loginRules: {
           username: [
@@ -241,7 +241,7 @@
     },
     created () {
       const appid = 'wxd99431bbff8305a0'
-      const redirect_uri = encodeURIComponent('http://www.pinzhi365.com/manage/redirect?redirect=' + window.location.origin + '/authredirect')
+      const redirect_uri = encodeURIComponent('http://www.pinzhi365.com/manage/common/redirect?redirect=' + window.location.origin + '/authredirect')
       const url = 'https://open.weixin.qq.com/connect/qrconnect?appid=' + appid + '&redirect_uri=' + redirect_uri + '&response_type=code&scope=snsapi_login#wechat_redirect'
       this.weixinUrl = url
 //       window.addEventListener('hashchange', this.afterQRScan)
