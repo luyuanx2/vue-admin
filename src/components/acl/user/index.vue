@@ -32,7 +32,7 @@
             </el-tree>
           </div>
         </el-card>
-        <user-list v-if="deptMap" :deptMap="deptMap" :deptId="deptId"></user-list>
+        <user-list v-if="!isEmptyObject(deptMap)" :deptMap="deptMap" :deptId="deptId"></user-list>
         <el-dialog width="410px" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
           <el-form size="medium" :rules="rules" ref="dataForm" :model="temp" label-width="50px" style="padding:0 24px">
             <el-form-item label="名称" prop="name">
@@ -61,6 +61,7 @@
   import UserList from 'components/acl/user/UserList'
   import {listDept, addDept, deleteDept, updateDept} from 'api/dept'
   import {Message} from 'element-ui'
+  import { isEmptyObject } from '@/utils'
   export default {
     components: {
       UserList
@@ -97,7 +98,6 @@
         })
       },
       _listDept() {
-        this.deptMap = {}
         listDept().then(response => {
           this.data2 = response.data
           this._recursiveRenderDept(response.data)
@@ -264,7 +264,7 @@
     data() {
       return {
         deptId: undefined,
-        deptMap: null,
+        deptMap: {},
         treeData: null,
         rules: {
           name: [{required: true, message: '部门名称不能为空', trigger: 'blur'}],

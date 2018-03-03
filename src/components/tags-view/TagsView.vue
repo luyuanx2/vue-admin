@@ -66,9 +66,6 @@
         const $containerWidth = $container.offsetWidth
         const $wrapper = this.$refs.scrollPane.$refs.scrollWrapper
         const $wrapperWidth = $wrapper.offsetWidth
-
-        console.log($containerWidth)
-        console.log($wrapperWidth)
         if ($wrapperWidth > $containerWidth) {
           this.$refs.scrollPane.left = Math.min(0, this.$refs.scrollPane.left + width)
         }
