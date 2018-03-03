@@ -76,7 +76,7 @@ service.interceptors.response.use(
         type: 'warning',
         duration: 5 * 1000
       })
-      return
+      return Promise.reject(error)
     }
     console.log('err' + error)// for debug
     Message({
