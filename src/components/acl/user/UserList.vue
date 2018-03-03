@@ -254,7 +254,7 @@
     },
     methods: {
       deleteUser(row) {
-        this.$confirm(`删除${row.name}, 是否继续?`, '提示', {
+        this.$confirm(`删除${row.username}, 是否继续?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
