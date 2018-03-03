@@ -249,7 +249,7 @@
         this.handleFilter()
       }
     },
-    created() {
+    mounted() {
       this.getList()
     },
     methods: {
