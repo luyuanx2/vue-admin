@@ -97,6 +97,7 @@
         })
       },
       _listDept() {
+        this.deptMap = {}
         listDept().then(response => {
           this.data2 = response.data
           this._recursiveRenderDept(response.data)
