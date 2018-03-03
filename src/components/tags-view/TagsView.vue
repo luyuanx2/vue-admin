@@ -69,7 +69,6 @@
         if ($wrapperWidth > $containerWidth) {
           this.$refs.scrollPane.left = Math.min(0, this.$refs.scrollPane.left + width)
         }
-        console.log('0' + this.$refs.scrollPane.left)
       },
       toggleSideBar () {
         this.$store.dispatch('toggleSideBar')
