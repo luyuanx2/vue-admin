@@ -41,7 +41,7 @@
                   <el-table-column align="center" label="操作" class-name="small-padding" width="110">
                     <template slot-scope="scope">
                       <el-button class="table-operate-button" @click.stop="edit(scope.row)" type="primary" size="mini">编辑</el-button>
-                      <el-button class="table-operate-button" @click.stop="delete(scope.row)" size="mini" type="danger">删除</el-button>
+                      <el-button class="table-operate-button" @click.stop="deleteRole(scope.row)" size="mini" type="danger">删除</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -252,7 +252,7 @@
           this.$refs.aclForm.clearValidate()
         })
       },
-      delete(row) {
+      deleteRole(row) {
         e.preventDefault()
         e.stopPropagation()
         this.$confirm(`删除${row.name}, 是否继续?`, '提示', {

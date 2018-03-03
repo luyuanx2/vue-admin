@@ -41,7 +41,7 @@
           <el-button class="table-operate-button" v-if="scope.row.type !== 3" type="primary"
                      size="mini"  @click="add(scope.row.id,scope.row.type)">添加</el-button>
           <el-button class="table-operate-button" type="success" size="mini" @click="edit(scope.row)">编辑</el-button>
-          <el-button class="table-operate-button" size="mini" @click="delete(scope.row)" type="danger">删除</el-button>
+          <el-button class="table-operate-button" size="mini" @click="deleteAcl(scope.row)" type="danger">删除</el-button>
         </template>
       </el-table-column>
     </tree-table>
@@ -187,7 +187,7 @@ export default {
     }
   },
   methods: {
-    delete(row) {
+    deleteAcl(row) {
       e.preventDefault()
       e.stopPropagation()
       this.$confirm(`删除${row.name}, 是否继续?`, '提示', {
