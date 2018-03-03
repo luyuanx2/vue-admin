@@ -84,6 +84,7 @@
     },
 
     methods: {
+      isEmptyObject,
       selectNode(a, node, c) {
         if(node.level !== 1) {
           this.deptId = node.key
