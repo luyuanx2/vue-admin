@@ -246,6 +246,7 @@
         this.getList()
       },
       resetForm(form) {
+        this.defaultDateTime = []
         this.$refs[form].resetFields()
       }
     }
