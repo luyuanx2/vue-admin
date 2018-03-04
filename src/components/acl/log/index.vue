@@ -150,7 +150,7 @@
 
 <script>
   import { Message } from 'element-ui'
-  import { parseTime, pickerOptions, prettyJson } from '@/utils'
+  import { parseTime, pickerOptions, prettyJson, isEmptyObject } from '@/utils'
   import { getLogList, recover } from 'api/log'
   const typeOptions = [
     {key: 1, display_name: '部门'},
@@ -185,8 +185,8 @@
           beforeSeg: undefined,
           afterSeg: undefined,
           operator: undefined,
-          beginTime: this.defaultDateTime.length > 0 ?this.defaultDateTime[0]:undefined,
-          endTime: this.defaultDateTime.length > 0 ?this.defaultDateTime[1]:undefined
+          beginTime: isEmptyObject(this.defaultDateTime)?undefined:this.defaultDateTime[0],
+          endTime:  isEmptyObject(this.defaultDateTime)?undefined:this.defaultDateTime[1]
         },
       }
     },
