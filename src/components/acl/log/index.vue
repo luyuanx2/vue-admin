@@ -4,7 +4,7 @@
       <div class="app-container">
         <div class="filter-container">
           <el-form ref="logSearchForm" size="small" :inline="true" :model="listQuery" class="demo-form-inline">
-            <el-form-item prop="username">
+            <el-form-item prop="operator">
               <el-input  @keyup.enter.native="handleFilter"
                          placeholder="操作人"
                          v-model="listQuery.operator">
