@@ -39,6 +39,7 @@
                 range-separator="至"
                 start-placeholder="操作开始时间"
                 end-placeholder="操作结束时间"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 align="right">
               </el-date-picker>
             </el-form-item>
