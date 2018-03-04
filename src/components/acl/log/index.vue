@@ -185,8 +185,8 @@
           beforeSeg: undefined,
           afterSeg: undefined,
           operator: undefined,
-          beginTime: isEmptyObject(this.defaultDateTime)?undefined:this.defaultDateTime[0],
-          endTime:  isEmptyObject(this.defaultDateTime)?undefined:this.defaultDateTime[1]
+          beginTime: undefined,
+          endTime: undefined
         },
       }
     },
@@ -209,6 +209,8 @@
       },
       getList() {
         this.listLoading = true
+        this.listQuery.beginTime = isEmptyObject(this.defaultDateTime)?undefined:this.defaultDateTime[0]
+        this.listQuery.endTime = isEmptyObject(this.defaultDateTime)?undefined:this.defaultDateTime[1]
         getLogList(this.listQuery).then(response => {
         this.list = response.data.list
         this.total = response.data.total
