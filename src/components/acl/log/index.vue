@@ -31,7 +31,7 @@
               </el-input>
             </el-form-item>
 
-            <el-form-item>
+            <el-form-item prop="defaultDateTime">
               <el-date-picker
                 v-model="defaultDateTime"
                 type="datetimerange"
