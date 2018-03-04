@@ -231,6 +231,8 @@
         });
       },
       handleFilter() {
+          alert(this.defaultDateTime)
+          console.log(this.defaultDateTime)
         this.listQuery.pageNo = 1
         this.getList()
       },
