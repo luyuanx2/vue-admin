@@ -169,7 +169,7 @@
   export default {
     data() {
       return {
-        defaultDateTime: '',
+        defaultDateTime: [],
         tableKey: 3,
         list: null,
         total: null,
@@ -185,8 +185,8 @@
           beforeSeg: undefined,
           afterSeg: undefined,
           operator: undefined,
-          beginTime: undefined,
-          endTime: undefined
+          beginTime: this.defaultDateTime.length > 0 ?this.defaultDateTime[0]:undefined,
+          endTime: this.defaultDateTime.length > 0 ?this.defaultDateTime[1]:undefined
         },
       }
     },
@@ -232,8 +232,6 @@
         });
       },
       handleFilter() {
-          alert(this.defaultDateTime)
-          console.log(this.defaultDateTime)
         this.listQuery.pageNo = 1
         this.getList()
       },
