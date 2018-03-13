@@ -10,6 +10,9 @@ const getters = {
   roles: state => state.user.roles,
   setting: state => state.user.setting,
   permission_routers: state => state.permission.routers,
-  addRouters: state => state.permission.addRouters
+  addRouters: state => state.permission.addRouters,
+  lockPasswd: state => state.app.lockPasswd,
+  isLock: state => state.app.isLock,
+  isFullScreen: state => state.app.isFullScreen
 }
 export default getters

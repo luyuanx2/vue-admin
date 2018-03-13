@@ -1,6 +1,19 @@
 <template xmlns="http://www.w3.org/1999/html">
   <div class="navbar-wrapper">
-  <el-dropdown class="avatar-container" trigger="click">
+
+    <div class="avatar-container">
+      <el-tooltip class="header-item" effect="dark" content="锁屏" placement="bottom">
+        <div class="">
+          <screen-lock></screen-lock>
+        </div>
+      </el-tooltip>
+      <el-tooltip class="header-item" effect="dark" :content="isFullScreen?'退出全屏':'全屏'" placement="bottom">
+        <div class="" @click="handleScreen">
+          <svg-icon :icon-class="isFullScreen?'exitfullscreen':'fullscreen'" />
+        </div>
+      </el-tooltip>
+
+  <el-dropdown class="" trigger="click">
     <div class="avatar-wrapper">
       <img class="user-avatar" src="../../common/image/default.png">
       <span style="vertical-align: middle;font-size: 16px">{{name}}</span>
@@ -17,19 +30,28 @@
       </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
+    </div>
 </div>
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import { mapGetters } from 'vuex'
+  import ScreenLock from "./screen-lock";
+  import { fullscreenToggel } from "@/utils";
   export default {
+    components: { ScreenLock },
     computed: {
       ...mapGetters([
         'avatar',
         'name'
-      ])
+      ]),
+      ...mapGetters(["isFullScreen"])
     },
     methods: {
+      handleScreen() {
+        this.$store.commit("SET_FULLSCREEN");
+        fullscreenToggel();
+      },
       logout () {
         this.$store.dispatch('FedLogOut').then(() => {
           // 为了重新实例化vue-router对象 避免bug
@@ -40,11 +62,12 @@
   }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .screenfull {
-    position: absolute;
-    right: 90px;
-    top: 16px;
-    color: red;
+  .header-item {
+    /*height: 35px;*/
+    display: inline-block;
+    margin: 0 8px;
+    line-height: 50px;
+    vertical-align: middle;
   }
   .navbar-wrapper {
     float: right;

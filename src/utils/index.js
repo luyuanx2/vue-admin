@@ -247,6 +247,53 @@ export function debounce(func, wait, immediate) {
   }
 }
 
+/**
+ * 浏览器判断是否全屏
+ */
+export const fullscreenToggel = () => {
+  if (fullscreenEnable()) {
+    exitFullScreen();
+  } else {
+    reqFullScreen();
+  }
+}
+
+/**
+ * 浏览器判断是否全屏
+ */
+export const fullscreenEnable = () => {
+  var isFullscreen = document.fullscreenEnabled ||
+    window.fullScreen ||
+    document.mozFullscreenEnabled ||
+    document.webkitIsFullScreen;
+  return isFullscreen;
+}
+
+/**
+ * 浏览器全屏
+ */
+export const reqFullScreen = () => {
+  if (document.documentElement.requestFullScreen) {
+    document.documentElement.requestFullScreen();
+  } else if (document.documentElement.webkitRequestFullScreen) {
+    document.documentElement.webkitRequestFullScreen();
+  } else if (document.documentElement.mozRequestFullScreen) {
+    document.documentElement.mozRequestFullScreen();
+  }
+}
+/**
+ * 浏览器退出全屏
+ */
+export const exitFullScreen = () => {
+  if (document.documentElement.requestFullScreen) {
+    document.exitFullScreen();
+  } else if (document.documentElement.webkitRequestFullScreen) {
+    document.webkitCancelFullScreen();
+  } else if (document.documentElement.mozRequestFullScreen) {
+    document.mozCancelFullScreen();
+  }
+}
+
 export function deepClone(source) {
   if (!source && typeof source !== 'object') {
     throw new Error('error arguments', 'shallowClone')
@@ -383,3 +430,19 @@ export function isEmptyObject(obj) {
   }
   return true;
 }
+
+/**
+ * 判断是否为空
+ */
+export function validateNull(val) {
+  if (val instanceof Array) {
+    if (val.length == 0) return true;
+  } else if (val instanceof Object) {
+    if (JSON.stringify(val) === '{}') return true;
+  } else {
+    if (val == 'null' || val == null || val == 'undefined' || val == undefined || val == '') return true;
+    return false;
+  }
+  return false;
+
+};
