@@ -274,8 +274,9 @@
     }
     .login-form {
       background-color: #fff;
-      box-shadow: 0 2px 10px #999;
-      border-radius: 5px;
+      /*box-shadow: 0 2px 10px #999;*/
+      box-shadow: 1px 2px 15px rgba(0,0,0,.3);
+      border-radius: 8px;
       position: absolute;
       left: 0;
       right: 0;
