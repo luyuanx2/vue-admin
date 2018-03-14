@@ -268,7 +268,7 @@
     .title {
       font-size: 25px;
       font-weight: 600;
-      color: #606266;
+      color: $miniPrimary;
       margin: 0px auto 40px auto;
       text-align: center;
     }

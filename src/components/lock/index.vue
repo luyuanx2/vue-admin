@@ -48,9 +48,9 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        //清除屏幕锁
-        this.$store.commit("CLEAR_LOCK");
         this.$store.dispatch("FedLogOut").then(() => {
+          //清除屏幕锁
+          this.$store.commit("CLEAR_LOCK");
           this.$router.push({ path: "/login" });
         });
       });
