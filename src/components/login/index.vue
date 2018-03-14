@@ -35,7 +35,7 @@
                       placeholder="验证码">
               <template slot="append" class="message-code">
                 <el-button type="default" :disabled="disabled" @click.native="sendCode">
-                {{sendCodeText}}
+                  <span style="color: #409eff">{{sendCodeText}}</span>
               </el-button>
               </template>
             </el-input>
@@ -253,6 +253,7 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
+  @import 'src/common/styles/variables.scss';
   $dark_gray: #889aa4;
   .login-container {
     /*position: fixed;*/
@@ -263,7 +264,6 @@
     background-image: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
-      /*-webkit-text-fill-color: #fff !important;*/
     }
     .title {
       font-size: 25px;
