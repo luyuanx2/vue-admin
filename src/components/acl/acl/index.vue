@@ -1,5 +1,7 @@
 <template>
-  <div class="app-container">
+    <transition name="fade" mode="out-in">
+    <keep-alive :include='cachedViews'>
+    <div class="app-container">
     <div class="table-wrapper">
       <div class="table-head-wrapper">
           <el-button size="small" class="table-head-button" type="primary">展开所有</el-button>
@@ -95,6 +97,8 @@
       </div>
     </el-dialog>
   </div>
+    </keep-alive>
+    </transition>
 </template>
 
 <script>

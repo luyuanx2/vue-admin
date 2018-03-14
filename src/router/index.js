@@ -57,6 +57,7 @@ export const asyncRouterMap = [
   //     {path: 'userList1', component: _import('user/index'), name: 'UserList', meta: {title: '用户列表'}}
   //   ]
   // },
+  { path: '/lock', name: '锁屏页', component: _import('lock/index'), hidden: true },
   {
     path: '/acl',
     component: Layout,

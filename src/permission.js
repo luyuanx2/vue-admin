@@ -13,11 +13,14 @@ function hasPermission (roles, permissionRoles) {
 }
 
 const whiteList = ['/login', '/authredirect'] // 不重定向白名单
-
+const lockPage = '/lock'
 router.beforeEach((to, from, next) => {
   NProgress.start() // 开启Progress
   if (getToken()) { // 判断是否有token
-    if (to.path === '/login') {
+    if (store.getters.isLock && to.path != lockPage) {
+      next({ path: lockPage })
+      NProgress.done()
+    }else if (to.path === '/login') {
       next({path: '/'})
       NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
     } else {
