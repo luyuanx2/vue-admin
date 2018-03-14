@@ -2,10 +2,10 @@
   <div class="lock-container pull-height">
     <div class="lock-form animated bounceInDown">
       <div class="animated" :class="{'shake':passwdError,'bounceOut':pass}">
-        <div style="text-align: center;margin-bottom: 8px;color: #fff;">
+        <div style="text-align: center;margin-bottom: 20px;color: #fff;">
           <h3>{{name}}</h3>
         </div>
-        <div style="text-align: center;margin-bottom: 20px">
+        <div style="text-align: center;margin-bottom: 40px">
           <span class="avatar"><img src="../../common/image/default.png"/></span>
         </div>
         <el-input placeholder="请输入解锁密码" type="password" class="input-with-select animated" v-model="passwd" @keyup.enter.native="handleLogin">
@@ -113,8 +113,8 @@ export default {
     white-space: nowrap;
     position: relative;
     overflow: hidden;
-    width: 132px;
-    height: 132px;
+    width: 100px;
+    height: 100px;
     line-height: 132px;
     border-radius: 70px;
     img {

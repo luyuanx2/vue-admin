@@ -3,9 +3,7 @@
 
     <div class="avatar-container">
       <el-tooltip class="header-item" effect="dark" content="锁屏" placement="bottom">
-        <div class="">
           <screen-lock></screen-lock>
-        </div>
       </el-tooltip>
       <el-tooltip class="header-item" effect="dark" :content="isFullScreen?'退出全屏':'全屏'" placement="bottom">
         <div class="" @click="handleScreen">

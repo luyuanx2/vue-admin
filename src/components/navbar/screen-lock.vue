@@ -1,10 +1,9 @@
 <template>
-    <span>
-      <span @click="handleLock">
-      <svg-icon icon-class="screenlock" />
+    <div>
+        <span @click="handleLock">
+          <svg-icon icon-class="screenlock" />
         </span>
-        <!--<i class="el-icon-rank" @click="handleLock"></i>-->
-        <el-dialog title="设置锁屏密码" :visible.sync="dialogFormVisible" width="500px">
+        <el-dialog title="设置锁屏密码" append-to-body :visible.sync="dialogFormVisible" width="500px">
             <el-form size="medium" :model="form" ref="form" label-width="80px" style="padding:0 24px">
                 <el-form-item label="锁屏密码" prop="passwd" :rules="[{ required: true, message: '锁屏密码不能为空'}]">
                     <el-input v-model="form.passwd" placeholder="请输入锁屏密码"></el-input>
@@ -15,7 +14,7 @@
               <el-button size="medium" type="primary" @click="handleSetLock">确 定</el-button>
             </span>
         </el-dialog>
-    </span>
+    </div>
 </template>
 
 <script>
@@ -53,6 +52,7 @@ export default {
         return;
       }
       this.$store.commit("SET_LOCK");
+      this.dialogFormVisible = false;
       setTimeout(() => {
         this.$router.push({ path: "/lock" });
       }, 100);
